@@ -1,113 +1,80 @@
 
-@font-face {
-  font-family: 'Alte Haas Grotesk';
-  src: url('assets/AlteHaasGroteskBold.ttf');
-  font-weight: bold;
-}
-
-@font-face {
-  font-family: 'Roboto Mono';
-  src: url('assets/RobotoMono-Light.ttf');
-  font-weight: 300;
-}
-
 body {
-  margin: 0;
-  font-family: 'Roboto Mono', monospace;
   background-color: #0a0e14;
   color: #ffffff;
+  font-family: 'Roboto Mono', monospace;
+  margin: 0;
+  padding: 0;
 }
 
 header {
-  background-color: #01d200;
+  background: #01d200;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
 }
 
 .logo {
   height: 40px;
 }
 
-nav a {
-  margin: 0 12px;
-  color: #000;
-  font-family: 'Roboto Mono';
-  text-decoration: none;
-}
-
-.auth-buttons .login,
-.auth-buttons .signup {
-  margin-left: 8px;
-  padding: 6px 12px;
-  background: #000;
-  color: #fff;
-  border: none;
-  font-weight: bold;
+nav .btn-outline,
+nav .btn-filled {
+  border-radius: 999px;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  margin-left: 0.5rem;
   cursor: pointer;
+  font-family: 'Roboto Mono', monospace;
 }
 
-.chart-section {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  padding: 40px;
+nav .btn-outline {
+  background: #01d200;
+  color: #000;
+  border: 2px solid #000;
 }
 
-.chart {
-  flex: 1;
-  max-width: 45%;
-  margin-right: 5%;
-}
-
-.info {
-  flex: 1;
-  max-width: 45%;
-}
-
-h2 {
+nav .btn-filled {
+  background: #000;
   color: #01d200;
-  font-family: 'Alte Haas Grotesk';
-  margin-top: 24px;
+  border: none;
 }
 
-.lifestyle-banner {
-  position: relative;
-  text-align: center;
-  margin: 60px 0;
+.value-prop {
+  padding: 2rem;
+  color: #ffffff;
 }
 
-.lifestyle-banner h1 {
-  font-family: 'Alte Haas Grotesk';
+.value-prop h2 {
   color: #01d200;
-  font-size: 3em;
-  margin-bottom: 20px;
+  font-family: 'Alte Haas Grotesk', sans-serif;
 }
 
-.lifestyle-banner img {
+.image-split img {
+  display: block;
   width: 100%;
-  height: auto;
 }
 
 .quote {
   text-align: center;
-  margin: 60px 0;
-  font-family: 'Roboto Mono';
+  padding: 2rem;
+}
+
+.quote h1 {
+  color: #01d200;
+  font-family: 'Alte Haas Grotesk', sans-serif;
+  font-size: 2.5rem;
 }
 
 footer {
-  background-color: #01d200;
-  padding: 20px;
+  background: #01d200;
+  padding: 1rem;
   text-align: center;
 }
 
 .footer-logo {
-  height: 60px;
-  margin-bottom: 10px;
-}
-
-.social-icons span {
-  margin: 0 10px;
-  font-size: 20px;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
