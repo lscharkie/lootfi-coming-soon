@@ -1,54 +1,40 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loot-Fi</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Loot-Fi Coming Soon</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script>
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const form = document.querySelector('.cta');
+      form.innerHTML = "<p class='success-message'>You’ve joined the waitlist.</p>";
+      // Simulate form send without redirect
+      const email = form.querySelector("input[name='email']")?.value;
+      if (email) {
+        fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ g: 'SEqCFQ', email })
+        });
+      }
+    }
+  </script>
 </head>
 <body>
-  <header>
-    <img src="images/loot-fi-logo-top-nav.svg" alt="Loot-Fi Logo" class="logo" />
-    <nav>
-      <button class="btn-outline">Log in</button>
-      <button class="btn-filled">Sign up</button>
-    </nav>
-  </header>
+  <img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi Logo" class="logo-svg" />
+  <img src="images/animation.gif" alt="animation" class="animation" />
+  <h1 class="headline">Crypto, minus the chaos.</h1>
+  <p class="body-copy">
+    Sick of the noise? We track which cryptocurrencies are actually moving — no influencers, no hype, no pump-and-dump roulette.
+    Just a weekly list of what’s quietly outperforming, powered by 10+ years of market data and a system that doesn’t sleep.
+  </p>
 
-  <main>
-    <section class="performance">
-      <img src="images/performance-chart-transparent-v2.png" alt="Performance Chart" />
-    </section>
-
-    <section class="value-prop">
-      <div class="copy">
-        <h2>Performance</h2>
-        <p>Track our long-term trend performance. No daily noise. Just signal.</p>
-
-        <h2>Signals</h2>
-        <p>We monitor the top 100 coins for trend changes. When momentum builds, you’ll know.</p>
-
-        <h2>Position Sizing</h2>
-        <p>Let your winners grow. Automatically size positions based on volatility and trend strength.</p>
-
-        <h2>Dashboard</h2>
-        <p>Everything in one place. Performance, past signals, and portfolio tracking.</p>
-      </div>
-    </section>
-
-    <section class="image-split">
-      <img src="images/person-in-dark-room-people-at-beach.jpg" alt="Contrast image" />
-    </section>
-
-    <section class="quote">
-      <h1>Trade Less.<br />Live More.</h1>
-      <p>“Gimme the loot, gimme the loot.”</p>
-      <cite>- BIGGIE SMALLS</cite>
-    </section>
-  </main>
-
-  <footer>
-    <img src="images/loot-fi-logo-footer.svg" alt="Loot-Fi Footer Logo" class="footer-logo" />
-  </footer>
+  <form onsubmit="handleFormSubmit(event)" class="cta">
+    <input type="email" name="email" placeholder="Email" required />
+    <button type="submit">Join Waitlist</button>
+  </form>
 </body>
 </html>

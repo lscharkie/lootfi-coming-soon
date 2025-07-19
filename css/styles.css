@@ -1,0 +1,108 @@
+
+@font-face {
+  font-family: 'Alte Haas Grotesk Bold';
+  src: url('../fonts/AlteHaasGroteskBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto Mono Light';
+  src: url('../fonts/RobotoMono-Light.ttf') format('truetype');
+}
+
+:root {
+  --green: #86f834;
+  --blue: #2e29ef;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--blue);
+  color: white;
+  font-family: 'Roboto Mono Light', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.logo-svg {
+  width: 100vw;
+  height: auto;
+  margin-top: -40px;
+  margin-bottom: 0px;
+}
+
+.animation {
+  width: 715px;
+  margin: 20px auto;
+}
+
+.headline {
+  font-size: 3.4rem;
+  color: var(--green);
+  font-family: 'Alte Haas Grotesk Bold', sans-serif;
+  margin-bottom: 20px;
+}
+
+.body-copy {
+  max-width: 650px;
+  font-size: 1.0rem;
+  font-family: 'Roboto Mono Light', monospace;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.cta {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.cta input[type="email"] {
+  padding: 10px 20px;
+  border: 2px solid white;
+  border-radius: 30px;
+  background: transparent;
+  color: white;
+  font-family: 'Roboto Mono Light', monospace;
+  width: 220px;
+}
+
+.cta input[type="email"]::placeholder {
+  color: white;
+  opacity: 0.6;
+}
+
+.cta button {
+  padding: 10px 25px;
+  background-color: var(--green);
+  border: none;
+  border-radius: 30px;
+  color: #000;
+  font-weight: normal;
+  font-family: 'Roboto Mono Light', monospace;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .logo-svg {
+    width: 100vw;
+    height: auto;
+    margin-top: -40px;
+    margin-bottom: 0px;
+  }
+  .animation {
+    width: 90%;
+  }
+  .headline {
+    font-size: 2.5rem;
+  }
+}
