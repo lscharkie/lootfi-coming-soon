@@ -6,22 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Loot-Fi Coming Soon</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <script>
-    function handleFormSubmit(e) {
-      e.preventDefault();
-      const form = document.querySelector('.cta');
-      form.innerHTML = "<p class='success-message'>You’ve joined the waitlist.</p>";
-      // Simulate form send without redirect
-      const email = form.querySelector("input[name='email']")?.value;
-      if (email) {
-        fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ g: 'SEqCFQ', email })
-        });
-      }
+<script>
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const form = document.querySelector('.cta');
+    const email = form.querySelector("input[name='email']")?.value;
+
+    if (email) {
+      fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ g: 'SEqCFQ', email })
+      }).then(() => {
+        form.innerHTML = "<p class='success-message'>You’ve joined the waitlist.</p>";
+      }).catch(() => {
+        form.innerHTML = "<p class='success-message'>Something went wrong. Please try again.</p>";
+      });
     }
-  </script>
+  }
+</script>
 </head>
 <body>
   <img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi Logo" class="logo-svg" />
