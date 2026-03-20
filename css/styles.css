@@ -1,8 +1,8 @@
 
 @font-face {
   font-family: 'AS Therma';
-  src: url('../fonts/ASTherma-BoldCondensed.ttf') format('truetype');
-  font-weight: 700;
+  src: url('../fonts/ASTherma-MediumCondensed.otf') format('opentype');
+  font-weight: 500;
   font-display: swap;
 }
 
