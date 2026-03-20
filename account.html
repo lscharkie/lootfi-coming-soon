@@ -132,6 +132,13 @@
 
         // Update nav to show account link instead of login/signup
         document.getElementById('navAuth').innerHTML = '<a href="account.html" class="btn-login" style="text-decoration:none;">Account</a>';
+
+        // Fetch plan from profiles
+        const { data: profile } = await sb.from('profiles').select('plan').eq('id', user.id).single();
+        if (profile && profile.plan === 'researcher') {
+            document.getElementById('userPlan').textContent = 'Researcher';
+            document.querySelector('.account-btn.primary').textContent = 'Manage subscription';
+        }
     }
 
     async function handleSignOut() {

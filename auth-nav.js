@@ -1,5 +1,4 @@
-// Shared auth-aware nav updater
-// Hide auth buttons until session check completes to prevent flash
+// Shared auth-aware nav updater + plan checker
 (function() {
     var authEl = document.querySelector('.topnav-auth');
     if (authEl) authEl.style.opacity = '0';
@@ -12,6 +11,12 @@
         var session = result.data.session;
         if (session) {
             authEl.innerHTML = '<a href="account.html" class="btn-login" style="text-decoration:none;">Account</a>';
+            // Fetch user plan
+            sb.from('profiles').select('plan').eq('id', session.user.id).single().then(function(res) {
+                if (res.data && res.data.plan === 'researcher') {
+                    document.body.classList.add('researcher');
+                }
+            });
         }
         if (authEl) authEl.style.opacity = '1';
     }).catch(function() {
