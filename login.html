@@ -140,12 +140,12 @@
     <script>
     const SUPABASE_URL = 'https://sxpzgnbxvbmpxhavzsar.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_83VJEzvMOCQB-s55rXy1cw_UDVFb342';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let currentMode = 'login';
 
     // Check if already logged in
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    sb.auth.getSession().then(({ data: { session } }) => {
         if (session) {
             window.location.href = 'account.html';
         }
@@ -200,11 +200,11 @@
 
         try {
             if (currentMode === 'login') {
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                const { data, error } = await sb.auth.signInWithPassword({ email, password });
                 if (error) throw error;
                 window.location.href = 'account.html';
             } else {
-                const { data, error } = await supabase.auth.signUp({ email, password });
+                const { data, error } = await sb.auth.signUp({ email, password });
                 if (error) throw error;
                 showMessage('Check your email to confirm your account. You may need to check your spam folder.', 'success');
             }
@@ -223,7 +223,7 @@
             showMessage('Enter your email address first.', 'error');
             return;
         }
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        const { error } = await sb.auth.resetPasswordForEmail(email, {
             redirectTo: 'https://loot-fi.com/login.html'
         });
         if (error) {
