@@ -493,6 +493,9 @@ body {
   .body-copy {
     font-size: 16px;
   }
+  .feature-title {
+    font-size: 38px;
+  }
   .stats-bar {
     display: grid;
     grid-template-columns: 1fr 1fr;
