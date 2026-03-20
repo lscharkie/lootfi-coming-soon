@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in | Loot-Fi</title>
+    <meta name="description" content="Log in or sign up for Loot-Fi — crypto backtesting research platform.">
+    <link rel="canonical" href="https://loot-fi.com/login.html">
+    <meta property="og:title" content="Log in | Loot-Fi">
+    <meta property="og:site_name" content="Loot-Fi">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @font-face { font-family: 'AS Therma'; src: url('fonts/ASTherma-BoldCondensed.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskRegular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskBold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Proto Mono'; src: url('fonts/ProtoMono-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-y: scroll; }
+        body { font-family: 'Alte Haas Grotesk', sans-serif; background: #06080a; color: #efefef; min-height: 100vh; display: flex; flex-direction: column; }
+        a { color: inherit; text-decoration: none; }
+
+        .topnav { padding: 16px 0; width: 100%; position: sticky; top: 0; z-index: 100; background: #2e29ef; }
+        .topnav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .topnav-logo img { height: 28px; }
+        .topnav-links { display: flex; gap: 32px; align-items: center; }
+        .topnav-links a { color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .topnav-links a:hover { color: #fff; }
+        .topnav-auth { display: flex; gap: 12px; align-items: center; }
+        .nav-toggle { display: none; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; background: none; border: none; }
+        .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+        .btn-login { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .btn-signup { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: #86f834; border: 1px solid #86f834; color: #000; font-family: 'Alte Haas Grotesk', sans-serif; }
+
+        .auth-container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
+        .auth-card { width: 100%; max-width: 400px; }
+        .auth-title { font-family: 'AS Therma', sans-serif; font-size: 36px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+        .auth-sub { color: #556070; font-size: 14px; margin-bottom: 32px; }
+
+        .auth-tabs { display: flex; gap: 0; margin-bottom: 32px; border: 1px solid #1e2430; border-radius: 50px; overflow: hidden; }
+        .auth-tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 700; cursor: pointer; background: transparent; border: none; color: #556070; font-family: 'Alte Haas Grotesk', sans-serif; transition: all 0.2s; }
+        .auth-tab.active { background: #1e2430; color: #efefef; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 12px; color: #556070; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .form-input { width: 100%; padding: 14px 16px; background: #0d1117; border: 1px solid #1e2430; border-radius: 12px; color: #efefef; font-size: 14px; font-family: 'Alte Haas Grotesk', sans-serif; outline: none; transition: border-color 0.2s; }
+        .form-input:focus { border-color: #86f834; }
+        .form-input::placeholder { color: #333a46; }
+
+        .auth-btn { width: 100%; padding: 14px; border-radius: 50px; font-size: 14px; font-weight: 700; cursor: pointer; border: none; font-family: 'Alte Haas Grotesk', sans-serif; transition: opacity 0.2s; background: #86f834; color: #000; margin-top: 8px; }
+        .auth-btn:hover { opacity: 0.9; }
+        .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .auth-link { text-align: center; margin-top: 20px; font-size: 13px; color: #556070; }
+        .auth-link a { color: #86f834; }
+
+        .auth-message { padding: 12px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 20px; display: none; }
+        .auth-message.success { display: block; background: rgba(134, 248, 52, 0.1); border: 1px solid rgba(134, 248, 52, 0.3); color: #86f834; }
+        .auth-message.error { display: block; background: rgba(255, 91, 91, 0.1); border: 1px solid rgba(255, 91, 91, 0.3); color: #ff5b5b; }
+
+        .forgot-link { text-align: right; margin-top: -12px; margin-bottom: 20px; }
+        .forgot-link a { font-size: 12px; color: #556070; }
+        .forgot-link a:hover { color: #86f834; }
+
+        .disclaimer { font-size: 11px; color: #556070; line-height: 1.6; max-width: 900px; margin: 40px auto 10px; text-align: center; border-top: 1px solid #1e2430; padding: 20px 24px 0; }
+        .disclaimer a { color: #556070; margin: 0 8px; }
+
+        @media (max-width: 800px) {
+            .hamburger { display: flex; }
+            .topnav-inner { flex-wrap: wrap; }
+            .topnav-links, .topnav-auth { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 16px; }
+            .nav-toggle:checked ~ .topnav-links, .nav-toggle:checked ~ .topnav-auth { display: flex; }
+            .topnav-links { order: 3; }
+            .topnav-auth { order: 4; flex-direction: row; justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .auth-title { font-size: 28px; }
+            .auth-container { padding: 32px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="topnav"><div class="topnav-inner">
+        <div class="topnav-logo"><a href="/"><img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi"></a></div>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+        <label for="nav-toggle" class="hamburger" aria-label="Menu"><span></span><span></span><span></span></label>
+        <div class="topnav-links">
+            <a href="strategies.html">Strategies</a>
+            <a href="stacking.html">Alpha Stacking</a>
+            <a href="scanner.html">Scanner</a>
+        </div>
+        <div class="topnav-auth">
+            <a href="login.html" class="btn-login" style="text-decoration:none;">Log in</a>
+            <a href="pricing.html" class="btn-signup" style="text-decoration:none;">Sign up</a>
+        </div>
+    </div></nav>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-title" id="authTitle">Log in</div>
+            <div class="auth-sub" id="authSub">Welcome back to Loot-Fi.</div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Log in</button>
+                <button class="auth-tab" onclick="switchTab('signup')">Sign up</button>
+            </div>
+
+            <div id="authMessage" class="auth-message"></div>
+
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="password" placeholder="Min 6 characters" required minlength="6">
+                </div>
+                <div class="forgot-link" id="forgotLink">
+                    <a href="#" onclick="handleForgot(event)">Forgot password?</a>
+                </div>
+                <button type="submit" class="auth-btn" id="authBtn">Log in</button>
+            </form>
+
+            <div class="auth-link" id="authSwitch">
+                Don't have an account? <a href="#" onclick="switchTab('signup')">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="disclaimer">
+        <p>Loot-Fi publishes historical backtesting research for educational purposes only. Nothing on Loot-Fi constitutes financial advice, a recommendation to buy or sell any asset, or an invitation to invest.</p>
+        <div style="margin-top: 10px;">
+            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+        </div>
+    </div>
+
+    <script>
+    const SUPABASE_URL = 'https://sxpzgnbxvbmpxhavzsar.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_83VJEzvMOCQB-s55rXy1cw_UDVFb342';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let currentMode = 'login';
+
+    // Check if already logged in
+    supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+            window.location.href = 'account.html';
+        }
+    });
+
+    function switchTab(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.auth-tab')[mode === 'login' ? 0 : 1].classList.add('active');
+
+        const title = document.getElementById('authTitle');
+        const sub = document.getElementById('authSub');
+        const btn = document.getElementById('authBtn');
+        const switchEl = document.getElementById('authSwitch');
+        const forgot = document.getElementById('forgotLink');
+
+        if (mode === 'login') {
+            title.textContent = 'Log in';
+            sub.textContent = 'Welcome back to Loot-Fi.';
+            btn.textContent = 'Log in';
+            switchEl.innerHTML = 'Don\'t have an account? <a href="#" onclick="switchTab(\'signup\')">Sign up</a>';
+            forgot.style.display = 'block';
+        } else {
+            title.textContent = 'Sign up';
+            sub.textContent = 'Create your free Loot-Fi account.';
+            btn.textContent = 'Create account';
+            switchEl.innerHTML = 'Already have an account? <a href="#" onclick="switchTab(\'login\')">Log in</a>';
+            forgot.style.display = 'none';
+        }
+        hideMessage();
+    }
+
+    function showMessage(text, type) {
+        const el = document.getElementById('authMessage');
+        el.textContent = text;
+        el.className = 'auth-message ' + type;
+    }
+
+    function hideMessage() {
+        document.getElementById('authMessage').className = 'auth-message';
+    }
+
+    async function handleAuth(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('authBtn');
+
+        btn.disabled = true;
+        btn.textContent = currentMode === 'login' ? 'Logging in...' : 'Creating account...';
+        hideMessage();
+
+        try {
+            if (currentMode === 'login') {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                window.location.href = 'account.html';
+            } else {
+                const { data, error } = await supabase.auth.signUp({ email, password });
+                if (error) throw error;
+                showMessage('Check your email to confirm your account. You may need to check your spam folder.', 'success');
+            }
+        } catch (err) {
+            showMessage(err.message, 'error');
+        }
+
+        btn.disabled = false;
+        btn.textContent = currentMode === 'login' ? 'Log in' : 'Create account';
+    }
+
+    async function handleForgot(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        if (!email) {
+            showMessage('Enter your email address first.', 'error');
+            return;
+        }
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: 'https://loot-fi.com/login.html'
+        });
+        if (error) {
+            showMessage(error.message, 'error');
+        } else {
+            showMessage('Password reset link sent. Check your email.', 'success');
+        }
+    }
+
+    // Handle URL params (e.g. after email confirm redirect)
+    if (window.location.hash.includes('type=signup') || window.location.hash.includes('type=email')) {
+        showMessage('Email confirmed! You can now log in.', 'success');
+    }
+    if (new URLSearchParams(window.location.search).get('mode') === 'signup') {
+        switchTab('signup');
+    }
+    </script>
+</body>
+</html>
