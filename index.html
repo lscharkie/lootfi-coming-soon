@@ -73,8 +73,9 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-nav.js"></script>
   <script>
-  // Handle Supabase auth redirects (email confirmation, password reset)
   if (window.location.hash.includes('access_token')) {
       window.location.href = 'account.html' + window.location.hash;
   }
