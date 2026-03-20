@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy | Loot-Fi</title>
+  <meta name="description" content="Privacy Policy for Loot-Fi. Learn how we collect, use, and protect your data on our crypto backtesting research platform.">
+  <link rel="canonical" href="https://loot-fi.com/privacy.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Privacy Policy | Loot-Fi">
+  <meta property="og:description" content="Privacy Policy for Loot-Fi. Learn how we collect, use, and protect your data.">
+  <meta property="og:url" content="https://loot-fi.com/privacy.html">
+  <meta property="og:site_name" content="Loot-Fi">
+  <style>
+    @font-face { font-family: 'AS Therma'; src: url('fonts/ASTherma-BoldCondensed.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskRegular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskBold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Proto Mono'; src: url('fonts/ProtoMono-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Alte Haas Grotesk', sans-serif; background: #06080a; color: #efefef; padding: 24px; max-width: 900px; margin: 0 auto; line-height: 1.7; }
+    a { color: #86f834; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .topnav { padding: 16px 0; margin: -24px calc(-50vw + 50%) 24px; width: 100vw; position: sticky; top: 0; z-index: 100; background: #2e29ef; }
+    .topnav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .topnav-logo img { height: 28px; }
+    .topnav-links { display: flex; gap: 32px; align-items: center; }
+    .topnav-links a { color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; font-family: 'Alte Haas Grotesk', sans-serif; text-decoration: none; }
+    .topnav-links a:hover { color: #fff; }
+    .topnav-auth { display: flex; gap: 12px; align-items: center; }
+    .nav-toggle { display: none; }
+    .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+    .btn-login { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'Alte Haas Grotesk', sans-serif; transition: border-color 0.2s; }
+    .btn-login:hover { border-color: #fff; }
+    .btn-signup { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; background: #86f834; border: 1px solid #86f834; color: #000; font-family: 'Alte Haas Grotesk', sans-serif; transition: opacity 0.2s; }
+    .btn-signup:hover { opacity: 0.9; }
+
+    h1 { font-family: 'AS Therma', sans-serif; font-size: 48px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; margin: 40px 0 12px; color: #efefef; }
+    .last-updated { color: #556070; font-size: 13px; margin-bottom: 40px; }
+    h2 { font-family: 'Alte Haas Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #efefef; margin: 36px 0 12px; text-transform: uppercase; letter-spacing: 1px; }
+    p, li { font-size: 14px; color: #8a8fa0; margin-bottom: 12px; }
+    ul { padding-left: 24px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+
+    .disclaimer-bar { border-top: 1px solid #1e2430; margin-top: 60px; padding: 20px 0 10px; text-align: center; }
+    .disclaimer-bar p { font-size: 11px; color: #556070; line-height: 1.6; max-width: 800px; margin: 0 auto 10px; }
+    .disclaimer-bar .footer-links { font-size: 11px; color: #556070; }
+    .disclaimer-bar .footer-links a { color: #556070; margin: 0 8px; }
+    .disclaimer-bar .footer-links a:hover { color: #efefef; }
+
+    @media (max-width: 800px) {
+      .hamburger { display: flex; }
+      .topnav-inner { flex-wrap: wrap; }
+      .topnav-links, .topnav-auth { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 16px; }
+      .nav-toggle:checked ~ .topnav-links, .nav-toggle:checked ~ .topnav-auth { display: flex; }
+      .topnav-links { order: 3; }
+      .topnav-auth { order: 4; flex-direction: row; justify-content: center; }
+      h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav"><div class="topnav-inner">
+    <div class="topnav-logo"><a href="index.html"><img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi"></a></div>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="hamburger" aria-label="Menu"><span></span><span></span><span></span></label>
+    <div class="topnav-links">
+      <a href="strategies.html">Strategies</a>
+      <a href="stacking.html">Alpha Stacking</a>
+      <a href="scanner.html">Scanner</a>
+    </div>
+    <div class="topnav-auth">
+      <a href="pricing.html" class="btn-login" style="text-decoration:none;">Log in</a>
+      <a href="pricing.html" class="btn-signup" style="text-decoration:none;">Sign up</a>
+    </div>
+  </div></nav>
+
+  <h1>Privacy Policy</h1>
+  <p class="last-updated">Last updated: 17 March 2026</p>
+
+  <h2>1. Introduction</h2>
+  <p>Loot-Fi ("we", "us", "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you visit and use our website. By using Loot-Fi, you consent to the practices described in this policy.</p>
+
+  <h2>2. Information We Collect</h2>
+  <p>We may collect the following types of information:</p>
+  <ul>
+    <li><strong>Account information:</strong> When you sign up, we collect your email address and any profile information you choose to provide.</li>
+    <li><strong>Usage data:</strong> We collect information about how you interact with our site, including pages visited, features used, and time spent on the platform.</li>
+    <li><strong>Device and browser information:</strong> We may collect your IP address, browser type, operating system, and device identifiers.</li>
+    <li><strong>Payment information:</strong> If you subscribe to a paid plan, payment details are processed by our third-party payment provider. We do not store your full card details.</li>
+  </ul>
+
+  <h2>3. How We Use Your Information</h2>
+  <p>We use the information we collect to:</p>
+  <ul>
+    <li>Provide, maintain, and improve the Loot-Fi platform.</li>
+    <li>Process subscriptions and payments.</li>
+    <li>Send you service-related communications (e.g., account updates, security alerts).</li>
+    <li>Send occasional marketing emails, if you have opted in. You may unsubscribe at any time.</li>
+    <li>Analyse usage patterns to improve the user experience.</li>
+    <li>Comply with legal obligations.</li>
+  </ul>
+
+  <h2>4. Cookies and Analytics</h2>
+  <p>We use cookies and similar tracking technologies to enhance your experience. These may include:</p>
+  <ul>
+    <li><strong>Essential cookies:</strong> Required for the site to function properly (e.g., authentication, session management).</li>
+    <li><strong>Analytics cookies:</strong> We use privacy-focused analytics tools to understand how visitors interact with the site. These tools may collect anonymised data about page views and user behaviour.</li>
+  </ul>
+  <p>You can control cookie preferences through your browser settings. Disabling certain cookies may affect site functionality.</p>
+
+  <h2>5. Third-Party Services</h2>
+  <p>We may share limited data with trusted third-party services that help us operate the platform, including:</p>
+  <ul>
+    <li><strong>Analytics:</strong> Google Analytics or similar privacy-focused analytics services</li>
+    <li><strong>Email:</strong> Transactional and marketing email service providers</li>
+    <li><strong>Payments:</strong> Processed by a third-party payment provider with their own privacy policy.</li>
+  </ul>
+  <p>We do not sell your personal information to third parties.</p>
+
+  <h2>6. Data Retention</h2>
+  <p>We retain your personal information for as long as your account is active or as needed to provide you with our services. If you close your account, we will delete or anonymise your data within a reasonable period, unless we are required by law to retain it.</p>
+
+  <h2>7. Data Security</h2>
+  <p>We take reasonable technical and organisational measures to protect your personal information against unauthorised access, alteration, disclosure, or destruction. However, no method of transmission over the internet or electronic storage is completely secure, and we cannot guarantee absolute security.</p>
+
+  <h2>8. Your Rights</h2>
+  <p>Depending on your jurisdiction, you may have the following rights regarding your personal data:</p>
+  <ul>
+    <li>Access the personal data we hold about you.</li>
+    <li>Request correction of inaccurate data.</li>
+    <li>Request deletion of your data.</li>
+    <li>Object to or restrict certain processing of your data.</li>
+    <li>Request data portability.</li>
+    <li>Withdraw consent at any time where processing is based on consent.</li>
+  </ul>
+  <p>To exercise any of these rights, please contact us at <a href="mailto:info@loot-fi.com">info@loot-fi.com</a>.</p>
+
+  <h2>9. Children's Privacy</h2>
+  <p>Loot-Fi is not intended for use by individuals under the age of 18. We do not knowingly collect personal information from children. If we become aware that we have collected data from a child, we will take steps to delete it promptly.</p>
+
+  <h2>10. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated "Last updated" date. Your continued use of Loot-Fi after any changes constitutes acceptance of the revised policy.</p>
+
+  <h2>11. Contact</h2>
+  <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:info@loot-fi.com">info@loot-fi.com</a>.</p>
+
+  <div class="disclaimer-bar">
+    <p>Loot-Fi publishes historical backtesting research for educational purposes only. Nothing on Loot-Fi constitutes financial advice, a recommendation to buy or sell any asset, or an invitation to invest. Past performance in backtesting does not guarantee future results. All trading involves risk, including the loss of your entire investment. You should consult a licensed financial adviser before making any investment decisions.</p>
+    <div class="footer-links">
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</body>
+</html>

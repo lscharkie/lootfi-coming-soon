@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service | Loot-Fi</title>
+  <meta name="description" content="Terms of Service for Loot-Fi, a crypto backtesting research platform. Read about usage terms, disclaimers, and intellectual property.">
+  <link rel="canonical" href="https://loot-fi.com/terms.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Terms of Service | Loot-Fi">
+  <meta property="og:description" content="Terms of Service for Loot-Fi, a crypto backtesting research platform.">
+  <meta property="og:url" content="https://loot-fi.com/terms.html">
+  <meta property="og:site_name" content="Loot-Fi">
+  <style>
+    @font-face { font-family: 'AS Therma'; src: url('fonts/ASTherma-BoldCondensed.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskRegular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskBold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Proto Mono'; src: url('fonts/ProtoMono-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Alte Haas Grotesk', sans-serif; background: #06080a; color: #efefef; padding: 24px; max-width: 900px; margin: 0 auto; line-height: 1.7; }
+    a { color: #86f834; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .topnav { padding: 16px 0; margin: -24px calc(-50vw + 50%) 24px; width: 100vw; position: sticky; top: 0; z-index: 100; background: #2e29ef; }
+    .topnav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .topnav-logo img { height: 28px; }
+    .topnav-links { display: flex; gap: 32px; align-items: center; }
+    .topnav-links a { color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; font-family: 'Alte Haas Grotesk', sans-serif; text-decoration: none; }
+    .topnav-links a:hover { color: #fff; }
+    .topnav-auth { display: flex; gap: 12px; align-items: center; }
+    .nav-toggle { display: none; }
+    .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+    .btn-login { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'Alte Haas Grotesk', sans-serif; transition: border-color 0.2s; }
+    .btn-login:hover { border-color: #fff; }
+    .btn-signup { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; background: #86f834; border: 1px solid #86f834; color: #000; font-family: 'Alte Haas Grotesk', sans-serif; transition: opacity 0.2s; }
+    .btn-signup:hover { opacity: 0.9; }
+
+    h1 { font-family: 'AS Therma', sans-serif; font-size: 48px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; margin: 40px 0 12px; color: #efefef; }
+    .last-updated { color: #556070; font-size: 13px; margin-bottom: 40px; }
+    h2 { font-family: 'Alte Haas Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #efefef; margin: 36px 0 12px; text-transform: uppercase; letter-spacing: 1px; }
+    p, li { font-size: 14px; color: #8a8fa0; margin-bottom: 12px; }
+    ul { padding-left: 24px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+
+    .disclaimer-bar { border-top: 1px solid #1e2430; margin-top: 60px; padding: 20px 0 10px; text-align: center; }
+    .disclaimer-bar p { font-size: 11px; color: #556070; line-height: 1.6; max-width: 800px; margin: 0 auto 10px; }
+    .disclaimer-bar .footer-links { font-size: 11px; color: #556070; }
+    .disclaimer-bar .footer-links a { color: #556070; margin: 0 8px; }
+    .disclaimer-bar .footer-links a:hover { color: #efefef; }
+
+    @media (max-width: 800px) {
+      .hamburger { display: flex; }
+      .topnav-inner { flex-wrap: wrap; }
+      .topnav-links, .topnav-auth { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 16px; }
+      .nav-toggle:checked ~ .topnav-links, .nav-toggle:checked ~ .topnav-auth { display: flex; }
+      .topnav-links { order: 3; }
+      .topnav-auth { order: 4; flex-direction: row; justify-content: center; }
+      h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav"><div class="topnav-inner">
+    <div class="topnav-logo"><a href="index.html"><img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi"></a></div>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="hamburger" aria-label="Menu"><span></span><span></span><span></span></label>
+    <div class="topnav-links">
+      <a href="strategies.html">Strategies</a>
+      <a href="stacking.html">Alpha Stacking</a>
+      <a href="scanner.html">Scanner</a>
+    </div>
+    <div class="topnav-auth">
+      <a href="pricing.html" class="btn-login" style="text-decoration:none;">Log in</a>
+      <a href="pricing.html" class="btn-signup" style="text-decoration:none;">Sign up</a>
+    </div>
+  </div></nav>
+
+  <h1>Terms of Service</h1>
+  <p class="last-updated">Last updated: 17 March 2026</p>
+
+  <h2>1. About Loot-Fi</h2>
+  <p>Loot-Fi is a cryptocurrency backtesting research platform that publishes historical performance data for systematic trading strategies. The platform is designed for educational and informational purposes only. By accessing or using Loot-Fi, you agree to be bound by these Terms of Service. If you do not agree, you must not use the site.</p>
+
+  <h2>2. Not Financial Advice</h2>
+  <p>Nothing on Loot-Fi constitutes financial advice, investment advice, trading advice, or any other form of professional advice. The content published on this site is for educational and research purposes only. You should not treat any information on Loot-Fi as a basis for making any financial decisions. Always conduct your own independent research and consult a qualified, licensed financial adviser before making investment decisions.</p>
+
+  <h2>3. Hypothetical Performance</h2>
+  <p>All performance results displayed on Loot-Fi are based on historical backtesting and are hypothetical in nature. They do not represent actual trading results and were not generated by live trading accounts. Hypothetical performance results have many inherent limitations, including but not limited to:</p>
+  <ul>
+    <li>They are generally prepared with the benefit of hindsight.</li>
+    <li>They do not reflect the impact of all real-world factors such as slippage beyond fee assumptions, exchange downtime, liquidity constraints, market impact, partial fills, and execution delays.</li>
+    <li>No representation is made that any account will or is likely to achieve profits or losses similar to those shown.</li>
+    <li>Past performance, whether actual or backtested, is not indicative of future results.</li>
+  </ul>
+
+  <h2>4. Risk Disclosure</h2>
+  <p>Trading and investing in cryptocurrencies involves substantial risk of loss and is not suitable for every person. The high degree of leverage often available in crypto markets can work against you as well as for you. You should carefully consider whether trading is appropriate for you in light of your financial condition. Some specific risks include:</p>
+  <ul>
+    <li>You may sustain a total loss of your invested capital.</li>
+    <li>Cryptocurrency markets are highly volatile and can move rapidly against your positions.</li>
+    <li>Leverage amplifies both gains and losses.</li>
+    <li>Regulatory changes, exchange failures, and smart contract vulnerabilities can result in sudden, irreversible losses.</li>
+    <li>Liquidity may be insufficient to execute trades at expected prices.</li>
+  </ul>
+
+  <h2>5. No Recommendation or Solicitation</h2>
+  <p>The strategies, data, and research published on Loot-Fi do not constitute a recommendation to buy, sell, or hold any cryptocurrency or financial instrument. Nothing on Loot-Fi should be construed as an offer, solicitation, or invitation to invest in any strategy, fund, or trading program. The inclusion of any strategy on the platform does not imply endorsement or suitability for any individual user.</p>
+
+  <h2>6. Subscription and Access</h2>
+  <p>Loot-Fi may offer free and paid tiers of access. By subscribing to a paid plan, you agree to the pricing and billing terms presented at the time of purchase. Loot-Fi reserves the right to modify pricing, features, or access levels at any time with reasonable notice. Refund policies, if applicable, will be stated on the relevant purchase page. Loot-Fi reserves the right to suspend or terminate any account at its sole discretion.</p>
+
+  <h2>7. Intellectual Property</h2>
+  <p>All content on Loot-Fi, including but not limited to strategy descriptions, backtesting results, charts, code, design, and branding, is the intellectual property of Loot-Fi and is protected by applicable copyright and intellectual property laws. You may not reproduce, distribute, modify, or create derivative works from any content on this site without prior written permission from Loot-Fi.</p>
+
+  <h2>8. User Responsibilities</h2>
+  <p>By using Loot-Fi, you agree to:</p>
+  <ul>
+    <li>Use the site lawfully and in accordance with these Terms.</li>
+    <li>Not attempt to reverse-engineer, scrape, or systematically extract data from the platform.</li>
+    <li>Not misrepresent backtested results as live or actual trading performance.</li>
+    <li>Not share or redistribute paid content without authorisation.</li>
+    <li>Take full responsibility for any trading or investment decisions you make, regardless of information viewed on this site.</li>
+  </ul>
+
+  <h2>9. Limitation of Liability</h2>
+  <p>To the fullest extent permitted by applicable law, Loot-Fi, its owners, operators, affiliates, and contributors shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from your use of the site, reliance on any information provided, or any trading or investment decisions made based on content viewed on Loot-Fi. This includes, without limitation, loss of profits, loss of data, or financial losses. The site and its content are provided on an "as is" and "as available" basis without warranties of any kind, whether express or implied.</p>
+
+  <h2>10. Changes to These Terms</h2>
+  <p>Loot-Fi reserves the right to update or modify these Terms of Service at any time. Changes will be effective upon posting to this page with an updated "Last updated" date. Your continued use of the site after any changes constitutes acceptance of the revised terms. We encourage you to review this page periodically.</p>
+
+  <h2>11. Contact</h2>
+  <p>If you have any questions about these Terms of Service, please contact us at <a href="mailto:info@loot-fi.com">info@loot-fi.com</a>.</p>
+
+  <div class="disclaimer-bar">
+    <p>Loot-Fi publishes historical backtesting research for educational purposes only. Nothing on Loot-Fi constitutes financial advice, a recommendation to buy or sell any asset, or an invitation to invest. Past performance in backtesting does not guarantee future results. All trading involves risk, including the loss of your entire investment. You should consult a licensed financial adviser before making any investment decisions.</p>
+    <div class="footer-links">
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</body>
+</html>

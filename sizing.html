@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Position Sizing Calculator | Loot-Fi</title>
+    <meta name="description" content="Calculate position sizes for crypto trading strategies. Explore how volatility targeting and leverage affect risk-adjusted returns.">
+    <link rel="canonical" href="https://loot-fi.com/sizing.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Crypto Position Sizing Calculator | Loot-Fi">
+    <meta property="og:description" content="Calculate position sizes for crypto trading strategies. Explore how volatility targeting and leverage affect risk-adjusted returns.">
+    <meta property="og:url" content="https://loot-fi.com/sizing.html">
+    <meta property="og:site_name" content="Loot-Fi">
+    <style>
+        @font-face { font-family: 'AS Therma'; src: url('fonts/ASTherma-BoldCondensed.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskRegular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskBold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Proto Mono'; src: url('fonts/ProtoMono-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Alte Haas Grotesk', sans-serif; background: #06080a; color: #efefef; padding: 24px; max-width: 1400px; margin: 0 auto; }
+        a { color: inherit; text-decoration: none; }
+
+        .topnav { padding: 16px 0; margin: -24px calc(-50vw + 50%) 24px; width: 100vw; position: sticky; top: 0; z-index: 100; background: #2e29ef; }
+        .topnav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .topnav-logo img { height: 28px; }
+        .topnav-links { display: flex; gap: 32px; }
+        .topnav-links a { color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+        .topnav-links a:hover, .topnav-links a.active { color: #fff; }
+        .topnav-auth { display: flex; gap: 12px; align-items: center; }
+        .nav-toggle { display: none; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; background: none; border: none; }
+        .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+        .btn-login { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .btn-signup { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: #86f834; border: 1px solid #86f834; color: #000; font-family: 'Alte Haas Grotesk', sans-serif; }
+
+        .page-title { font-family: 'AS Therma', sans-serif; font-size: 36px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+        .page-subtitle { color: #556070; font-size: 14px; margin-bottom: 32px; line-height: 1.6; max-width: 800px; }
+        .positive { color: #86f834; }
+        .negative { color: #2e29ef; }
+
+        .section { margin-bottom: 40px; }
+        .section-title { color: #efefef; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; padding: 10px 0; border-bottom: 1px solid #1e2430; margin-bottom: 16px; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #0d1117; color: #556070; padding: 10px 8px; text-align: left; border-bottom: 1px solid #1e2430; font-weight: bold; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+        td { padding: 8px; border-bottom: 1px solid #111820; }
+        tr { transition: background 0.15s; }
+        tr:hover { background: rgba(134, 248, 52, 0.03); }
+
+        .sizing-card { background: linear-gradient(145deg, #0d1117, #111820); border: 1px solid #1e2430; border-radius: 16px; padding: 24px; margin-bottom: 20px; }
+        .sizing-title { font-family: 'AS Therma', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; margin-bottom: 16px; }
+
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .summary-card { background: linear-gradient(145deg, #0d1117, #111820); border: 1px solid #1e2430; border-radius: 16px; padding: 24px; }
+        .summary-card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #556070; margin-bottom: 16px; }
+
+        .method-desc { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 32px; }
+        .method-pill { border: 1px solid #1e2430; border-radius: 12px; padding: 16px; }
+        .method-pill-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+        .method-pill-desc { color: #556070; font-size: 11px; line-height: 1.5; }
+
+        .footer { color: #556070; font-size: 10px; margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid #111820; }
+
+        @media (max-width: 800px) {
+            .hamburger { display: flex; }
+            .topnav-inner { flex-wrap: wrap; }
+            .topnav-links, .topnav-auth { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 16px; }
+            .nav-toggle:checked ~ .topnav-links, .nav-toggle:checked ~ .topnav-auth { display: flex; }
+            .topnav-links { order: 3; }
+            .topnav-auth { order: 4; flex-direction: row; justify-content: center; }
+            .method-desc { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="topnav"><div class="topnav-inner">
+        <div class="topnav-logo"><a href="index.html"><img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi"></a></div>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+        <label for="nav-toggle" class="hamburger" aria-label="Menu"><span></span><span></span><span></span></label>
+        <div class="topnav-links">
+            <a href="strategies.html">Strategies</a>
+            <a href="stacking.html">Alpha Stacking</a>
+            <a href="scanner.html">Scanner</a>
+        </div>
+        <div class="topnav-auth">
+            <a href="pricing.html" class="btn-login" style="text-decoration:none;">Log in</a>
+            <a href="pricing.html" class="btn-signup" style="text-decoration:none;">Sign up</a>
+        </div>
+    </div></nav>
+
+    <div class="page-title">Position Sizing Lab</div>
+    <p class="page-subtitle">
+        Same signals, different sizing. How you size positions matters as much as which coins you pick.
+        We test 5 sizing methods across 5 strategies to find what works best for each signal type.
+        All tests use 30% vol target and 7bps fees.
+    </p>
+
+    <div class="method-desc">
+        <div class="method-pill">
+            <div class="method-pill-title">Equal Weight</div>
+            <div class="method-pill-desc">Every position gets the same capital. Simple, no assumptions about conviction.</div>
+        </div>
+        <div class="method-pill">
+            <div class="method-pill-title">Inverse Vol</div>
+            <div class="method-pill-desc">Lower-vol coins get more capital. Risk parity — equalises risk contribution per position.</div>
+        </div>
+        <div class="method-pill">
+            <div class="method-pill-title">Momentum Weighted</div>
+            <div class="method-pill-desc">Stronger signals get bigger positions. Concentrates capital in highest-conviction trades.</div>
+        </div>
+        <div class="method-pill">
+            <div class="method-pill-title">Risk-Adjusted</div>
+            <div class="method-pill-desc">Weights by signal strength divided by volatility. Balances conviction with risk.</div>
+        </div>
+        <div class="method-pill">
+            <div class="method-pill-title">Kelly</div>
+            <div class="method-pill-desc">Weights by expected return / variance. Mathematically optimal sizing for compounding.</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Strategy Comparisons</div>
+        
+        <div class="sizing-card">
+            <div class="sizing-title">Turtle 20/10</div>
+            <table>
+                <tr><th>Sizing Method</th><th style="text-align:center">Sharpe</th><th style="text-align:center">CAGR</th><th style="text-align:center">Max DD</th><th style="text-align:center">Ann Vol</th></tr>
+                <tr><td style="font-weight:700">Equal Weight</td><td style="text-align:center">1.62</td><td class="positive" style="text-align:center">+61.7%</td><td class="negative" style="text-align:center">-37.6%</td><td style="text-align:center">33.1%</td></tr>
+<tr><td style="font-weight:700">Inverse Vol</td><td style="text-align:center">1.54</td><td class="positive" style="text-align:center">+58.0%</td><td class="negative" style="text-align:center">-41.0%</td><td style="text-align:center">33.1%</td></tr>
+<tr style="background:rgba(134,248,52,0.08)"><td style="font-weight:700">Momentum Weighted <span style="color:#86f834;font-size:10px;font-weight:700">BEST</span></td><td style="text-align:center">1.74</td><td class="positive" style="text-align:center">+70.7%</td><td class="negative" style="text-align:center">-39.0%</td><td style="text-align:center">33.9%</td></tr>
+<tr><td style="font-weight:700">Risk-Adjusted</td><td style="text-align:center">1.54</td><td class="positive" style="text-align:center">+58.0%</td><td class="negative" style="text-align:center">-41.0%</td><td style="text-align:center">33.1%</td></tr>
+<tr style="background:rgba(134,248,52,0.08)"><td style="font-weight:700">Kelly <span style="color:#86f834;font-size:10px;font-weight:700">BEST</span></td><td style="text-align:center">1.74</td><td class="positive" style="text-align:center">+70.2%</td><td class="negative" style="text-align:center">-43.4%</td><td style="text-align:center">33.8%</td></tr>
+
+            </table>
+        </div>
+        <div class="sizing-card">
+            <div class="sizing-title">21d Momentum L/S</div>
+            <table>
+                <tr><th>Sizing Method</th><th style="text-align:center">Sharpe</th><th style="text-align:center">CAGR</th><th style="text-align:center">Max DD</th><th style="text-align:center">Ann Vol</th></tr>
+                <tr><td style="font-weight:700">Equal Weight</td><td style="text-align:center">0.57</td><td class="positive" style="text-align:center">+14.0%</td><td class="negative" style="text-align:center">-35.3%</td><td style="text-align:center">32.1%</td></tr>
+<tr><td style="font-weight:700">Inverse Vol</td><td style="text-align:center">0.51</td><td class="positive" style="text-align:center">+11.7%</td><td class="negative" style="text-align:center">-34.9%</td><td style="text-align:center">32.1%</td></tr>
+<tr><td style="font-weight:700">Momentum Weighted</td><td style="text-align:center">0.83</td><td class="positive" style="text-align:center">+25.7%</td><td class="negative" style="text-align:center">-44.2%</td><td style="text-align:center">34.8%</td></tr>
+<tr><td style="font-weight:700">Risk-Adjusted</td><td style="text-align:center">0.82</td><td class="positive" style="text-align:center">+24.0%</td><td class="negative" style="text-align:center">-46.1%</td><td style="text-align:center">32.6%</td></tr>
+<tr style="background:rgba(134,248,52,0.08)"><td style="font-weight:700">Kelly <span style="color:#86f834;font-size:10px;font-weight:700">BEST</span></td><td style="text-align:center">1.09</td><td class="positive" style="text-align:center">+35.6%</td><td class="negative" style="text-align:center">-41.8%</td><td style="text-align:center">33.0%</td></tr>
+
+            </table>
+        </div>
+        <div class="sizing-card">
+            <div class="sizing-title">RSI Momentum L/S</div>
+            <table>
+                <tr><th>Sizing Method</th><th style="text-align:center">Sharpe</th><th style="text-align:center">CAGR</th><th style="text-align:center">Max DD</th><th style="text-align:center">Ann Vol</th></tr>
+                <tr><td style="font-weight:700">Equal Weight</td><td style="text-align:center">1.04</td><td class="positive" style="text-align:center">+36.4%</td><td class="negative" style="text-align:center">-59.8%</td><td style="text-align:center">36.5%</td></tr>
+<tr><td style="font-weight:700">Inverse Vol</td><td style="text-align:center">1.08</td><td class="positive" style="text-align:center">+38.5%</td><td class="negative" style="text-align:center">-59.8%</td><td style="text-align:center">36.7%</td></tr>
+<tr style="background:rgba(134,248,52,0.08)"><td style="font-weight:700">Momentum Weighted <span style="color:#86f834;font-size:10px;font-weight:700">BEST</span></td><td style="text-align:center">1.09</td><td class="positive" style="text-align:center">+38.4%</td><td class="negative" style="text-align:center">-59.8%</td><td style="text-align:center">36.5%</td></tr>
+<tr><td style="font-weight:700">Risk-Adjusted</td><td style="text-align:center">0.82</td><td class="positive" style="text-align:center">+26.1%</td><td class="negative" style="text-align:center">-59.8%</td><td style="text-align:center">37.1%</td></tr>
+<tr><td style="font-weight:700">Kelly</td><td style="text-align:center">0.82</td><td class="positive" style="text-align:center">+26.5%</td><td class="negative" style="text-align:center">-60.0%</td><td style="text-align:center">37.8%</td></tr>
+
+            </table>
+        </div>
+        <div class="sizing-card">
+            <div class="sizing-title">Trend + Momentum LO</div>
+            <table>
+                <tr><th>Sizing Method</th><th style="text-align:center">Sharpe</th><th style="text-align:center">CAGR</th><th style="text-align:center">Max DD</th><th style="text-align:center">Ann Vol</th></tr>
+                <tr><td style="font-weight:700">Equal Weight</td><td style="text-align:center">0.84</td><td class="positive" style="text-align:center">+33.9%</td><td class="negative" style="text-align:center">-45.7%</td><td style="text-align:center">47.3%</td></tr>
+<tr><td style="font-weight:700">Inverse Vol</td><td style="text-align:center">0.86</td><td class="positive" style="text-align:center">+34.9%</td><td class="negative" style="text-align:center">-47.3%</td><td style="text-align:center">46.6%</td></tr>
+<tr style="background:rgba(134,248,52,0.08)"><td style="font-weight:700">Momentum Weighted <span style="color:#86f834;font-size:10px;font-weight:700">BEST</span></td><td style="text-align:center">0.89</td><td class="positive" style="text-align:center">+38.7%</td><td class="negative" style="text-align:center">-46.5%</td><td style="text-align:center">49.5%</td></tr>
+<tr><td style="font-weight:700">Risk-Adjusted</td><td style="text-align:center">0.86</td><td class="positive" style="text-align:center">+34.9%</td><td class="negative" style="text-align:center">-47.3%</td><td style="text-align:center">46.6%</td></tr>
+<tr style="background:rgba(134,248,52,0.08)"><td style="font-weight:700">Kelly <span style="color:#86f834;font-size:10px;font-weight:700">BEST</span></td><td style="text-align:center">0.89</td><td class="positive" style="text-align:center">+37.4%</td><td class="negative" style="text-align:center">-44.9%</td><td style="text-align:center">47.2%</td></tr>
+
+            </table>
+        </div>
+        <div class="sizing-card">
+            <div class="sizing-title">Time-Series Momentum</div>
+            <table>
+                <tr><th>Sizing Method</th><th style="text-align:center">Sharpe</th><th style="text-align:center">CAGR</th><th style="text-align:center">Max DD</th><th style="text-align:center">Ann Vol</th></tr>
+                <tr><td style="font-weight:700">Equal Weight</td><td style="text-align:center">1.12</td><td class="positive" style="text-align:center">+68.5%</td><td class="negative" style="text-align:center">-33.9%</td><td style="text-align:center">57.0%</td></tr>
+<tr style="background:rgba(134,248,52,0.08)"><td style="font-weight:700">Inverse Vol <span style="color:#86f834;font-size:10px;font-weight:700">BEST</span></td><td style="text-align:center">1.17</td><td class="positive" style="text-align:center">+73.2%</td><td class="negative" style="text-align:center">-32.1%</td><td style="text-align:center">57.3%</td></tr>
+<tr><td style="font-weight:700">Momentum Weighted</td><td style="text-align:center">1.15</td><td class="positive" style="text-align:center">+71.5%</td><td class="negative" style="text-align:center">-34.0%</td><td style="text-align:center">57.1%</td></tr>
+
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Summary</div>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-card-title">Best Method Per Strategy</div>
+                <table>
+                    <tr><th>Strategy</th><th style="text-align:center">Best Sizing</th><th style="text-align:center">Sharpe</th><th style="text-align:center">CAGR</th></tr>
+                    <tr><td style="font-weight:700">Turtle 20/10</td><td style="color:#86f834;font-weight:700;text-align:center">Momentum Weighted</td><td style="text-align:center">1.74</td><td style="text-align:center">+70.7%</td></tr>
+<tr><td style="font-weight:700">21d Momentum L/S</td><td style="color:#86f834;font-weight:700;text-align:center">Kelly</td><td style="text-align:center">1.09</td><td style="text-align:center">+35.6%</td></tr>
+<tr><td style="font-weight:700">RSI Momentum L/S</td><td style="color:#86f834;font-weight:700;text-align:center">Momentum Weighted</td><td style="text-align:center">1.09</td><td style="text-align:center">+38.4%</td></tr>
+<tr><td style="font-weight:700">Trend + Momentum LO</td><td style="color:#86f834;font-weight:700;text-align:center">Momentum Weighted</td><td style="text-align:center">0.89</td><td style="text-align:center">+38.7%</td></tr>
+<tr><td style="font-weight:700">Time-Series Momentum</td><td style="color:#86f834;font-weight:700;text-align:center">Inverse Vol</td><td style="text-align:center">1.17</td><td style="text-align:center">+73.2%</td></tr>
+
+                </table>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-title">Method Win Count</div>
+                <div style="padding-top:8px;">
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;"><div style="width:160px;font-weight:700">Momentum Weighted</div><div style="height:24px;width:240px;background:rgba(134,248,52,0.2);border-radius:4px;display:flex;align-items:center;padding-left:8px;"><span style="color:#86f834;font-weight:700;font-size:13px">3 wins</span></div></div><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;"><div style="width:160px;font-weight:700">Kelly</div><div style="height:24px;width:80px;background:rgba(134,248,52,0.2);border-radius:4px;display:flex;align-items:center;padding-left:8px;"><span style="color:#86f834;font-weight:700;font-size:13px">1 wins</span></div></div><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;"><div style="width:160px;font-weight:700">Inverse Vol</div><div style="height:24px;width:80px;background:rgba(134,248,52,0.2);border-radius:4px;display:flex;align-items:center;padding-left:8px;"><span style="color:#86f834;font-weight:700;font-size:13px">1 wins</span></div></div>
+                </div>
+                <div style="margin-top:20px;padding-top:16px;border-top:1px solid #1e2430;color:#556070;font-size:12px;line-height:1.6;">
+                    <strong style="color:#efefef">Key Insight:</strong> No single sizing method dominates. Momentum weighting and Kelly tend to win for trend/breakout strategies, while equal weight and inverse vol work better for mean-reversion and RSI signals. The best approach depends on the signal type.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">loot-fi — quantitative crypto strategies</div>
+</body>
+</html>

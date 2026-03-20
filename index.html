@@ -4,40 +4,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loot-Fi</title>
+  <title>Crypto Backtesting Strategies &amp; Research | Loot-Fi</title>
+  <meta name="description" content="Browse 40+ backtested crypto trading strategies. Filter by type, explore equity curves, and research systematic approaches to crypto markets. Free to explore.">
+  <link rel="canonical" href="https://loot-fi.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Crypto Backtesting Strategies & Research | Loot-Fi">
+  <meta property="og:description" content="Browse 40+ backtested crypto trading strategies. Filter by type, explore equity curves, and research systematic approaches to crypto markets.">
+  <meta property="og:url" content="https://loot-fi.com/">
+  <meta property="og:site_name" content="Loot-Fi">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Crypto Backtesting Strategies & Research | Loot-Fi">
+  <meta name="twitter:description" content="Browse 40+ backtested crypto trading strategies. Filter by type, explore equity curves, and research systematic approaches to crypto markets.">
   <link rel="stylesheet" href="css/styles.css" />
-<script>
-  function handleFormSubmit(e) {
-    e.preventDefault();
-    const form = document.querySelector('.cta');
-    const email = form.querySelector("input[name='email']")?.value;
-
-    if (email) {
-      fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ g: 'SEqCFQ', email })
-      }).then(() => {
-        form.innerHTML = "<p class='success-message'>You’ve joined the waitlist.</p>";
-      }).catch(() => {
-        form.innerHTML = "<p class='success-message'>Something went wrong. Please try again.</p>";
-      });
-    }
-  }
-</script>
 </head>
 <body>
-  <img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi Logo" class="logo-svg" />
+  <nav class="topnav"><div class="topnav-inner">
+    <div class="topnav-logo"><a href="index.html"><img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi"></a></div>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="hamburger" aria-label="Menu"><span></span><span></span><span></span></label>
+    <div class="topnav-links">
+      <a href="strategies.html">Strategies</a>
+      <a href="stacking.html">Alpha Stacking</a>
+      <a href="scanner.html">Scanner</a>
+    </div>
+    <div class="topnav-auth">
+      <a href="pricing.html" class="btn-login" style="text-decoration:none;">Log in</a>
+      <a href="pricing.html" class="btn-signup" style="text-decoration:none;">Sign up</a>
+    </div>
+  </div></nav>
   <img src="images/animation.gif" alt="animation" class="animation" />
-  <h1 class="headline">Crypto, minus the chaos.</h1>
+  <h1 class="headline">Your crypto <br class="mobile-break">research engine.</h1>
   <p class="body-copy">
-    Sick of the noise? We track which cryptocurrencies are actually moving — no influencers, no hype, no pump-and-dump roulette.
-    Just a weekly list of what’s quietly outperforming, powered by 10+ years of market data and a system that doesn’t sleep.
+    Browse a growing library of backtested crypto strategies — filter, explore, and research systematic trading approaches.
   </p>
 
-  <form onsubmit="handleFormSubmit(event)" class="cta">
-    <input type="email" name="email" placeholder="Email" required />
-    <button type="submit">Join Waitlist</button>
-  </form>
+  <div class="features-grid">
+    <div class="feature-block">
+      <div class="feature-icon">
+        <img src="images/strategies-icon.svg" alt="Strategies" width="56" height="56">
+      </div>
+      <div class="feature-title">Strategies</div>
+      <div class="feature-desc">40+ backtested strategies across breakouts, momentum, mean reversion, and sector plays. Filter by type, sort by historical Sharpe or CAGR. All results are hypothetical and based on historical data.</div>
+      <a href="strategies.html" class="btn-outline">Explore Strategies</a>
+    </div>
+    <div class="feature-block">
+      <div class="feature-icon">
+        <img src="images/alpha-stack-icon.svg" alt="Alpha Stacking" width="56" height="56">
+      </div>
+      <div class="feature-title">Alpha Stacking</div>
+      <div class="feature-desc">Research into combining uncorrelated strategies. We analyse how blending strategies with low correlation has historically affected portfolio-level risk-adjusted returns.</div>
+      <a href="stacking.html" class="btn-outline">Explore Stacks</a>
+    </div>
+    <div class="feature-block">
+      <div class="feature-icon">
+        <img src="images/scanner-icon.svg" alt="Scanner" width="56" height="56">
+      </div>
+      <div class="feature-title">Scanner</div>
+      <div class="feature-desc">Live momentum rankings across liquid crypto assets. See which coins have the strongest and weakest 21-day momentum, updated daily.</div>
+      <a href="scanner.html" class="btn-outline">Open Scanner</a>
+    </div>
+  </div>
+
+  <div style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 60px; padding: 20px 0 10px; text-align: center; width: 100%; max-width: 900px;">
+    <p style="font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.6; margin-bottom: 10px;">Loot-Fi publishes historical backtesting research for educational purposes only. Nothing on Loot-Fi constitutes financial advice, a recommendation to buy or sell any asset, or an invitation to invest. Past performance in backtesting does not guarantee future results. All trading involves risk, including the loss of your entire investment. You should consult a licensed financial adviser before making any investment decisions.</p>
+    <div style="font-size: 11px; color: rgba(255,255,255,0.35);">
+      <a href="terms.html" style="color: rgba(255,255,255,0.35); text-decoration: none; margin: 0 8px;">Terms of Service</a>
+      <a href="privacy.html" style="color: rgba(255,255,255,0.35); text-decoration: none; margin: 0 8px;">Privacy Policy</a>
+    </div>
+  </div>
+
 </body>
 </html>

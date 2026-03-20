@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Momentum Scanner — Daily Rankings | Loot-Fi</title>
+    <meta name="description" content="Live momentum rankings across liquid crypto futures on Binance and Hyperliquid. See the strongest and weakest 21-day momentum coins, filtered by volume, updated daily.">
+    <link rel="canonical" href="https://loot-fi.com/scanner.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Crypto Momentum Scanner — Daily Rankings | Loot-Fi">
+    <meta property="og:description" content="Live momentum rankings across liquid crypto futures on Binance and Hyperliquid. Updated daily.">
+    <meta property="og:url" content="https://loot-fi.com/scanner.html">
+    <meta property="og:site_name" content="Loot-Fi">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Crypto Momentum Scanner — Daily Rankings | Loot-Fi">
+    <meta name="twitter:description" content="Live momentum rankings across liquid crypto futures on Binance and Hyperliquid. Updated daily.">
+    <style>
+        @font-face { font-family: 'AS Therma'; src: url('fonts/ASTherma-BoldCondensed.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskRegular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskBold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Proto Mono'; src: url('fonts/ProtoMono-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-y: scroll; }
+        body { font-family: 'Alte Haas Grotesk', sans-serif; background: #06080a; color: #efefef; padding: 24px; max-width: 1400px; margin: 0 auto; }
+        a { color: inherit; text-decoration: none; }
+
+        .topnav { padding: 16px 0; margin: -24px calc(-50vw + 50%) 24px; width: 100vw; position: sticky; top: 0; z-index: 100; background: #2e29ef; }
+        .topnav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .topnav-logo img { height: 28px; }
+        .topnav-links { display: flex; gap: 32px; align-items: center; }
+        .topnav-links a { color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .topnav-links a:hover, .topnav-links a.active { color: #fff; }
+        .topnav-auth { display: flex; gap: 12px; align-items: center; }
+        .nav-toggle { display: none; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; background: none; border: none; }
+        .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+        .btn-login { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .btn-signup { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: #86f834; border: 1px solid #86f834; color: #000; font-family: 'Alte Haas Grotesk', sans-serif; }
+
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .page-title { font-family: 'AS Therma', sans-serif; font-size: 36px; font-weight: 700; text-transform: uppercase; }
+        .countdown { font-family: 'Proto Mono', monospace; font-size: 11px; color: #556070; text-align: right; }
+        .countdown-time { font-size: 16px; color: #efefef; letter-spacing: -1px; }
+        .page-desc { color: #556070; font-size: 13px; margin-bottom: 24px; line-height: 1.6; }
+
+        /* Exchange tabs */
+        .exchange-tabs { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; }
+        .exchange-tab { padding: 8px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; border: 1px solid #1e2430; color: #556070; font-family: 'Alte Haas Grotesk', sans-serif; transition: all 0.2s; letter-spacing: 0.5px; }
+        .exchange-tab:hover { border-color: #556070; color: #efefef; }
+        .exchange-tab.active { border-color: #86f834; color: #86f834; }
+
+        .filter-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .filter-bar span { color: #556070; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+        .filter-btn { padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; border: 1px solid #1e2430; color: #556070; font-family: 'Alte Haas Grotesk', sans-serif; transition: all 0.2s; }
+        .filter-btn:hover { border-color: #556070; color: #efefef; }
+        .filter-btn.active { border-color: #86f834; color: #86f834; }
+
+        .scanner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+        .scanner-panel { background: linear-gradient(145deg, #0d1117, #111820); border: 1px solid #1e2430; border-radius: 16px; padding: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .panel-title { font-family: 'Alte Haas Grotesk', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #1e2430; }
+        .panel-title.green { color: #86f834; }
+        .panel-title.blue { color: #2e29ef; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 500px; }
+        th { color: #556070; padding: 8px 6px; text-align: left; font-weight: bold; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; border-bottom: 1px solid #1e2430; }
+        td { padding: 8px 6px; border-bottom: 1px solid #111820; }
+        tr { transition: background 0.15s; }
+        tr:hover { background: rgba(134, 248, 52, 0.03); }
+        .rank { color: #556070; font-weight: 700; width: 30px; }
+        .coin { font-weight: 700; }
+        .positive { color: #86f834; }
+        .negative { color: #2e29ef; }
+        .neutral { color: #efefef; }
+        .muted { color: #556070; }
+        .mono { font-family: 'Proto Mono', monospace; letter-spacing: -0.5px; }
+
+        div.loading { text-align: center; padding: 60px; color: #556070; font-size: 14px; }
+        .loading-spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid #1e2430; border-top-color: #86f834; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 10px; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 12px 16px; background: #0d1117; border-radius: 10px; border: 1px solid #1e2430; font-family: 'Proto Mono', monospace; font-size: 10px; color: #556070; }
+        .status-dot { display: inline-block; width: 10px; height: 10px; min-width: 10px; max-width: 10px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+        .status-dot.live { background: #86f834; animation: pulse 2s infinite; }
+        .status-dot.loading { background: #86f834; opacity: 0.4; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* Blur gate */
+        tr.blurred td { filter: blur(3px); user-select: none; pointer-events: none; }
+        .blur-gate { position: relative; }
+        .blur-overlay { position: absolute; top: 60px; left: 0; right: 0; height: 180px; display: flex; align-items: center; justify-content: center; z-index: 10; background: radial-gradient(ellipse at center, rgba(13,17,23,0.9) 0%, rgba(13,17,23,0.6) 60%, transparent 100%); border-radius: 8px; }
+        .blur-cta { text-align: center; max-width: 400px; padding: 20px; }
+        .blur-cta-title { font-family: 'AS Therma', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: #efefef; }
+        .blur-cta-text { font-size: 13px; color: #556070; line-height: 1.6; margin-bottom: 14px; }
+        .blur-cta a { display: inline-block; padding: 10px 24px; border-radius: 50px; background: #86f834; color: #000; font-size: 12px; font-weight: 700; font-family: 'Alte Haas Grotesk', sans-serif; text-decoration: none; transition: opacity 0.2s; }
+        .blur-cta a:hover { opacity: 0.9; }
+
+        .disclaimer { font-size: 11px; color: #556070; line-height: 1.6; max-width: 900px; margin: 40px auto 10px; text-align: center; border-top: 1px solid #1e2430; padding-top: 20px; }
+        .disclaimer a { color: #556070; margin: 0 8px; }
+
+        @media (max-width: 800px) {
+            .hamburger { display: flex; }
+            .topnav-inner { flex-wrap: wrap; }
+            .topnav-links, .topnav-auth { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 16px; }
+            .nav-toggle:checked ~ .topnav-links, .nav-toggle:checked ~ .topnav-auth { display: flex; }
+            .topnav-links { order: 3; }
+            .topnav-auth { order: 4; flex-direction: row; justify-content: center; }
+            .scanner-grid { grid-template-columns: 1fr; }
+            .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .page-header .countdown { display: none; }
+            .countdown-mobile { display: flex !important; margin-left: auto; }
+            .filter-bar { gap: 6px; }
+            .status-bar { flex-direction: column; gap: 8px; align-items: flex-start; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 16px; }
+            h1.page-title { font-size: 28px; }
+            .filter-btn, .exchange-tab { padding: 5px 12px; font-size: 11px; }
+            table { font-size: 11px; }
+            th, td { padding: 6px 4px; }
+            .blur-cta-title { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="topnav"><div class="topnav-inner">
+        <div class="topnav-logo"><a href="index.html"><img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi"></a></div>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+        <label for="nav-toggle" class="hamburger" aria-label="Menu"><span></span><span></span><span></span></label>
+        <div class="topnav-links">
+            <a href="strategies.html">Strategies</a>
+            <a href="stacking.html">Alpha Stacking</a>
+            <a href="scanner.html" class="active">Scanner</a>
+        </div>
+        <div class="topnav-auth">
+            <a href="pricing.html" class="btn-login" style="text-decoration:none;">Log in</a>
+            <a href="pricing.html" class="btn-signup" style="text-decoration:none;">Sign up</a>
+        </div>
+    </div></nav>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Momentum Scanner</h1>
+            <div class="page-desc">Historical momentum rankings across liquid crypto assets. Updated daily for research purposes.</div>
+        </div>
+        <div class="countdown">
+            <div>Next refresh</div>
+            <div class="countdown-time" id="countdown">--:--:--</div>
+        </div>
+    </div>
+
+    <div class="exchange-tabs">
+        <button class="exchange-tab active" onclick="switchExchange('binance', this)">Binance Futures</button>
+        <button class="exchange-tab" onclick="switchExchange('hyperliquid', this)">Hyperliquid</button>
+        <div class="countdown countdown-mobile" style="display:none;text-align:right;flex-direction:column;">
+            <div style="font-size:9px;color:#556070;">NEXT REFRESH</div>
+            <div class="countdown-time" id="countdownMobile">--:--:--</div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div><span class="status-dot loading" id="statusDot"></span><span id="statusText">Loading data from Binance...</span></div>
+        <div id="statusInfo">—</div>
+        <div id="volNote" style="color:#556070;font-size:10px;">Volume = futures notional (includes leverage)</div>
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+        <span>Min Volume</span>
+        <button class="filter-btn active" onclick="setVolFilter(15, this)">$15M+</button>
+        <button class="filter-btn" onclick="setVolFilter(25, this)">$25M+</button>
+        <button class="filter-btn" onclick="setVolFilter(50, this)">$50M+</button>
+        <button class="filter-btn" onclick="setVolFilter(100, this)">$100M+</button>
+        <button class="filter-btn" onclick="setVolFilter(250, this)">$250M+</button>
+    </div>
+
+    <div id="content">
+        <div class="loading"><span class="loading-spinner"></span>Fetching live data from Binance Futures...</div>
+    </div>
+
+    <div class="disclaimer">
+        <p>Loot-Fi publishes historical backtesting research for educational purposes only. Nothing on Loot-Fi constitutes financial advice, a recommendation to buy or sell any asset, or an invitation to invest. Past performance in backtesting does not guarantee future results. All trading involves risk, including the loss of your entire investment.</p>
+        <div style="margin-top: 10px;">
+            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+        </div>
+    </div>
+
+    <script>
+    // Config
+    const MIN_VOL_USD = 15000000;
+    const MIN_DAYS = 30;
+    const MAX_SPIKE_RATIO = 2.0;
+    const DISPLAY_N = 20;
+    const EXCLUDED_BINANCE = new Set(['USDCUSDT', 'BUSDUSDT', 'DAIUSDT', 'TUSDUSDT', 'FDUSDUSDT']);
+    const EXCLUDED_HL = new Set(['USDC', 'USDT', 'DAI', 'TUSD', 'FDUSD']);
+
+    let allCoins = [];
+    let currentVolFilter = 15;
+    let currentExchange = 'binance';
+
+    // Cache loaded data so switching tabs is instant
+    const cache = { binance: null, hyperliquid: null };
+
+    // Countdown timer to next UTC midnight
+    function updateCountdown() {
+        const now = new Date();
+        const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+        const nextMidnight = new Date(utcNow);
+        nextMidnight.setUTCHours(24, 0, 0, 0);
+        const diff = nextMidnight - utcNow;
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        const time = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        document.getElementById('countdown').textContent = time;
+        document.getElementById('countdownMobile').textContent = time;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // ── BINANCE ──
+    async function fetchBinanceSymbols() {
+        const resp = await fetch('https://fapi.binance.com/fapi/v1/exchangeInfo');
+        const data = await resp.json();
+        return data.symbols
+            .filter(s => s.contractType === 'PERPETUAL' && s.status === 'TRADING' && s.quoteAsset === 'USDT' && !EXCLUDED_BINANCE.has(s.symbol) && /^[A-Z0-9]+$/.test(s.baseAsset))
+            .map(s => s.symbol);
+    }
+
+    async function fetchBinanceKlines(symbol, limit = 65) {
+        try {
+            const resp = await fetch(`https://fapi.binance.com/fapi/v1/klines?symbol=${symbol}&interval=1d&limit=${limit}`);
+            if (!resp.ok) return null;
+            const data = await resp.json();
+            return data.map(k => ({
+                close: parseFloat(k[4]),
+                quoteVol: parseFloat(k[7]),
+            }));
+        } catch { return null; }
+    }
+
+    function processBinanceSymbol(symbol, klines) {
+        if (!klines || klines.length < MIN_DAYS) return null;
+        const n = klines.length;
+        const price = klines[n - 1].close;
+        const vols = klines.slice(-30).map(k => k.quoteVol).sort((a, b) => a - b);
+        const medianVol = vols[Math.floor(vols.length / 2)];
+        if (medianVol < MIN_VOL_USD) return null;
+        const meanVol = vols.reduce((a, b) => a + b, 0) / vols.length;
+        if (meanVol / (medianVol || 1) > MAX_SPIKE_RATIO) return null;
+        const ret7 = n >= 8 ? (price / klines[n - 8].close - 1) * 100 : null;
+        const ret21 = n >= 22 ? (price / klines[n - 22].close - 1) * 100 : null;
+        const ret63 = n >= 64 ? (price / klines[n - 64].close - 1) * 100 : null;
+        const ret1d = n >= 2 ? (price / klines[n - 2].close - 1) * 100 : null;
+        const dailyVol = klines[n - 1].quoteVol;
+        const coin = symbol.replace('USDT', '');
+        return { symbol, coin, price, medianVol, dailyVol, ret1d, ret7, ret21, ret63 };
+    }
+
+    async function loadBinance() {
+        if (cache.binance) { allCoins = cache.binance; return; }
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+
+        statusText.textContent = 'Fetching Binance symbol list...';
+        statusDot.className = 'status-dot loading';
+        const symbols = await fetchBinanceSymbols();
+        statusText.textContent = `Found ${symbols.length} symbols. Fetching data...`;
+
+        const batchSize = 10;
+        const results = [];
+        for (let i = 0; i < symbols.length; i += batchSize) {
+            const batch = symbols.slice(i, i + batchSize);
+            const klines = await Promise.all(batch.map(s => fetchBinanceKlines(s)));
+            for (let j = 0; j < batch.length; j++) {
+                const processed = processBinanceSymbol(batch[j], klines[j]);
+                if (processed) results.push(processed);
+            }
+            statusText.textContent = `Processing... ${Math.min(i + batchSize, symbols.length)}/${symbols.length} symbols`;
+            if (i + batchSize < symbols.length) await new Promise(r => setTimeout(r, 100));
+        }
+        results.sort((a, b) => b.medianVol - a.medianVol);
+        cache.binance = results;
+        allCoins = results;
+    }
+
+    // ── HYPERLIQUID ──
+    async function fetchHLMeta() {
+        const resp = await fetch('https://api.hyperliquid.xyz/info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'meta' })
+        });
+        const data = await resp.json();
+        return data.universe
+            .filter(u => !EXCLUDED_HL.has(u.name) && /^[A-Z0-9]+$/.test(u.name))
+            .map(u => u.name);
+    }
+
+    async function fetchHLKlines(coin, limit = 65) {
+        try {
+            const now = Date.now();
+            const start = now - limit * 24 * 60 * 60 * 1000;
+            const resp = await fetch('https://api.hyperliquid.xyz/info', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: 'candleSnapshot',
+                    req: { coin, interval: '1d', startTime: start, endTime: now }
+                })
+            });
+            if (!resp.ok) return null;
+            const data = await resp.json();
+            if (!data || !data.length) return null;
+            return data.map(k => ({
+                close: parseFloat(k.c),
+                quoteVol: parseFloat(k.v) * parseFloat(k.c), // volume in base * price = notional
+            }));
+        } catch { return null; }
+    }
+
+    function processHLSymbol(coin, klines) {
+        if (!klines || klines.length < MIN_DAYS) return null;
+        const n = klines.length;
+        const price = klines[n - 1].close;
+        const vols = klines.slice(-30).map(k => k.quoteVol).sort((a, b) => a - b);
+        const medianVol = vols[Math.floor(vols.length / 2)];
+        if (medianVol < 1000000) return null; // $1M floor for HL (filtered further in UI)
+        const meanVol = vols.reduce((a, b) => a + b, 0) / vols.length;
+        if (meanVol / (medianVol || 1) > MAX_SPIKE_RATIO) return null;
+        const ret7 = n >= 8 ? (price / klines[n - 8].close - 1) * 100 : null;
+        const ret21 = n >= 22 ? (price / klines[n - 22].close - 1) * 100 : null;
+        const ret63 = n >= 64 ? (price / klines[n - 64].close - 1) * 100 : null;
+        const ret1d = n >= 2 ? (price / klines[n - 2].close - 1) * 100 : null;
+        const dailyVol = klines[n - 1].quoteVol;
+        return { symbol: coin, coin, price, medianVol, dailyVol, ret1d, ret7, ret21, ret63 };
+    }
+
+    async function loadHyperliquid() {
+        if (cache.hyperliquid) { allCoins = cache.hyperliquid; return; }
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+
+        statusText.textContent = 'Fetching Hyperliquid symbols...';
+        statusDot.className = 'status-dot loading';
+        const coins = await fetchHLMeta();
+        statusText.textContent = `Found ${coins.length} symbols. Fetching data...`;
+
+        const batchSize = 5;
+        const results = [];
+        for (let i = 0; i < coins.length; i += batchSize) {
+            const batch = coins.slice(i, i + batchSize);
+            const klines = await Promise.all(batch.map(c => fetchHLKlines(c)));
+            for (let j = 0; j < batch.length; j++) {
+                const processed = processHLSymbol(batch[j], klines[j]);
+                if (processed) results.push(processed);
+            }
+            statusText.textContent = `Processing... ${Math.min(i + batchSize, coins.length)}/${coins.length} symbols`;
+            if (i + batchSize < coins.length) await new Promise(r => setTimeout(r, 50));
+        }
+        results.sort((a, b) => b.medianVol - a.medianVol);
+        cache.hyperliquid = results;
+        allCoins = results;
+    }
+
+    // ── SHARED ──
+    function updateStatus() {
+        const minVol = currentVolFilter * 1e6;
+        const count = allCoins.filter(c => c.ret21 !== null && c.medianVol >= minVol).length;
+        const volLabel = currentVolFilter >= 1000 ? `$${(currentVolFilter/1000).toFixed(0)}B+` : `$${currentVolFilter}M+`;
+        document.getElementById('statusText').textContent = `Live — ${count} coins passing filters`;
+        document.getElementById('statusInfo').textContent = `${volLabel} median vol · Spike ratio < 2.0 · ${count} coins`;
+    }
+
+    function setVolFilter(volM, btn) {
+        currentVolFilter = volM;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateStatus();
+        renderTables();
+    }
+
+    function renderTables() {
+        if (!allCoins.length) return;
+        const minVol = currentVolFilter * 1e6;
+        const valid = allCoins.filter(c => c.ret21 !== null && c.medianVol >= minVol);
+        const sorted = [...valid].sort((a, b) => b.ret21 - a.ret21);
+        const showN = Math.min(DISPLAY_N, Math.floor(sorted.length / 2));
+        const top20 = sorted.slice(0, showN);
+        const bottom20 = sorted.slice(-showN).reverse();
+
+        function fmtPct(val) {
+            if (val === null) return '—';
+            const cls = val >= 0 ? 'positive' : 'negative';
+            return `<span class="${cls}">${val >= 0 ? '+' : ''}${val.toFixed(1)}%</span>`;
+        }
+
+        const BLUR_N = 5;
+        function makeRow(coin, rank, blurred) {
+            const val = coin.ret21;
+            const cls = val >= 0 ? 'positive' : 'negative';
+            const sign = val >= 0 ? '+' : '';
+            const vol = coin.dailyVol >= 1e9 ? (coin.dailyVol / 1e9).toFixed(1) + 'B' :
+                        coin.dailyVol >= 1e6 ? (coin.dailyVol / 1e6).toFixed(0) + 'M' :
+                        (coin.dailyVol / 1e3).toFixed(0) + 'K';
+            const priceStr = coin.price >= 1000 ? coin.price.toFixed(0) :
+                             coin.price >= 1 ? coin.price.toFixed(2) :
+                             coin.price >= 0.01 ? coin.price.toFixed(4) :
+                             coin.price.toFixed(6);
+            return `<tr${blurred ? ' class="blurred"' : ''}>
+                <td class="rank">${rank}</td>
+                <td class="coin">${coin.coin}</td>
+                <td class="mono muted">$${priceStr}</td>
+                <td class="mono">${fmtPct(coin.ret1d)}</td>
+                <td class="mono">${fmtPct(coin.ret7)}</td>
+                <td class="mono ${cls}" style="font-weight:700">${sign}${val.toFixed(1)}%</td>
+                <td class="mono muted">${vol}</td>
+            </tr>`;
+        }
+
+        const topRows = top20.map((c, i) => makeRow(c, i + 1, i < BLUR_N)).join('');
+        const bottomRows = bottom20.map((c, i) => makeRow(c, i + 1, i < BLUR_N)).join('');
+        const headers = `<tr><th>#</th><th>Coin</th><th>Price</th><th>24h %</th><th>7d %</th><th>21d %</th><th>Volume</th></tr>`;
+        const blurOverlay = `<div class="blur-overlay"><div class="blur-cta"><div class="blur-cta-title">Unlock full rankings</div><div class="blur-cta-text">Top 5 momentum rankings are available on<br>the Researcher plan.</div><a href="pricing.html">Upgrade</a></div></div>`;
+
+        document.getElementById('content').innerHTML = `
+            <div class="scanner-grid">
+                <div class="scanner-panel blur-gate">
+                    ${blurOverlay}
+                    <div class="panel-title green">Top ${showN} — Strongest 21-Day Momentum</div>
+                    <table>${headers}${topRows}</table>
+                </div>
+                <div class="scanner-panel blur-gate">
+                    ${blurOverlay}
+                    <div class="panel-title blue">Bottom ${showN} — Weakest 21-Day Momentum</div>
+                    <table>${headers}${bottomRows}</table>
+                </div>
+            </div>`;
+    }
+
+    const FILTERS_BINANCE = [
+        { vol: 15, label: '$15M+' }, { vol: 25, label: '$25M+' }, { vol: 50, label: '$50M+' },
+        { vol: 100, label: '$100M+' }, { vol: 250, label: '$250M+' }
+    ];
+    const FILTERS_HL = [
+        { vol: 1, label: '$1M+' }, { vol: 5, label: '$5M+' }, { vol: 15, label: '$15M+' },
+        { vol: 25, label: '$25M+' }, { vol: 50, label: '$50M+' }
+    ];
+
+    function updateFilterButtons(exchange) {
+        const filters = exchange === 'binance' ? FILTERS_BINANCE : FILTERS_HL;
+        const defaultVol = filters[0].vol;
+        currentVolFilter = defaultVol;
+        const bar = document.getElementById('filterBar');
+        bar.innerHTML = '<span>Min Volume</span>' + filters.map((f, i) =>
+            `<button class="filter-btn${i === 0 ? ' active' : ''}" onclick="setVolFilter(${f.vol}, this)">${f.label}</button>`
+        ).join('');
+    }
+
+    async function switchExchange(exchange, btn) {
+        if (exchange === currentExchange) return;
+        currentExchange = exchange;
+        document.querySelectorAll('.exchange-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        updateFilterButtons(exchange);
+
+        const volNote = document.getElementById('volNote');
+        volNote.textContent = exchange === 'binance'
+            ? 'Volume = futures notional (includes leverage)'
+            : 'Volume = notional (base volume × price)';
+
+        // If cached, render immediately
+        if (cache[exchange]) {
+            allCoins = cache[exchange];
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const statusInfo = document.getElementById('statusInfo');
+            statusDot.className = 'status-dot live';
+            updateStatus();
+            renderTables();
+            return;
+        }
+
+        // Otherwise load fresh
+        document.getElementById('content').innerHTML = `<div class="loading"><span class="loading-spinner"></span>Fetching live data from ${exchange === 'binance' ? 'Binance Futures' : 'Hyperliquid'}...</div>`;
+        await loadExchange(exchange);
+    }
+
+    async function loadExchange(exchange) {
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const statusInfo = document.getElementById('statusInfo');
+
+        try {
+            if (exchange === 'binance') {
+                await loadBinance();
+            } else {
+                await loadHyperliquid();
+            }
+
+            statusDot.className = 'status-dot live';
+            updateStatus();
+            renderTables();
+        } catch (err) {
+            statusDot.style.background = '#ff5c5c';
+            statusText.textContent = `Error: ${err.message}`;
+            document.getElementById('content').innerHTML = `<div class="loading" style="color:#ff5c5c;">Failed to load data. Please refresh the page.</div>`;
+        }
+    }
+
+    // Load Binance on page load
+    loadExchange('binance');
+    </script>
+</body>
+</html>

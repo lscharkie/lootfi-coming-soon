@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing — Crypto Strategy Research Plans | Loot-Fi</title>
+    <meta name="description" content="Browse free or upgrade to Researcher for full strategy details, monthly heatmaps, trade breakdowns, alpha stack compositions, and top momentum rankings.">
+    <link rel="canonical" href="https://loot-fi.com/pricing.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Pricing — Crypto Strategy Research Plans | Loot-Fi">
+    <meta property="og:description" content="Browse free or upgrade to Researcher for full strategy details, monthly heatmaps, trade breakdowns, and alpha stack compositions.">
+    <meta property="og:url" content="https://loot-fi.com/pricing.html">
+    <meta property="og:site_name" content="Loot-Fi">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pricing — Crypto Strategy Research Plans | Loot-Fi">
+    <meta name="twitter:description" content="Browse free or upgrade to Researcher for full strategy details, monthly heatmaps, trade breakdowns, and alpha stack compositions.">
+    <style>
+        @font-face { font-family: 'AS Therma'; src: url('fonts/ASTherma-BoldCondensed.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskRegular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskBold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Proto Mono'; src: url('fonts/ProtoMono-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-y: scroll; }
+        body { font-family: 'Alte Haas Grotesk', sans-serif; background: #06080a; color: #efefef; }
+        a { color: inherit; text-decoration: none; }
+
+        /* Nav */
+        .topnav { padding: 16px 0; width: 100%; position: sticky; top: 0; z-index: 100; background: #2e29ef; }
+        .topnav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .topnav-logo img { height: 28px; }
+        .topnav-links { display: flex; gap: 32px; align-items: center; }
+        .topnav-links a { color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .topnav-links a:hover, .topnav-links a.active { color: #fff; }
+        .topnav-auth { display: flex; gap: 12px; align-items: center; }
+        .nav-toggle { display: none; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; background: none; border: none; }
+        .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+        .btn-login { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .btn-signup { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: #86f834; border: 1px solid #86f834; color: #000; font-family: 'Alte Haas Grotesk', sans-serif; }
+
+        /* Hero */
+        .pricing-hero { text-align: center; padding: 80px 24px 40px; max-width: 700px; margin: 0 auto; }
+        .pricing-title { font-family: 'AS Therma', sans-serif; font-size: 56px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 20px; }
+        .pricing-sub { color: #556070; font-size: 16px; line-height: 1.6; }
+        .desktop-break { display: block; }
+        @media (max-width: 800px) { .desktop-break { display: none; } }
+
+        /* Toggle */
+        .toggle-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 40px 0 48px; }
+        .toggle-label { font-size: 14px; color: #556070; transition: color 0.2s; }
+        .toggle-label.active { color: #efefef; }
+        .toggle-track { width: 48px; height: 26px; background: #1e2430; border-radius: 13px; cursor: pointer; position: relative; transition: background 0.2s; }
+        .toggle-track.annual { background: #86f834; }
+        .toggle-knob { width: 20px; height: 20px; background: #fff; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: transform 0.2s; }
+        .toggle-track.annual .toggle-knob { transform: translateX(22px); }
+        .save-badge { font-family: 'Proto Mono', monospace; font-size: 11px; color: #86f834; border: 1px solid #86f834; border-radius: 50px; padding: 3px 10px; }
+
+        /* Cards */
+        .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 800px; margin: 0 auto; padding: 0 24px; }
+        .plan-card { border: 1px solid #1e2430; border-radius: 20px; padding: 32px; background: linear-gradient(145deg, #0d1117, #111820); position: relative; display: flex; flex-direction: column; }
+        .plan-card.featured { border-color: rgba(134,248,52,0.3); }
+        .popular-badge { position: absolute; top: -12px; left: 36px; font-family: 'Proto Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #000; background: #86f834; padding: 4px 12px; border-radius: 50px; }
+        .plan-name { font-family: 'AS Therma', sans-serif; font-size: 32px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+        .plan-desc { color: #556070; font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
+        .plan-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
+        .price-amount { font-family: 'Proto Mono', monospace; font-size: 52px; font-weight: 300; letter-spacing: -2px; }
+        .price-period { color: #556070; font-size: 14px; }
+        .price-annual-note { color: #556070; font-family: 'Proto Mono', monospace; font-size: 12px; margin-bottom: 16px; min-height: 18px; }
+
+        /* Features */
+        .plan-features { list-style: none; margin-bottom: 24px; flex: 1; }
+        .plan-features li { display: flex; align-items: flex-start; gap: 10px; padding: 3px 0; font-size: 13px; line-height: 1.4; }
+        .plan-features li.included { color: #efefef; }
+        .plan-features li.locked { color: #333a46; }
+        .check { color: #86f834; font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+        .lock { color: #333a46; font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+
+        /* Buttons */
+        .plan-btn { display: block; width: 100%; padding: 16px; border-radius: 50px; font-family: 'Alte Haas Grotesk', sans-serif; font-size: 14px; font-weight: 700; text-align: center; cursor: pointer; transition: all 0.2s; border: none; }
+        .plan-btn.secondary { background: transparent; border: 1px solid #1e2430; color: #efefef; }
+        .plan-btn.secondary:hover { border-color: #556070; }
+        .plan-btn.primary { background: #86f834; color: #000; }
+        .plan-btn.primary:hover { opacity: 0.9; }
+
+        /* FAQ */
+        .faq-section { max-width: 800px; margin: 80px auto 0; padding: 0 24px 60px; }
+        .faq-label { font-family: 'Proto Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #86f834; margin-bottom: 12px; }
+        .faq-title { font-family: 'AS Therma', sans-serif; font-size: 36px; font-weight: 700; text-transform: uppercase; margin-bottom: 40px; }
+        .faq-item { border-bottom: 1px solid #1e2430; }
+        .faq-question { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; cursor: pointer; font-size: 15px; color: #efefef; background: none; border: none; width: 100%; text-align: left; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .faq-question:hover { color: #86f834; }
+        .faq-icon { color: #556070; font-size: 20px; transition: transform 0.2s; flex-shrink: 0; margin-left: 16px; }
+        .faq-item.open .faq-icon { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
+        .faq-answer-inner { padding: 0 0 20px; color: #556070; font-size: 14px; line-height: 1.7; }
+
+        /* Footer */
+        .disclaimer { font-size: 11px; color: #556070; line-height: 1.6; max-width: 900px; margin: 40px auto 10px; text-align: center; border-top: 1px solid #1e2430; padding: 20px 24px 0; }
+        .disclaimer a { color: #556070; margin: 0 8px; }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .hamburger { display: flex; }
+            .topnav-inner { flex-wrap: wrap; }
+            .topnav-links, .topnav-auth { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 16px; }
+            .nav-toggle:checked ~ .topnav-links, .nav-toggle:checked ~ .topnav-auth { display: flex; }
+            .topnav-links { order: 3; }
+            .topnav-auth { order: 4; flex-direction: row; justify-content: center; }
+            .pricing-title { font-size: 38px; }
+            .plans { grid-template-columns: 1fr; }
+            .plan-card.featured { order: -1; }
+            .faq-section { margin-top: 60px; }
+        }
+        @media (max-width: 480px) {
+            .pricing-hero { padding: 48px 16px 24px; }
+            .pricing-title { font-size: 28px; }
+            .price-amount { font-size: 40px; }
+            .plan-name { font-size: 26px; }
+            .plan-card { padding: 28px 24px; }
+            .faq-title { font-size: 28px; }
+            .toggle-row { gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="topnav"><div class="topnav-inner">
+        <div class="topnav-logo"><a href="index.html"><img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi"></a></div>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+        <label for="nav-toggle" class="hamburger" aria-label="Menu"><span></span><span></span><span></span></label>
+        <div class="topnav-links">
+            <a href="strategies.html">Strategies</a>
+            <a href="stacking.html">Alpha Stacking</a>
+            <a href="scanner.html">Scanner</a>
+        </div>
+        <div class="topnav-auth">
+            <a href="pricing.html" class="btn-login" style="text-decoration:none;">Log in</a>
+            <a href="pricing.html" class="btn-signup" style="text-decoration:none;">Sign up</a>
+        </div>
+    </div></nav>
+
+    <div class="pricing-hero">
+        <h1 class="pricing-title">Browse free. Go deep when you're ready.</h1>
+        <p class="pricing-sub">Every strategy comes with the full breakdown.<br class="desktop-break"> Upgrade to Researcher when you want the complete picture.</p>
+    </div>
+
+    <div class="toggle-row">
+        <span class="toggle-label" id="lblMonthly">Monthly</span>
+        <div class="toggle-track annual" id="billingToggle" onclick="toggleBilling()">
+            <div class="toggle-knob"></div>
+        </div>
+        <span class="toggle-label active" id="lblAnnual">Annual</span>
+        <span class="save-badge">Save 30%</span>
+    </div>
+
+    <div class="plans">
+        <!-- Explorer (Free) -->
+        <div class="plan-card">
+            <div class="plan-name">Explorer</div>
+            <div class="plan-desc">See every strategy name and summary. Get a feel for the research before going deeper.</div>
+            <div class="plan-price">
+                <span class="price-amount">$0</span>
+                <span class="price-period">/forever</span>
+            </div>
+            <div class="price-annual-note">&nbsp;</div>
+            <ul class="plan-features">
+                <li class="included"><span class="check">&#10003;</span>Full strategy library — names + metrics</li>
+                <li class="included"><span class="check">&#10003;</span>Equity curves + drawdown charts</li>
+                <li class="included"><span class="check">&#10003;</span>Alpha stacking concept preview</li>
+                <li class="included"><span class="check">&#10003;</span>Momentum scanner (ranks 6–20)</li>
+                <li class="included"><span class="check">&#10003;</span>Weekly research digest</li>
+                <li class="locked"><span class="lock">&#9588;</span>Strategy descriptions + rules</li>
+                <li class="locked"><span class="lock">&#9588;</span>Monthly return heatmaps</li>
+                <li class="locked"><span class="lock">&#9588;</span>Trade breakdowns</li>
+                <li class="locked"><span class="lock">&#9588;</span>Alpha stack compositions</li>
+                <li class="locked"><span class="lock">&#9588;</span>Top 5 momentum rankings</li>
+                <li class="locked"><span class="lock">&#9588;</span>New research on drop day</li>
+            </ul>
+            <a href="#" class="plan-btn secondary" style="text-decoration:none;">Get started &rarr;</a>
+        </div>
+
+        <!-- Researcher (Paid) -->
+        <div class="plan-card featured">
+            <div class="popular-badge">Most Popular</div>
+            <div class="plan-name">Researcher</div>
+            <div class="plan-desc">Every strategy. Every chart. Every edge — the day it's published.</div>
+            <div class="plan-price">
+                <span class="price-amount" id="paidPrice">$19</span>
+                <span class="price-period" id="paidPeriod">/mo</span>
+            </div>
+            <div class="price-annual-note" id="annualNote">$228 billed annually</div>
+            <ul class="plan-features">
+                <li class="included"><span class="check">&#10003;</span>Every strategy description + rules</li>
+                <li class="included"><span class="check">&#10003;</span>Monthly return heatmaps</li>
+                <li class="included"><span class="check">&#10003;</span>Full trade breakdowns</li>
+                <li class="included"><span class="check">&#10003;</span>Alpha stack compositions + correlations</li>
+                <li class="included"><span class="check">&#10003;</span>Full momentum scanner — top 5 unlocked</li>
+                <li class="included"><span class="check">&#10003;</span>New research on drop day</li>
+                <li class="included"><span class="check">&#10003;</span>All future strategies included</li>
+                <li class="included"><span class="check">&#10003;</span>Methodology + assumptions for every test</li>
+            </ul>
+            <a href="#" class="plan-btn primary" id="paidBtn" style="text-decoration:none;">Unlock full access &rarr;</a>
+        </div>
+    </div>
+
+    <!-- Social proof -->
+    <div style="text-align: center; margin-top: 48px; padding: 0 24px;">
+        <span style="font-family: 'Proto Mono', monospace; font-size: 12px; color: #556070;">42 strategies &middot; 16 alpha stacks &middot; new research added regularly</span>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+        <div class="faq-label">Questions</div>
+        <h2 class="faq-title">Before you ask</h2>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">What kind of strategies are in the library?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Breakout, momentum, mean reversion, sector rotation, carry, volatility fade, and more. Every strategy is backtested on historical crypto data with clearly stated assumptions, fees, and universe filters.</div></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">What data is the backtesting based on?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">All strategies are backtested on Binance Futures historical data. We apply realistic assumptions including 7bps round-trip trading costs, volume-filtered universes ($15M+ median daily volume), and volatility-targeted position sizing. Every test page states its exact parameters.</div></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">How often is new research added?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">New strategies and stacks are added regularly as we complete backtesting and review. Researcher-tier members get access the moment new research is published.</div></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">Can I cancel anytime?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Yes, no questions asked. Cancel from your account settings at any time. You'll keep access until the end of your current billing period.</div></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">Is this financial advice?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">No. Loot-Fi publishes historical backtesting research for educational purposes only. Nothing on Loot-Fi constitutes financial advice, a recommendation to buy or sell any asset, or an invitation to invest. Past performance does not guarantee future results.</div></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">What's Alpha Stacking?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Alpha Stacking is our research into combining uncorrelated strategies. We analyse how blending strategies with low correlation has historically affected portfolio-level risk-adjusted returns.</div></div>
+        </div>
+    </div>
+
+    <div class="disclaimer">
+        <p>Loot-Fi publishes historical backtesting research for educational purposes only. Nothing on Loot-Fi constitutes financial advice, a recommendation to buy or sell any asset, or an invitation to invest. Past performance in backtesting does not guarantee future results. All trading involves risk, including the loss of your entire investment. You should consult a licensed financial adviser before making any investment decisions.</p>
+        <div style="margin-top: 10px;">
+            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+        </div>
+    </div>
+
+    <script>
+    let isAnnual = true;
+
+    function toggleBilling() {
+        isAnnual = !isAnnual;
+        const track = document.getElementById('billingToggle');
+        const lblM = document.getElementById('lblMonthly');
+        const lblA = document.getElementById('lblAnnual');
+        const price = document.getElementById('paidPrice');
+        const period = document.getElementById('paidPeriod');
+        const note = document.getElementById('annualNote');
+        const btn = document.getElementById('paidBtn');
+
+        if (isAnnual) {
+            track.classList.add('annual');
+            lblA.classList.add('active');
+            lblM.classList.remove('active');
+            price.textContent = '$19';
+            period.textContent = '/mo';
+            note.textContent = '$228 billed annually';
+            btn.textContent = 'Unlock full access →';
+        } else {
+            track.classList.remove('annual');
+            lblM.classList.add('active');
+            lblA.classList.remove('active');
+            price.textContent = '$29';
+            period.textContent = '/mo';
+            note.textContent = '';
+            btn.textContent = 'Unlock full access →';
+        }
+    }
+
+    function toggleFaq(el) {
+        const item = el.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        const isOpen = item.classList.contains('open');
+
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(i => {
+            i.classList.remove('open');
+            i.querySelector('.faq-answer').style.maxHeight = null;
+        });
+
+        // Open clicked (if wasn't already open)
+        if (!isOpen) {
+            item.classList.add('open');
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+    }
+    </script>
+</body>
+</html>

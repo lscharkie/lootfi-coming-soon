@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha Stacking — Combine Uncorrelated Crypto Strategies | Loot-Fi</title>
+    <meta name="description" content="Research into combining uncorrelated crypto strategies. See how blending strategies with low correlation has historically improved portfolio-level risk-adjusted returns.">
+    <link rel="canonical" href="https://loot-fi.com/stacking.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Alpha Stacking — Combine Uncorrelated Crypto Strategies | Loot-Fi">
+    <meta property="og:description" content="Research into combining uncorrelated crypto strategies. See how blending strategies improves risk-adjusted returns.">
+    <meta property="og:url" content="https://loot-fi.com/stacking.html">
+    <meta property="og:site_name" content="Loot-Fi">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Alpha Stacking — Combine Uncorrelated Crypto Strategies | Loot-Fi">
+    <meta name="twitter:description" content="Research into combining uncorrelated crypto strategies. See how blending strategies improves risk-adjusted returns.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        @font-face { font-family: 'AS Therma'; src: url('fonts/ASTherma-BoldCondensed.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskRegular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Alte Haas Grotesk'; src: url('fonts/AlteHaasGroteskBold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+        @font-face { font-family: 'DGM Fette'; src: url('fonts/DGMFette-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Proto Mono'; src: url('fonts/ProtoMono-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-y: scroll; }
+        body { font-family: 'Alte Haas Grotesk', sans-serif; background: #06080a; color: #efefef; padding: 24px; max-width: 1400px; margin: 0 auto; }
+        a { color: inherit; text-decoration: none; }
+
+        .topnav { padding: 16px 0; margin: -24px calc(-50vw + 50%) 24px; width: 100vw; position: sticky; top: 0; z-index: 100; background: #2e29ef; }
+        .topnav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .topnav-logo img { height: 28px; }
+        .topnav-links { display: flex; gap: 32px; align-items: center; }
+        .topnav-links a { color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .topnav-links a:hover, .topnav-links a.active { color: #fff; }
+        .topnav-auth { display: flex; gap: 12px; align-items: center; }
+        .nav-toggle { display: none; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; background: none; border: none; }
+        .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+        .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .btn-login { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .btn-login:hover { border-color: #fff; }
+        .btn-signup { padding: 7px 20px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; background: #86f834; border: 1px solid #86f834; color: #000; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .btn-signup:hover { opacity: 0.9; }
+
+        .page-subtitle { color: #556070; font-size: 14px; margin-bottom: 20px; }
+        .sort-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
+        .sort-bar span { color: #556070; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+        .sort-btn { padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s; background: transparent; border: 1px solid #1e2430; color: #556070; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .sort-btn:hover { border-color: #556070; color: #efefef; }
+        .sort-btn.active { border-color: #86f834; color: #86f834; }
+
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px; margin-bottom: 40px; }
+        .strategy-card { background: linear-gradient(145deg, #0d1117, #111820); border: 1px solid #1e2430; border-radius: 16px; padding: 28px; cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
+        .strategy-card:hover { border-color: #86f834; transform: translateY(-2px); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+        .card-name { font-family: 'AS Therma', sans-serif; font-size: 28px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; }
+        .card-badge { padding: 4px 12px; border-radius: 50px; font-size: 10px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; color: #86f834; border: 1px solid rgba(134, 248, 52, 0.4); }
+        .card-desc { color: #556070; font-size: 13px; line-height: 1.5; margin-bottom: 20px; }
+        .card-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .card-stat .label { color: #556070; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .card-stat .value { font-family: 'Proto Mono', monospace; font-size: 20px; font-weight: 300; letter-spacing: -1px; }
+        .positive { color: #86f834; }
+        .negative { color: #2e29ef; }
+        .neutral { color: #efefef; }
+
+        .strategy-detail { display: none; margin-bottom: 40px; }
+        .strategy-detail.active { display: block; }
+        .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .detail-title { font-family: 'AS Therma', sans-serif; font-size: 36px; font-weight: 700; text-transform: uppercase; }
+        .btn-back { color: #556070; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; background: none; border: 1px solid #1e2430; border-radius: 50px; padding: 8px 20px; font-family: 'Alte Haas Grotesk', sans-serif; }
+        .btn-back:hover { color: #efefef; border-color: #efefef; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 28px; }
+        .stat-card { background: transparent; border: 1px solid #1e2430; border-radius: 24px; padding: 12px 18px; }
+        .stat-card .label { color: #556070; font-size: 12px; margin-bottom: 6px; }
+        .stat-card .value { font-family: 'Proto Mono', monospace; font-size: 28px; font-weight: 300; letter-spacing: -2px; }
+
+        .section { margin-bottom: 30px; }
+        .section-title { color: #efefef; font-size: 13px; margin-bottom: 14px; letter-spacing: 1.5px; text-transform: uppercase; padding: 10px 0; border-bottom: 1px solid #1e2430; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #0d1117; color: #556070; padding: 10px 8px; text-align: left; border-bottom: 1px solid #1e2430; font-weight: bold; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+        td { padding: 7px 8px; border-bottom: 1px solid #111820; }
+        tr:hover { background: rgba(134, 248, 52, 0.03); }
+
+        .monthly-grid { display: grid; grid-template-columns: 60px repeat(12, 1fr) minmax(65px, 1fr) minmax(65px, 1fr) minmax(55px, 1fr); gap: 3px; font-size: 11px; }
+        .monthly-grid .month-header { color: #556070; font-size: 10px; text-transform: uppercase; text-align: center; padding: 6px 0; }
+        .monthly-grid .year-label { color: #556070; font-size: 12px; font-weight: 700; display: flex; align-items: center; }
+        .monthly-grid .cell { border-radius: 6px; padding: 8px 6px; text-align: center; font-family: 'Proto Mono', monospace; font-size: 11px; white-space: nowrap; }
+        .cell-pos { background: rgba(134, 248, 52, 0.12); color: #86f834; }
+        .cell-neg { background: rgba(46, 41, 239, 0.15); color: #7b78ff; }
+        .cell-empty { background: transparent; color: #1e2430; }
+
+        .chart-container { background: linear-gradient(145deg, #0d1117, #111820); border: 1px solid #1e2430; border-radius: 16px; padding: 24px; margin-bottom: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .chart-inner { min-width: 600px; }
+        .chart-title { font-size: 13px; color: #556070; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; }
+
+        .breakdown-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+        .breakdown-card { border: 1px solid #1e2430; border-radius: 16px; padding: 20px; background: linear-gradient(145deg, #0d1117, #111820); }
+        .breakdown-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #556070; margin-bottom: 10px; }
+        .breakdown-body { font-size: 13px; line-height: 1.65; color: #8a8fa0; }
+
+        .footer { color: #556070; font-size: 10px; margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid #111820; }
+        .paywall-gate { position: relative; }
+        .paywall-blur { filter: blur(3px); pointer-events: none; user-select: none; }
+        .paywall-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; z-index: 10; background: radial-gradient(ellipse at center, rgba(6,8,10,0.85) 0%, rgba(6,8,10,0.6) 60%, transparent 100%); border-radius: 16px; }
+        .paywall-cta { text-align: center; max-width: 400px; padding: 40px; }
+        .paywall-cta-title { font-family: 'AS Therma', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+        .paywall-cta-text { font-size: 14px; color: #556070; line-height: 1.6; margin-bottom: 20px; }
+        .paywall-cta a { display: inline-block; padding: 12px 28px; border-radius: 50px; background: #86f834; color: #000; font-size: 13px; font-weight: 700; font-family: 'Alte Haas Grotesk', sans-serif; text-decoration: none; transition: opacity 0.2s; }
+        .paywall-cta a:hover { opacity: 0.9; }
+        .bookmark-icon { cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+        .bookmark-icon:hover { stroke: #86f834; }
+        .bookmark-icon.active { fill: #86f834; stroke: #86f834; }
+
+        @media (max-width: 800px) {
+            .hamburger { display: flex; }
+            .topnav-inner { flex-wrap: wrap; }
+            .topnav-links, .topnav-auth { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 16px; }
+            .nav-toggle:checked ~ .topnav-links, .nav-toggle:checked ~ .topnav-auth { display: flex; }
+            .topnav-links { order: 3; }
+            .topnav-auth { order: 4; flex-direction: row; justify-content: center; }
+            .topnav-links a { font-size: 15px; padding: 8px 0; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .card-stats { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .breakdown-grid { grid-template-columns: 1fr !important; }
+            .monthly-grid { grid-template-columns: 40px repeat(12, 1fr) minmax(40px, 1fr) minmax(40px, 1fr) minmax(35px, 1fr); font-size: 9px; }
+            .chart-container { padding: 16px; }
+            .chart-container canvas { height: auto !important; }
+            .detail-title { font-size: 28px; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .card-name { font-size: 22px; }
+            .stat-card .value { font-size: 22px; }
+            .detail-title { font-size: 22px; }
+            .detail-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .paywall-cta { padding: 24px 16px; }
+            .paywall-cta-title { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="topnav"><div class="topnav-inner">
+        <div class="topnav-logo"><a href="index.html"><img src="images/loot-fi-logo-footer2.svg" alt="Loot-Fi"></a></div>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+        <label for="nav-toggle" class="hamburger" aria-label="Menu"><span></span><span></span><span></span></label>
+        <div class="topnav-links">
+            <a href="strategies.html">Strategies</a>
+            <a href="stacking.html" class="active">Alpha Stacking</a>
+            <a href="scanner.html">Scanner</a>
+        </div>
+        <div class="topnav-auth">
+            <a href="pricing.html" class="btn-login" style="text-decoration:none;">Log in</a>
+            <a href="pricing.html" class="btn-signup" style="text-decoration:none;">Sign up</a>
+        </div>
+    </div></nav>
+
+    <div id="cardsView">
+        <p class="page-subtitle">Combine uncorrelated strategies into optimised portfolios. Each stack achieves a higher Sharpe ratio than any single strategy alone.</p>
+
+        <div class="sort-bar">
+            <span>Sort by</span>
+            <button class="sort-btn active" onclick="sortCards('cagr', this)">Highest CAGR</button>
+            <button class="sort-btn" onclick="sortCards('sharpe', this)">Highest Sharpe</button>
+            <button class="sort-btn" onclick="sortCards('maxdd', this)">Lowest Max DD</button>
+            <button class="sort-btn" onclick="sortCards('bookmarked', this)">Bookmarked</button>
+        </div>
+
+        <div class="cards-grid">
+
+            <div class="strategy-card" onclick="showDetail('stack-aggressive-growth')" data-cagr="105.9" data-sharpe="2.01" data-maxdd="-24.0">
+                <div class="card-header">
+                    <div class="card-name">Stack: Aggressive Growth</div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <span class="card-badge badge-backtest">STACK</span>
+                        <svg class="bookmark-icon" data-id="stack-aggressive-growth" onclick="event.stopPropagation();toggleBookmark(this)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#556070" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+                    </div>
+                </div>
+                <div class="card-desc">Maximum returns stack combining A high-conviction breakout and momentum strategies. Turtle Fast (40%) catches early trend entries, Time-Seri...</div>
+                <div class="card-stats">
+                    <div class="card-stat"><div class="label">Sharpe</div><div class="value neutral">2.01</div></div>
+                    <div class="card-stat"><div class="label">CAGR</div><div class="value positive">+105.9%</div></div>
+                    <div class="card-stat"><div class="label">Max DD</div><div class="value negative">-24.0%</div></div>
+                    <div class="card-stat"><div class="label">Strategies</div><div class="value neutral">3</div></div>
+                </div>
+            </div>
+            <div class="strategy-card" onclick="showDetail('stack-max-diversification')" data-cagr="62.0" data-sharpe="1.97" data-maxdd="-13.1">
+                <div class="card-header">
+                    <div class="card-name">Stack: Max Diversification</div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <span class="card-badge badge-backtest">STACK</span>
+                        <svg class="bookmark-icon" data-id="stack-max-diversification" onclick="event.stopPropagation();toggleBookmark(this)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#556070" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+                    </div>
+                </div>
+                <div class="card-desc">Maximum diversification across 6 strategies spanning BTC trend following, cross-sectional momentum, short-only bear protection, large-cap tr...</div>
+                <div class="card-stats">
+                    <div class="card-stat"><div class="label">Sharpe</div><div class="value neutral">1.97</div></div>
+                    <div class="card-stat"><div class="label">CAGR</div><div class="value positive">+62.0%</div></div>
+                    <div class="card-stat"><div class="label">Max DD</div><div class="value negative">-13.1%</div></div>
+                    <div class="card-stat"><div class="label">Strategies</div><div class="value neutral">5</div></div>
+                </div>
+            </div>
+            <div class="strategy-card" onclick="showDetail('stack-all-weather')" data-cagr="43.0" data-sharpe="1.76" data-maxdd="-17.0">
+                <div class="card-header">
+                    <div class="card-name">Stack: All-Weather</div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <span class="card-badge badge-backtest">STACK</span>
+                        <svg class="bookmark-icon" data-id="stack-all-weather" onclick="event.stopPropagation();toggleBookmark(this)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#556070" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+                    </div>
+                </div>
+                <div class="card-desc">Designed to perform in any market regime. All-Weather Adaptive (40%) handles regime detection, Trend+Anti-Trend (34%) provides dual signal d...</div>
+                <div class="card-stats">
+                    <div class="card-stat"><div class="label">Sharpe</div><div class="value neutral">1.76</div></div>
+                    <div class="card-stat"><div class="label">CAGR</div><div class="value positive">+43.0%</div></div>
+                    <div class="card-stat"><div class="label">Max DD</div><div class="value negative">-17.0%</div></div>
+                    <div class="card-stat"><div class="label">Strategies</div><div class="value neutral">4</div></div>
+                </div>
+            </div>
+            <div class="strategy-card" onclick="showDetail('stack-conservative')" data-cagr="36.4" data-sharpe="1.71" data-maxdd="-15.4">
+                <div class="card-header">
+                    <div class="card-name">Stack: Conservative</div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <span class="card-badge badge-backtest">STACK</span>
+                        <svg class="bookmark-icon" data-id="stack-conservative" onclick="event.stopPropagation();toggleBookmark(this)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#556070" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+                    </div>
+                </div>
+                <div class="card-desc">Capital preservation focused. Vol-Scaled Turtle (56%) provides trend exposure with automatic volatility reduction, Conservative All-Season (...</div>
+                <div class="card-stats">
+                    <div class="card-stat"><div class="label">Sharpe</div><div class="value neutral">1.71</div></div>
+                    <div class="card-stat"><div class="label">CAGR</div><div class="value positive">+36.4%</div></div>
+                    <div class="card-stat"><div class="label">Max DD</div><div class="value negative">-15.4%</div></div>
+                    <div class="card-stat"><div class="label">Strategies</div><div class="value neutral">4</div></div>
+                </div>
+            </div>
+            <div class="strategy-card" onclick="showDetail('stack-balanced')" data-cagr="47.5" data-sharpe="1.62" data-maxdd="-17.6">
+                <div class="card-header">
+                    <div class="card-name">Stack: Balanced</div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <span class="card-badge badge-backtest">STACK</span>
+                        <svg class="bookmark-icon" data-id="stack-balanced" onclick="event.stopPropagation();toggleBookmark(this)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#556070" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+                    </div>
+                </div>
+                <div class="card-desc">A balanced mix of long breakouts with built-in hedge (Hedged Breakout 37%), regime-adaptive momentum that shifts L/S allocation (Regime 24%)...</div>
+                <div class="card-stats">
+                    <div class="card-stat"><div class="label">Sharpe</div><div class="value neutral">1.62</div></div>
+                    <div class="card-stat"><div class="label">CAGR</div><div class="value positive">+47.5%</div></div>
+                    <div class="card-stat"><div class="label">Max DD</div><div class="value negative">-17.6%</div></div>
+                    <div class="card-stat"><div class="label">Strategies</div><div class="value neutral">4</div></div>
+                </div>
+            </div>
+            <div class="strategy-card" onclick="showDetail('alpha-stack-3x')" data-cagr="75.8" data-sharpe="2.04" data-maxdd="-14.4">
+                <div class="card-header">
+                    <div class="card-name">Alpha Stack 3x</div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <span class="card-badge badge-backtest">STACK</span>
+                        <svg class="bookmark-icon" data-id="alpha-stack-3x" onclick="event.stopPropagation();toggleBookmark(this)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#556070" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+                    </div>
+                </div>
+                <div class="card-desc">Combines 3 uncorrelated strategies to maximise risk-adjusted returns. Allocations optimised via Monte Carlo Sharpe maximisation. Components:...</div>
+                <div class="card-stats">
+                    <div class="card-stat"><div class="label">Sharpe</div><div class="value neutral">2.04</div></div>
+                    <div class="card-stat"><div class="label">CAGR</div><div class="value positive">+75.8%</div></div>
+                    <div class="card-stat"><div class="label">Max DD</div><div class="value negative">-14.4%</div></div>
+                    <div class="card-stat"><div class="label">Strategies</div><div class="value neutral">3</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;padding:48px 24px;border:1px solid #1e2430;border-radius:20px;background:linear-gradient(145deg,#0d1117,#111820);margin-bottom:40px;">
+            <div style="font-family:'Proto Mono',monospace;font-size:12px;color:#556070;margin-bottom:12px;">6 of 16 stacks shown</div>
+            <div style="font-family:'AS Therma',sans-serif;font-size:28px;font-weight:700;text-transform:uppercase;margin-bottom:10px;">Unlock 10 more stacks</div>
+            <div style="font-size:14px;color:#556070;line-height:1.6;margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto;">Get full access to every alpha stack composition, correlation matrix, and performance breakdown.</div>
+            <a href="pricing.html" style="display:inline-block;padding:14px 32px;border-radius:50px;background:#86f834;color:#000;font-size:14px;font-weight:700;font-family:'Alte Haas Grotesk',sans-serif;text-decoration:none;transition:opacity 0.2s;">Upgrade</a>
+        </div>
+    </div>
+
+
+    <div id="detail-stack-aggressive-growth" class="strategy-detail">
+        <div class="detail-header">
+            <div class="detail-title">Stack: Aggressive Growth</div>
+            <button class="btn-back" onclick="showCards()">Back</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label">Total Return</div><div class="value positive">+8503.6%</div></div>
+            <div class="stat-card"><div class="label">CAGR</div><div class="value positive">+105.9%</div></div>
+            <div class="stat-card"><div class="label">Sharpe</div><div class="value neutral">2.01</div></div>
+            <div class="stat-card"><div class="label">Max Drawdown</div><div class="value negative">-24.0%</div></div>
+            <div class="stat-card"><div class="label">Annual Vol</div><div class="value neutral">52.8%</div></div>
+            <div class="stat-card"><div class="label">Win Rate</div><div class="value neutral">66.2%</div></div>
+            <div class="stat-card"><div class="label">Starting Capital</div><div class="value neutral">$50K</div></div>
+            <div class="stat-card"><div class="label">Fees</div><div class="value neutral">7bps RT</div></div>
+            <div class="stat-card"><div class="label">Strategies</div><div class="value neutral">3</div></div>
+            <div class="stat-card"><div class="label">Rebalance</div><div class="value neutral">Monthly</div></div>        </div>
+
+        <div class="breakdown-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="breakdown-card">
+                <div class="breakdown-title">Strategy</div>
+                <div class="breakdown-body">Maximum returns stack combining A high-conviction breakout and momentum strategies. Turtle Fast (40%) catches early trend entries, Time-Series Momentum (52%) provides diversified trend exposure across all coins independently, with small allocations to VWAP+RVOL and Gap Volume for daily momentum signals. Achieves a 2.0 Sharpe through uncorrelated signal sources despite aggressive positioning.</div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Key Takeaway</div>
+                <div class="breakdown-body">Despite holding some of Highly volatile strategies individually, combining them cuts max drawdown from -64.8% to just -24.0% — a 40 percentage point improvement.<ul style='margin-top:8px;padding-left:18px;'><li>The stack actually returns MORE than any individual component (+105.9% vs best individual +99.1%) while the Sharpe ratio jumps from an average of 1.35 to 2.01.</li><li>This is diversification at its best — uncorrelated signals compound returns while cancelling out drawdowns.</li></ul></div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Result</div>
+                <div class="breakdown-body">$50,000 → <span style="color:#86f834;font-weight:700">$4,301,808</span> over 6.2 years</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">Component Strategies (Individual Performance)</div>
+            <div class="table-scroll">
+            <table>
+                <tr>
+                    <th>Strategy</th>
+                    <th style="text-align:center">CAGR</th>
+                    <th style="text-align:center">Sharpe</th>
+                    <th style="text-align:center">Max DD</th>
+                    <th style="text-align:center">Direction</th>
+                    <th style="text-align:center">Timeframe</th>
+                    <th style="text-align:center">Allocation</th>
+                </tr>
+                <tr><td style="font-weight:700">Turtle 10-5 Fast</td><td class="positive" style="text-align:center">+93.6%</td><td style="text-align:center">1.70</td><td class="negative" style="text-align:center">-46.5%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">40%</td></tr>
+<tr><td style="font-weight:700">Time-Series Momentum</td><td class="positive" style="text-align:center">+99.1%</td><td style="text-align:center">1.27</td><td class="negative" style="text-align:center">-35.9%</td><td style="color:#556070;text-align:center">Long/Short</td><td style="color:#556070;text-align:center">Weekly</td><td style="color:#86f834;font-weight:700;text-align:center">50%</td></tr>
+<tr><td style="font-weight:700">Gap Volume Long</td><td class="positive" style="text-align:center">+75.6%</td><td style="text-align:center">1.07</td><td class="negative" style="text-align:center">-64.8%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">10%</td></tr>
+
+            </table>
+            </div>
+        </div>
+
+        
+        <div class="section">
+            <div class="section-title">Strategy Correlations</div>
+            <div class="table-scroll">
+            <div style="display:flex;gap:16px;align-items:flex-start;min-width:500px;">
+                <table style="font-size:11px;">
+                    <tr><th></th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Turtle 10-5 Fast</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Time-Series Momentum</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Gap Volume Long</th></tr>
+                    <tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Turtle 10-5 Fast</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.40</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.53</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Time-Series Momentum</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.40</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.25</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Gap Volume Long</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.53</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.25</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td></tr>
+
+                </table>
+                <div style="font-size:11px;color:#556070;min-width:140px;padding-top:10px;">
+                    <div style="margin-bottom:8px;font-weight:700;color:#efefef">Key</div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.4)"></div>
+                        <span>&lt; -0.2 Negative (ideal)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.15)"></div>
+                        <span>-0.2 to 0.2 Low (good)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(85,96,112,0.15)"></div>
+                        <span>0.2 to 0.5 Moderate</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(46,41,239,0.5)"></div>
+                        <span>&gt; 0.5 High (redundant)</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Portfolio Equity — $50K start</div>
+            <div class="chart-inner"><canvas id="chart-eq-stack-aggressive-growth" height="120"></canvas></div>
+        </div>
+        <p style="font-size:12px;color:#556070;line-height:1.6;margin:-10px 0 20px;padding:0 4px;">These results are based on historical backtesting and are hypothetical in nature. They do not represent actual trading results. Backtested performance does not account for real-world factors including slippage beyond fee assumptions, exchange downtime, liquidity constraints, market impact, and execution delays. Actual results may differ materially.</p>
+
+        <div class="chart-container">
+            <div class="chart-title">Drawdown</div>
+            <div class="chart-inner"><canvas id="chart-dd-stack-aggressive-growth" height="80"></canvas></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Monthly Returns</div>
+            <div class="table-scroll"><div class="monthly-grid" id="monthly-stack-aggressive-growth" style="min-width:800px;"></div></div>
+        </div>
+
+    </div>
+    <div id="detail-stack-max-diversification" class="strategy-detail">
+        <div class="detail-header">
+            <div class="detail-title">Stack: Max Diversification</div>
+            <button class="btn-back" onclick="showCards()">Back</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label">Total Return</div><div class="value positive">+1862.6%</div></div>
+            <div class="stat-card"><div class="label">CAGR</div><div class="value positive">+62.0%</div></div>
+            <div class="stat-card"><div class="label">Sharpe</div><div class="value neutral">1.97</div></div>
+            <div class="stat-card"><div class="label">Max Drawdown</div><div class="value negative">-13.1%</div></div>
+            <div class="stat-card"><div class="label">Annual Vol</div><div class="value neutral">31.5%</div></div>
+            <div class="stat-card"><div class="label">Win Rate</div><div class="value neutral">59.5%</div></div>
+            <div class="stat-card"><div class="label">Starting Capital</div><div class="value neutral">$50K</div></div>
+            <div class="stat-card"><div class="label">Fees</div><div class="value neutral">7bps RT</div></div>
+            <div class="stat-card"><div class="label">Strategies</div><div class="value neutral">5</div></div>
+            <div class="stat-card"><div class="label">Rebalance</div><div class="value neutral">Monthly</div></div>        </div>
+
+        <div class="breakdown-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="breakdown-card">
+                <div class="breakdown-title">Strategy</div>
+                <div class="breakdown-body">Maximum diversification across 6 strategies spanning BTC trend following, cross-sectional momentum, short-only bear protection, large-cap trend, regime-adaptive, and hedged breakouts. A low max drawdown of any stack at just -14.6%, achieved by combining strategies that profit in different market environments. When breakouts fail in bears, the short and regime strategies compensate.</div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Key Takeaway</div>
+                <div class="breakdown-body">A low drawdown of -13.1%, compared to -53.3% for the worst individual component.<ul style='margin-top:8px;padding-left:18px;'><li>By spreading across 5 strategies that include BTC trend following, cross-sectional momentum, short-only bear protection, large-cap trends, and regime-adaptive allocation, the portfolio survives every market environment.</li><li>The Sharpe ratio of 1.97 is 60% higher than the average individual Sharpe of 1.23.</li></ul></div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Result</div>
+                <div class="breakdown-body">$50,000 → <span style="color:#86f834;font-weight:700">$981,296</span> over 6.2 years</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">Component Strategies (Individual Performance)</div>
+            <div class="table-scroll">
+            <table>
+                <tr>
+                    <th>Strategy</th>
+                    <th style="text-align:center">CAGR</th>
+                    <th style="text-align:center">Sharpe</th>
+                    <th style="text-align:center">Max DD</th>
+                    <th style="text-align:center">Direction</th>
+                    <th style="text-align:center">Timeframe</th>
+                    <th style="text-align:center">Allocation</th>
+                </tr>
+                <tr><td style="font-weight:700">Btc Quarterly Momentum</td><td class="positive" style="text-align:center">+36.7%</td><td style="text-align:center">1.24</td><td class="negative" style="text-align:center">-30.7%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">10%</td></tr>
+<tr><td style="font-weight:700">Time-Series Momentum</td><td class="positive" style="text-align:center">+99.1%</td><td style="text-align:center">1.27</td><td class="negative" style="text-align:center">-35.9%</td><td style="color:#556070;text-align:center">Long/Short</td><td style="color:#556070;text-align:center">Weekly</td><td style="color:#86f834;font-weight:700;text-align:center">25%</td></tr>
+<tr><td style="font-weight:700">Short Overextended Bear</td><td class="positive" style="text-align:center">+18.1%</td><td style="text-align:center">0.68</td><td class="negative" style="text-align:center">-40.8%</td><td style="color:#556070;text-align:center">Short Only</td><td style="color:#556070;text-align:center">5-Day</td><td style="color:#86f834;font-weight:700;text-align:center">15%</td></tr>
+<tr><td style="font-weight:700">Large Cap Ema Ribbon</td><td class="positive" style="text-align:center">+73.1%</td><td style="text-align:center">1.26</td><td class="negative" style="text-align:center">-53.3%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Weekly</td><td style="color:#86f834;font-weight:700;text-align:center">10%</td></tr>
+<tr><td style="font-weight:700">All-Weather Adaptive</td><td class="positive" style="text-align:center">+49.8%</td><td style="text-align:center">1.72</td><td class="negative" style="text-align:center">-36.6%</td><td style="color:#556070;text-align:center">Long/Short</td><td style="color:#556070;text-align:center">3-Day</td><td style="color:#86f834;font-weight:700;text-align:center">40%</td></tr>
+
+            </table>
+            </div>
+        </div>
+
+        
+        <div class="section">
+            <div class="section-title">Strategy Correlations</div>
+            <div class="table-scroll">
+            <div style="display:flex;gap:16px;align-items:flex-start;min-width:500px;">
+                <table style="font-size:11px;">
+                    <tr><th></th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Btc Quarterly Moment</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Time-Series Momentum</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Short Overextended B</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Large Cap Ema Ribbon</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">All-Weather Adaptive</th></tr>
+                    <tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Btc Quarterly Moment</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.43</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.11</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.43</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.54</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Time-Series Momentum</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.43</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.03</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.46</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.42</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Short Overextended B</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.11</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.03</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.07</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.07</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Large Cap Ema Ribbon</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.43</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.46</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.07</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.35</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">All-Weather Adaptive</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.54</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.42</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.07</td><td style="background:rgba(85, 96, 112, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.35</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td></tr>
+
+                </table>
+                <div style="font-size:11px;color:#556070;min-width:140px;padding-top:10px;">
+                    <div style="margin-bottom:8px;font-weight:700;color:#efefef">Key</div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.4)"></div>
+                        <span>&lt; -0.2 Negative (ideal)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.15)"></div>
+                        <span>-0.2 to 0.2 Low (good)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(85,96,112,0.15)"></div>
+                        <span>0.2 to 0.5 Moderate</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(46,41,239,0.5)"></div>
+                        <span>&gt; 0.5 High (redundant)</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Portfolio Equity — $50K start</div>
+            <div class="chart-inner"><canvas id="chart-eq-stack-max-diversification" height="120"></canvas></div>
+        </div>
+        <p style="font-size:12px;color:#556070;line-height:1.6;margin:-10px 0 20px;padding:0 4px;">These results are based on historical backtesting and are hypothetical in nature. They do not represent actual trading results. Backtested performance does not account for real-world factors including slippage beyond fee assumptions, exchange downtime, liquidity constraints, market impact, and execution delays. Actual results may differ materially.</p>
+
+        <div class="chart-container">
+            <div class="chart-title">Drawdown</div>
+            <div class="chart-inner"><canvas id="chart-dd-stack-max-diversification" height="80"></canvas></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Monthly Returns</div>
+            <div class="table-scroll"><div class="monthly-grid" id="monthly-stack-max-diversification" style="min-width:800px;"></div></div>
+        </div>
+
+    </div>
+    <div id="detail-stack-all-weather" class="strategy-detail">
+        <div class="detail-header">
+            <div class="detail-title">Stack: All-Weather</div>
+            <button class="btn-back" onclick="showCards()">Back</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label">Total Return</div><div class="value positive">+805.8%</div></div>
+            <div class="stat-card"><div class="label">CAGR</div><div class="value positive">+43.0%</div></div>
+            <div class="stat-card"><div class="label">Sharpe</div><div class="value neutral">1.76</div></div>
+            <div class="stat-card"><div class="label">Max Drawdown</div><div class="value negative">-17.0%</div></div>
+            <div class="stat-card"><div class="label">Annual Vol</div><div class="value neutral">24.4%</div></div>
+            <div class="stat-card"><div class="label">Win Rate</div><div class="value neutral">60.8%</div></div>
+            <div class="stat-card"><div class="label">Starting Capital</div><div class="value neutral">$50K</div></div>
+            <div class="stat-card"><div class="label">Fees</div><div class="value neutral">7bps RT</div></div>
+            <div class="stat-card"><div class="label">Strategies</div><div class="value neutral">4</div></div>
+            <div class="stat-card"><div class="label">Rebalance</div><div class="value neutral">Monthly</div></div>        </div>
+
+        <div class="breakdown-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="breakdown-card">
+                <div class="breakdown-title">Strategy</div>
+                <div class="breakdown-body">Designed to perform in any market regime. All-Weather Adaptive (40%) handles regime detection, Trend+Anti-Trend (34%) provides dual signal diversification, Short Overextended (20%) adds bear market alpha, with small BTC momentum and hedged breakout allocations. Targets consistent returns with minimal drawdowns across bull, bear, and choppy markets.</div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Key Takeaway</div>
+                <div class="breakdown-body">Built to perform in any market regime.<ul style='margin-top:8px;padding-left:18px;'><li>While BTC Monthly Momentum alone returns +63.9% CAGR, its -47.8% drawdown would be painful to stomach.</li><li>This stack delivers +43.0% CAGR with only -17.0% max drawdown — cutting the worst-case loss by 30 percentage points.</li><li>The short overextended bear component (25% allocation) acts as insurance, profiting during the exact periods when the long strategies struggle.</li></ul></div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Result</div>
+                <div class="breakdown-body">$50,000 → <span style="color:#86f834;font-weight:700">$452,882</span> over 6.2 years</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">Component Strategies (Individual Performance)</div>
+            <div class="table-scroll">
+            <table>
+                <tr>
+                    <th>Strategy</th>
+                    <th style="text-align:center">CAGR</th>
+                    <th style="text-align:center">Sharpe</th>
+                    <th style="text-align:center">Max DD</th>
+                    <th style="text-align:center">Direction</th>
+                    <th style="text-align:center">Timeframe</th>
+                    <th style="text-align:center">Allocation</th>
+                </tr>
+                <tr><td style="font-weight:700">All-Weather Adaptive</td><td class="positive" style="text-align:center">+49.8%</td><td style="text-align:center">1.72</td><td class="negative" style="text-align:center">-36.6%</td><td style="color:#556070;text-align:center">Long/Short</td><td style="color:#556070;text-align:center">3-Day</td><td style="color:#86f834;font-weight:700;text-align:center">30%</td></tr>
+<tr><td style="font-weight:700">Trend Anti-Trend Combo</td><td class="positive" style="text-align:center">+40.2%</td><td style="text-align:center">1.61</td><td class="negative" style="text-align:center">-29.1%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">35%</td></tr>
+<tr><td style="font-weight:700">Short Overextended Bear</td><td class="positive" style="text-align:center">+18.1%</td><td style="text-align:center">0.68</td><td class="negative" style="text-align:center">-40.8%</td><td style="color:#556070;text-align:center">Short Only</td><td style="color:#556070;text-align:center">5-Day</td><td style="color:#86f834;font-weight:700;text-align:center">25%</td></tr>
+<tr><td style="font-weight:700">Btc Monthly Momentum</td><td class="positive" style="text-align:center">+63.9%</td><td style="text-align:center">1.31</td><td class="negative" style="text-align:center">-47.8%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">10%</td></tr>
+
+            </table>
+            </div>
+        </div>
+
+        
+        <div class="section">
+            <div class="section-title">Strategy Correlations</div>
+            <div class="table-scroll">
+            <div style="display:flex;gap:16px;align-items:flex-start;min-width:500px;">
+                <table style="font-size:11px;">
+                    <tr><th></th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">All-Weather Adaptive</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Trend Anti-Trend Com</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Short Overextended B</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Btc Monthly Momentum</th></tr>
+                    <tr><td style="font-weight:700;font-size:10px;white-space:nowrap">All-Weather Adaptive</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.54</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.07</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.60</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Trend Anti-Trend Com</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.54</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.13</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.62</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Short Overextended B</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">+0.07</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.13</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.02</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Btc Monthly Momentum</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.60</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.62</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.02</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td></tr>
+
+                </table>
+                <div style="font-size:11px;color:#556070;min-width:140px;padding-top:10px;">
+                    <div style="margin-bottom:8px;font-weight:700;color:#efefef">Key</div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.4)"></div>
+                        <span>&lt; -0.2 Negative (ideal)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.15)"></div>
+                        <span>-0.2 to 0.2 Low (good)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(85,96,112,0.15)"></div>
+                        <span>0.2 to 0.5 Moderate</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(46,41,239,0.5)"></div>
+                        <span>&gt; 0.5 High (redundant)</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Portfolio Equity — $50K start</div>
+            <div class="chart-inner"><canvas id="chart-eq-stack-all-weather" height="120"></canvas></div>
+        </div>
+        <p style="font-size:12px;color:#556070;line-height:1.6;margin:-10px 0 20px;padding:0 4px;">These results are based on historical backtesting and are hypothetical in nature. They do not represent actual trading results. Backtested performance does not account for real-world factors including slippage beyond fee assumptions, exchange downtime, liquidity constraints, market impact, and execution delays. Actual results may differ materially.</p>
+
+        <div class="chart-container">
+            <div class="chart-title">Drawdown</div>
+            <div class="chart-inner"><canvas id="chart-dd-stack-all-weather" height="80"></canvas></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Monthly Returns</div>
+            <div class="table-scroll"><div class="monthly-grid" id="monthly-stack-all-weather" style="min-width:800px;"></div></div>
+        </div>
+
+    </div>
+    <div id="detail-stack-conservative" class="strategy-detail">
+        <div class="detail-header">
+            <div class="detail-title">Stack: Conservative</div>
+            <button class="btn-back" onclick="showCards()">Back</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label">Total Return</div><div class="value positive">+579.2%</div></div>
+            <div class="stat-card"><div class="label">CAGR</div><div class="value positive">+36.4%</div></div>
+            <div class="stat-card"><div class="label">Sharpe</div><div class="value neutral">1.71</div></div>
+            <div class="stat-card"><div class="label">Max Drawdown</div><div class="value negative">-15.4%</div></div>
+            <div class="stat-card"><div class="label">Annual Vol</div><div class="value neutral">21.3%</div></div>
+            <div class="stat-card"><div class="label">Win Rate</div><div class="value neutral">63.5%</div></div>
+            <div class="stat-card"><div class="label">Starting Capital</div><div class="value neutral">$50K</div></div>
+            <div class="stat-card"><div class="label">Fees</div><div class="value neutral">7bps RT</div></div>
+            <div class="stat-card"><div class="label">Strategies</div><div class="value neutral">4</div></div>
+            <div class="stat-card"><div class="label">Rebalance</div><div class="value neutral">Monthly</div></div>        </div>
+
+        <div class="breakdown-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="breakdown-card">
+                <div class="breakdown-title">Strategy</div>
+                <div class="breakdown-body">Capital preservation focused. Vol-Scaled Turtle (56%) provides trend exposure with automatic volatility reduction, Conservative All-Season (20%) uses small positions with strict regime filters, Short Low Vol Downtrend (23%) adds bear market hedge, and BTC Dual Momentum provides additional trend confirmation. Prioritises protecting capital over maximising returns.</div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Key Takeaway</div>
+                <div class="breakdown-body">The capital preservation stack.<ul style='margin-top:8px;padding-left:18px;'><li>Every component is designed to be defensive, yet combined they still deliver +36.4% CAGR — well above most traditional portfolios.</li><li>Max drawdown of -15.4% means the worst period would lose less than what many single strategies lose in a bad month.</li><li>The Sharpe of 1.71 is 42% higher than the average component Sharpe of 1.20, showing the power of combining defensive strategies.</li></ul></div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Result</div>
+                <div class="breakdown-body">$50,000 → <span style="color:#86f834;font-weight:700">$339,612</span> over 6.2 years</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">Component Strategies (Individual Performance)</div>
+            <div class="table-scroll">
+            <table>
+                <tr>
+                    <th>Strategy</th>
+                    <th style="text-align:center">CAGR</th>
+                    <th style="text-align:center">Sharpe</th>
+                    <th style="text-align:center">Max DD</th>
+                    <th style="text-align:center">Direction</th>
+                    <th style="text-align:center">Timeframe</th>
+                    <th style="text-align:center">Allocation</th>
+                </tr>
+                <tr><td style="font-weight:700">Conservative All-Season</td><td class="positive" style="text-align:center">+35.0%</td><td style="text-align:center">1.34</td><td class="negative" style="text-align:center">-25.5%</td><td style="color:#556070;text-align:center">Long/Short</td><td style="color:#556070;text-align:center">3-Day</td><td style="color:#86f834;font-weight:700;text-align:center">20%</td></tr>
+<tr><td style="font-weight:700">Vol-Scaled Turtle</td><td class="positive" style="text-align:center">+39.6%</td><td style="text-align:center">1.59</td><td class="negative" style="text-align:center">-28.0%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">45%</td></tr>
+<tr><td style="font-weight:700">Btc Dual Momentum V2</td><td class="positive" style="text-align:center">+32.7%</td><td style="text-align:center">1.19</td><td class="negative" style="text-align:center">-33.1%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">10%</td></tr>
+<tr><td style="font-weight:700">Short Low Vol Downtrend</td><td class="positive" style="text-align:center">+19.4%</td><td style="text-align:center">0.68</td><td class="negative" style="text-align:center">-52.5%</td><td style="color:#556070;text-align:center">Short Only</td><td style="color:#556070;text-align:center">5-Day</td><td style="color:#86f834;font-weight:700;text-align:center">25%</td></tr>
+
+            </table>
+            </div>
+        </div>
+
+        
+        <div class="section">
+            <div class="section-title">Strategy Correlations</div>
+            <div class="table-scroll">
+            <div style="display:flex;gap:16px;align-items:flex-start;min-width:500px;">
+                <table style="font-size:11px;">
+                    <tr><th></th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Conservative All-Sea</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Vol-Scaled Turtle</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Btc Dual Momentum V2</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Short Low Vol Downtr</th></tr>
+                    <tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Conservative All-Sea</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.65</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.56</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.15</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Vol-Scaled Turtle</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.65</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.64</td><td style="background:rgba(134, 248, 52, 0.25);text-align:center;font-size:11px;color:#86f834;font-weight:700">-0.21</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Btc Dual Momentum V2</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.56</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.64</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.09</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Short Low Vol Downtr</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.15</td><td style="background:rgba(134, 248, 52, 0.25);text-align:center;font-size:11px;color:#86f834;font-weight:700">-0.21</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.09</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td></tr>
+
+                </table>
+                <div style="font-size:11px;color:#556070;min-width:140px;padding-top:10px;">
+                    <div style="margin-bottom:8px;font-weight:700;color:#efefef">Key</div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.4)"></div>
+                        <span>&lt; -0.2 Negative (ideal)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.15)"></div>
+                        <span>-0.2 to 0.2 Low (good)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(85,96,112,0.15)"></div>
+                        <span>0.2 to 0.5 Moderate</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(46,41,239,0.5)"></div>
+                        <span>&gt; 0.5 High (redundant)</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Portfolio Equity — $50K start</div>
+            <div class="chart-inner"><canvas id="chart-eq-stack-conservative" height="120"></canvas></div>
+        </div>
+        <p style="font-size:12px;color:#556070;line-height:1.6;margin:-10px 0 20px;padding:0 4px;">These results are based on historical backtesting and are hypothetical in nature. They do not represent actual trading results. Backtested performance does not account for real-world factors including slippage beyond fee assumptions, exchange downtime, liquidity constraints, market impact, and execution delays. Actual results may differ materially.</p>
+
+        <div class="chart-container">
+            <div class="chart-title">Drawdown</div>
+            <div class="chart-inner"><canvas id="chart-dd-stack-conservative" height="80"></canvas></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Monthly Returns</div>
+            <div class="table-scroll"><div class="monthly-grid" id="monthly-stack-conservative" style="min-width:800px;"></div></div>
+        </div>
+
+    </div>
+    <div id="detail-stack-balanced" class="strategy-detail">
+        <div class="detail-header">
+            <div class="detail-title">Stack: Balanced</div>
+            <button class="btn-back" onclick="showCards()">Back</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label">Total Return</div><div class="value positive">+997.6%</div></div>
+            <div class="stat-card"><div class="label">CAGR</div><div class="value positive">+47.5%</div></div>
+            <div class="stat-card"><div class="label">Sharpe</div><div class="value neutral">1.62</div></div>
+            <div class="stat-card"><div class="label">Max Drawdown</div><div class="value negative">-17.6%</div></div>
+            <div class="stat-card"><div class="label">Annual Vol</div><div class="value neutral">29.4%</div></div>
+            <div class="stat-card"><div class="label">Win Rate</div><div class="value neutral">59.5%</div></div>
+            <div class="stat-card"><div class="label">Starting Capital</div><div class="value neutral">$50K</div></div>
+            <div class="stat-card"><div class="label">Fees</div><div class="value neutral">7bps RT</div></div>
+            <div class="stat-card"><div class="label">Strategies</div><div class="value neutral">4</div></div>
+            <div class="stat-card"><div class="label">Rebalance</div><div class="value neutral">Monthly</div></div>        </div>
+
+        <div class="breakdown-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="breakdown-card">
+                <div class="breakdown-title">Strategy</div>
+                <div class="breakdown-body">A balanced mix of long breakouts with built-in hedge (Hedged Breakout 37%), regime-adaptive momentum that shifts L/S allocation (Regime 24%), simple BTC trend following (6%), and short-only bear protection (33%). Provides steady compounding with meaningful crash protection. The short allocation is larger than typical to ensure the portfolio survives extended bear markets.</div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Key Takeaway</div>
+                <div class="breakdown-body">A practical middle ground: hedged breakouts, regime-adaptive momentum, BTC trend following, and short-only bear protection.<ul style='margin-top:8px;padding-left:18px;'><li>Regime-Adaptive alone returns +78.6% but with -56.0% drawdown.</li><li>This stack captures +47.5% CAGR while limiting drawdown to -17.6% — a 38 percentage point improvement in worst-case loss.</li><li>The 30% short allocation provides meaningful crash protection without dragging returns in bull markets.</li></ul></div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Result</div>
+                <div class="breakdown-body">$50,000 → <span style="color:#86f834;font-weight:700">$548,793</span> over 6.2 years</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">Component Strategies (Individual Performance)</div>
+            <div class="table-scroll">
+            <table>
+                <tr>
+                    <th>Strategy</th>
+                    <th style="text-align:center">CAGR</th>
+                    <th style="text-align:center">Sharpe</th>
+                    <th style="text-align:center">Max DD</th>
+                    <th style="text-align:center">Direction</th>
+                    <th style="text-align:center">Timeframe</th>
+                    <th style="text-align:center">Allocation</th>
+                </tr>
+                <tr><td style="font-weight:700">Hedged Breakout</td><td class="positive" style="text-align:center">+35.2%</td><td style="text-align:center">1.46</td><td class="negative" style="text-align:center">-27.5%</td><td style="color:#556070;text-align:center">Long/Short</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">35%</td></tr>
+<tr><td style="font-weight:700">Regime-Adaptive</td><td class="positive" style="text-align:center">+78.6%</td><td style="text-align:center">1.33</td><td class="negative" style="text-align:center">-56.0%</td><td style="color:#556070;text-align:center">Long/Short</td><td style="color:#556070;text-align:center">Weekly</td><td style="color:#86f834;font-weight:700;text-align:center">25%</td></tr>
+<tr><td style="font-weight:700">Btc Monthly Momentum</td><td class="positive" style="text-align:center">+63.9%</td><td style="text-align:center">1.31</td><td class="negative" style="text-align:center">-47.8%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">10%</td></tr>
+<tr><td style="font-weight:700">Short Overextended Bear</td><td class="positive" style="text-align:center">+18.1%</td><td style="text-align:center">0.68</td><td class="negative" style="text-align:center">-40.8%</td><td style="color:#556070;text-align:center">Short Only</td><td style="color:#556070;text-align:center">5-Day</td><td style="color:#86f834;font-weight:700;text-align:center">30%</td></tr>
+
+            </table>
+            </div>
+        </div>
+
+        
+        <div class="section">
+            <div class="section-title">Strategy Correlations</div>
+            <div class="table-scroll">
+            <div style="display:flex;gap:16px;align-items:flex-start;min-width:500px;">
+                <table style="font-size:11px;">
+                    <tr><th></th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Hedged Breakout</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Regime-Adaptive</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Btc Monthly Momentum</th><th style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">Short Overextended B</th></tr>
+                    <tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Hedged Breakout</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.67</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.65</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.04</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Regime-Adaptive</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.67</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.64</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.09</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Btc Monthly Momentum</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.65</td><td style="background:rgba(46, 41, 239, 0.25);text-align:center;font-size:11px;color:#7b78ff;font-weight:700">+0.64</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.02</td></tr>
+<tr><td style="font-weight:700;font-size:10px;white-space:nowrap">Short Overextended B</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.04</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.09</td><td style="background:rgba(134, 248, 52, 0.15);text-align:center;font-size:11px;color:#8a8fa0;font-weight:700">-0.02</td><td style="background:#1e2430;text-align:center;font-size:11px;color:#556070">1.00</td></tr>
+
+                </table>
+                <div style="font-size:11px;color:#556070;min-width:140px;padding-top:10px;">
+                    <div style="margin-bottom:8px;font-weight:700;color:#efefef">Key</div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.4)"></div>
+                        <span>&lt; -0.2 Negative (ideal)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(134,248,52,0.15)"></div>
+                        <span>-0.2 to 0.2 Low (good)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(85,96,112,0.15)"></div>
+                        <span>0.2 to 0.5 Moderate</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:16px;height:16px;border-radius:4px;background:rgba(46,41,239,0.5)"></div>
+                        <span>&gt; 0.5 High (redundant)</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Portfolio Equity — $50K start</div>
+            <div class="chart-inner"><canvas id="chart-eq-stack-balanced" height="120"></canvas></div>
+        </div>
+        <p style="font-size:12px;color:#556070;line-height:1.6;margin:-10px 0 20px;padding:0 4px;">These results are based on historical backtesting and are hypothetical in nature. They do not represent actual trading results. Backtested performance does not account for real-world factors including slippage beyond fee assumptions, exchange downtime, liquidity constraints, market impact, and execution delays. Actual results may differ materially.</p>
+
+        <div class="chart-container">
+            <div class="chart-title">Drawdown</div>
+            <div class="chart-inner"><canvas id="chart-dd-stack-balanced" height="80"></canvas></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Monthly Returns</div>
+            <div class="table-scroll"><div class="monthly-grid" id="monthly-stack-balanced" style="min-width:800px;"></div></div>
+        </div>
+
+    </div>
+    <div id="detail-alpha-stack-3x" class="strategy-detail">
+        <div class="detail-header">
+            <div class="detail-title">Alpha Stack 3x</div>
+            <button class="btn-back" onclick="showCards()">Back</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label">Total Return</div><div class="value positive">+3141.8%</div></div>
+            <div class="stat-card"><div class="label">CAGR</div><div class="value positive">+75.8%</div></div>
+            <div class="stat-card"><div class="label">Sharpe</div><div class="value neutral">2.04</div></div>
+            <div class="stat-card"><div class="label">Max Drawdown</div><div class="value negative">-14.4%</div></div>
+            <div class="stat-card"><div class="label">Annual Vol</div><div class="value neutral">37.1%</div></div>
+            <div class="stat-card"><div class="label">Win Rate</div><div class="value neutral">59.5%</div></div>
+            <div class="stat-card"><div class="label">Starting Capital</div><div class="value neutral">$50K</div></div>
+            <div class="stat-card"><div class="label">Fees</div><div class="value neutral">7bps RT</div></div>
+            <div class="stat-card"><div class="label">Strategies</div><div class="value neutral">3</div></div>
+            <div class="stat-card"><div class="label">Rebalance</div><div class="value neutral">Monthly</div></div>        </div>
+
+        <div class="breakdown-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="breakdown-card">
+                <div class="breakdown-title">Strategy</div>
+                <div class="breakdown-body">Combines 3 uncorrelated strategies to maximise risk-adjusted returns. Allocations optimised via Monte Carlo Sharpe maximisation. Components: All-Weather Adaptive (24%), Breakout Rvol Donchian (41%), Time-Series Momentum (35%). The portfolio achieves a higher Sharpe ratio than any individual strategy by diversifying across different signal types, timeframes, and market regimes.</div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Key Takeaway</div>
+                <div class="breakdown-body">A strong Sharpe ratio of 2.04.<ul style='margin-top:8px;padding-left:18px;'><li>Adding All-Weather Adaptive (25%) to the two breakout/momentum strategies provides regime detection that reduces exposure during bear markets.</li><li>Max drawdown drops to just -14.4% while maintaining +75.8% CAGR.</li><li>The three strategies have low enough correlation that losses in one are typically offset by gains in another.</li></ul></div>
+            </div>
+            <div class="breakdown-card">
+                <div class="breakdown-title">Result</div>
+                <div class="breakdown-body">$50,000 → <span style="color:#86f834;font-weight:700">$1,620,884</span> over 6.2 years</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">Component Strategies (Individual Performance)</div>
+            <div class="table-scroll">
+            <table>
+                <tr>
+                    <th>Strategy</th>
+                    <th style="text-align:center">CAGR</th>
+                    <th style="text-align:center">Sharpe</th>
+                    <th style="text-align:center">Max DD</th>
+                    <th style="text-align:center">Direction</th>
+                    <th style="text-align:center">Timeframe</th>
+                    <th style="text-align:center">Allocation</th>
+                </tr>
+                <tr><td style="font-weight:700">All-Weather Adaptive</td><td class="positive" style="text-align:center">+49.8%</td><td style="text-align:center">1.72</td><td class="negative" style="text-align:center">-36.6%</td><td style="color:#556070;text-align:center">Long/Short</td><td style="color:#556070;text-align:center">3-Day</td><td style="color:#86f834;font-weight:700;text-align:center">25%</td></tr>
+<tr><td style="font-weight:700">Breakout Rvol Donchian</td><td class="positive" style="text-align:center">+61.3%</td><td style="text-align:center">1.58</td><td class="negative" style="text-align:center">-34.9%</td><td style="color:#556070;text-align:center">Long Only</td><td style="color:#556070;text-align:center">Daily</td><td style="color:#86f834;font-weight:700;text-align:center">40%</td></tr>
+<tr><td style="font-weight:700">Time-Series Momentum</td><td class="positive" style="text-align:center">+99.1%</td><td style="text-align:center">1.27</td><td class="negative" style="text-align:center">-35.9%</td><td style="color:#556070;text-align:center">Long/Short</td><td style="color:#556070;text-align:center">Weekly</td><td style="color:#86f834;font-weight:700;text-align:center">35%</td></tr>
+
+            </table>
+            </div>
+        </div>
+
+        
+
+        <div class="chart-container">
+            <div class="chart-title">Portfolio Equity — $50K start</div>
+            <div class="chart-inner"><canvas id="chart-eq-alpha-stack-3x" height="120"></canvas></div>
+        </div>
+        <p style="font-size:12px;color:#556070;line-height:1.6;margin:-10px 0 20px;padding:0 4px;">These results are based on historical backtesting and are hypothetical in nature. They do not represent actual trading results. Backtested performance does not account for real-world factors including slippage beyond fee assumptions, exchange downtime, liquidity constraints, market impact, and execution delays. Actual results may differ materially.</p>
+
+        <div class="chart-container">
+            <div class="chart-title">Drawdown</div>
+            <div class="chart-inner"><canvas id="chart-dd-alpha-stack-3x" height="80"></canvas></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Monthly Returns</div>
+            <div class="table-scroll"><div class="monthly-grid" id="monthly-alpha-stack-3x" style="min-width:800px;"></div></div>
+        </div>
+
+    </div>
+
+    <div style="border-top:1px solid #1e2430;margin-top:40px;padding:20px 0 10px;text-align:center;max-width:900px;margin-left:auto;margin-right:auto;">
+        <p style="font-size:11px;color:#556070;line-height:1.6;margin:0 auto 10px;">Loot-Fi publishes historical backtesting research for educational purposes only. Nothing on Loot-Fi constitutes financial advice, a recommendation to buy or sell any asset, or an invitation to invest. Past performance in backtesting does not guarantee future results. All trading involves risk, including the loss of your entire investment. You should consult a licensed financial adviser before making any investment decisions.</p>
+        <div style="font-size:11px;color:#556070;"><a href="terms.html" style="color:#556070;text-decoration:none;margin:0 8px;">Terms of Service</a><a href="privacy.html" style="color:#556070;text-decoration:none;margin:0 8px;">Privacy Policy</a></div>
+    </div>
+
+    <script>
+    const START_CAPITAL = 50000;
+    const STRATEGY_DATA = {
+    'stack-aggressive-growth': { nav: [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0718}, {"ym": "2020-03", "nav": 1.1011}, {"ym": "2020-04", "nav": 1.5029}, {"ym": "2020-05", "nav": 1.5629}, {"ym": "2020-06", "nav": 1.658}, {"ym": "2020-07", "nav": 1.6696}, {"ym": "2020-08", "nav": 2.0967}, {"ym": "2020-09", "nav": 2.1236}, {"ym": "2020-10", "nav": 1.8146}, {"ym": "2020-11", "nav": 1.8421}, {"ym": "2020-12", "nav": 2.4187}, {"ym": "2021-01", "nav": 2.5463}, {"ym": "2021-02", "nav": 3.4205}, {"ym": "2021-03", "nav": 4.4989}, {"ym": "2021-04", "nav": 5.849}, {"ym": "2021-05", "nav": 7.7259}, {"ym": "2021-06", "nav": 7.1655}, {"ym": "2021-07", "nav": 7.0437}, {"ym": "2021-08", "nav": 7.2167}, {"ym": "2021-09", "nav": 8.737}, {"ym": "2021-10", "nav": 8.1091}, {"ym": "2021-11", "nav": 8.6038}, {"ym": "2021-12", "nav": 9.9017}, {"ym": "2022-01", "nav": 10.1151}, {"ym": "2022-02", "nav": 11.0804}, {"ym": "2022-03", "nav": 10.323}, {"ym": "2022-04", "nav": 10.3712}, {"ym": "2022-05", "nav": 9.9004}, {"ym": "2022-06", "nav": 10.7818}, {"ym": "2022-07", "nav": 11.0191}, {"ym": "2022-08", "nav": 11.779}, {"ym": "2022-09", "nav": 10.6064}, {"ym": "2022-10", "nav": 10.4798}, {"ym": "2022-11", "nav": 11.1406}, {"ym": "2022-12", "nav": 10.2237}, {"ym": "2023-01", "nav": 10.5179}, {"ym": "2023-02", "nav": 13.4832}, {"ym": "2023-03", "nav": 13.4396}, {"ym": "2023-04", "nav": 11.7738}, {"ym": "2023-05", "nav": 11.43}, {"ym": "2023-06", "nav": 11.2183}, {"ym": "2023-07", "nav": 12.3626}, {"ym": "2023-08", "nav": 11.354}, {"ym": "2023-09", "nav": 10.8205}, {"ym": "2023-10", "nav": 10.2443}, {"ym": "2023-11", "nav": 11.757}, {"ym": "2023-12", "nav": 13.5731}, {"ym": "2024-01", "nav": 18.3492}, {"ym": "2024-02", "nav": 18.1522}, {"ym": "2024-03", "nav": 25.3744}, {"ym": "2024-04", "nav": 30.9776}, {"ym": "2024-05", "nav": 27.8693}, {"ym": "2024-06", "nav": 27.825}, {"ym": "2024-07", "nav": 27.915}, {"ym": "2024-08", "nav": 28.4239}, {"ym": "2024-09", "nav": 28.453}, {"ym": "2024-10", "nav": 31.1716}, {"ym": "2024-11", "nav": 29.3162}, {"ym": "2024-12", "nav": 51.3738}, {"ym": "2025-01", "nav": 54.9707}, {"ym": "2025-02", "nav": 55.863}, {"ym": "2025-03", "nav": 59.4999}, {"ym": "2025-04", "nav": 53.5126}, {"ym": "2025-05", "nav": 56.9742}, {"ym": "2025-06", "nav": 53.8651}, {"ym": "2025-07", "nav": 53.685}, {"ym": "2025-08", "nav": 66.8556}, {"ym": "2025-09", "nav": 67.9259}, {"ym": "2025-10", "nav": 75.3521}, {"ym": "2025-11", "nav": 83.6747}, {"ym": "2025-12", "nav": 86.6104}, {"ym": "2026-01", "nav": 85.5501}, {"ym": "2026-02", "nav": 86.0362}], components: [{"name": "Turtle 10-5 Fast", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.1794}, {"ym": "2020-03", "nav": 1.2601}, {"ym": "2020-04", "nav": 1.1511}, {"ym": "2020-05", "nav": 1.4463}, {"ym": "2020-06", "nav": 1.3962}, {"ym": "2020-07", "nav": 1.4447}, {"ym": "2020-08", "nav": 1.7782}, {"ym": "2020-09", "nav": 1.9497}, {"ym": "2020-10", "nav": 1.6016}, {"ym": "2020-11", "nav": 1.5736}, {"ym": "2020-12", "nav": 2.1752}, {"ym": "2021-01", "nav": 2.4092}, {"ym": "2021-02", "nav": 3.4074}, {"ym": "2021-03", "nav": 4.524}, {"ym": "2021-04", "nav": 6.3126}, {"ym": "2021-05", "nav": 7.4957}, {"ym": "2021-06", "nav": 6.7927}, {"ym": "2021-07", "nav": 5.9405}, {"ym": "2021-08", "nav": 6.5809}, {"ym": "2021-09", "nav": 7.917}, {"ym": "2021-10", "nav": 7.8818}, {"ym": "2021-11", "nav": 9.008}, {"ym": "2021-12", "nav": 11.8453}, {"ym": "2022-01", "nav": 11.9883}, {"ym": "2022-02", "nav": 11.284}, {"ym": "2022-03", "nav": 10.581}, {"ym": "2022-04", "nav": 10.5638}, {"ym": "2022-05", "nav": 8.6054}, {"ym": "2022-06", "nav": 7.7928}, {"ym": "2022-07", "nav": 6.918}, {"ym": "2022-08", "nav": 8.204}, {"ym": "2022-09", "nav": 7.4143}, {"ym": "2022-10", "nav": 7.3336}, {"ym": "2022-11", "nav": 7.7848}, {"ym": "2022-12", "nav": 7.604}, {"ym": "2023-01", "nav": 6.9272}, {"ym": "2023-02", "nav": 10.3237}, {"ym": "2023-03", "nav": 10.3518}, {"ym": "2023-04", "nav": 9.7788}, {"ym": "2023-05", "nav": 9.0038}, {"ym": "2023-06", "nav": 7.9499}, {"ym": "2023-07", "nav": 9.1076}, {"ym": "2023-08", "nav": 8.4491}, {"ym": "2023-09", "nav": 7.3356}, {"ym": "2023-10", "nav": 7.4938}, {"ym": "2023-11", "nav": 9.0713}, {"ym": "2023-12", "nav": 10.1019}, {"ym": "2024-01", "nav": 13.8325}, {"ym": "2024-02", "nav": 13.944}, {"ym": "2024-03", "nav": 20.8854}, {"ym": "2024-04", "nav": 25.6799}, {"ym": "2024-05", "nav": 22.2542}, {"ym": "2024-06", "nav": 23.5103}, {"ym": "2024-07", "nav": 19.5438}, {"ym": "2024-08", "nav": 20.5282}, {"ym": "2024-09", "nav": 18.5894}, {"ym": "2024-10", "nav": 20.6098}, {"ym": "2024-11", "nav": 18.8333}, {"ym": "2024-12", "nav": 30.9943}, {"ym": "2025-01", "nav": 39.4467}, {"ym": "2025-02", "nav": 37.8883}, {"ym": "2025-03", "nav": 37.8571}, {"ym": "2025-04", "nav": 33.2834}, {"ym": "2025-05", "nav": 39.1868}, {"ym": "2025-06", "nav": 40.3455}, {"ym": "2025-07", "nav": 41.1379}, {"ym": "2025-08", "nav": 50.8768}, {"ym": "2025-09", "nav": 51.296}, {"ym": "2025-10", "nav": 63.9864}, {"ym": "2025-11", "nav": 63.894}, {"ym": "2025-12", "nav": 56.4325}, {"ym": "2026-01", "nav": 54.3673}, {"ym": "2026-02", "nav": 56.1854}]}, {"name": "Time-Series Momentum", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.799}, {"ym": "2020-05", "nav": 1.6288}, {"ym": "2020-06", "nav": 1.8727}, {"ym": "2020-07", "nav": 1.8657}, {"ym": "2020-08", "nav": 2.4666}, {"ym": "2020-09", "nav": 2.4273}, {"ym": "2020-10", "nav": 2.0675}, {"ym": "2020-11", "nav": 2.1263}, {"ym": "2020-12", "nav": 2.7556}, {"ym": "2021-01", "nav": 2.8092}, {"ym": "2021-02", "nav": 3.5557}, {"ym": "2021-03", "nav": 4.7882}, {"ym": "2021-04", "nav": 6.1475}, {"ym": "2021-05", "nav": 8.0271}, {"ym": "2021-06", "nav": 7.0656}, {"ym": "2021-07", "nav": 7.5346}, {"ym": "2021-08", "nav": 7.0198}, {"ym": "2021-09", "nav": 9.143}, {"ym": "2021-10", "nav": 7.519}, {"ym": "2021-11", "nav": 7.5769}, {"ym": "2021-12", "nav": 8.2604}, {"ym": "2022-01", "nav": 8.5366}, {"ym": "2022-02", "nav": 10.5672}, {"ym": "2022-03", "nav": 9.6492}, {"ym": "2022-04", "nav": 9.8523}, {"ym": "2022-05", "nav": 10.419}, {"ym": "2022-06", "nav": 13.0613}, {"ym": "2022-07", "nav": 14.8091}, {"ym": "2022-08", "nav": 14.559}, {"ym": "2022-09", "nav": 12.9763}, {"ym": "2022-10", "nav": 12.7796}, {"ym": "2022-11", "nav": 12.6902}, {"ym": "2022-12", "nav": 10.9054}, {"ym": "2023-01", "nav": 12.3094}, {"ym": "2023-02", "nav": 13.2665}, {"ym": "2023-03", "nav": 13.1517}, {"ym": "2023-04", "nav": 11.2311}, {"ym": "2023-05", "nav": 11.9061}, {"ym": "2023-06", "nav": 12.58}, {"ym": "2023-07", "nav": 13.5424}, {"ym": "2023-08", "nav": 12.5828}, {"ym": "2023-09", "nav": 12.884}, {"ym": "2023-10", "nav": 11.2897}, {"ym": "2023-11", "nav": 12.2705}, {"ym": "2023-12", "nav": 15.1918}, {"ym": "2024-01", "nav": 20.4281}, {"ym": "2024-02", "nav": 19.5507}, {"ym": "2024-03", "nav": 22.6499}, {"ym": "2024-04", "nav": 28.153}, {"ym": "2024-05", "nav": 25.5078}, {"ym": "2024-06", "nav": 24.5989}, {"ym": "2024-07", "nav": 27.8962}, {"ym": "2024-08", "nav": 27.3298}, {"ym": "2024-09", "nav": 29.4508}, {"ym": "2024-10", "nav": 26.9055}, {"ym": "2024-11", "nav": 26.322}, {"ym": "2024-12", "nav": 46.8071}, {"ym": "2025-01", "nav": 41.6359}, {"ym": "2025-02", "nav": 44.5017}, {"ym": "2025-03", "nav": 50.3256}, {"ym": "2025-04", "nav": 51.4218}, {"ym": "2025-05", "nav": 49.3085}, {"ym": "2025-06", "nav": 40.5322}, {"ym": "2025-07", "nav": 40.026}, {"ym": "2025-08", "nav": 42.416}, {"ym": "2025-09", "nav": 44.8468}, {"ym": "2025-10", "nav": 45.8468}, {"ym": "2025-11", "nav": 52.9231}, {"ym": "2025-12", "nav": 64.0272}, {"ym": "2026-01", "nav": 64.3341}, {"ym": "2026-02", "nav": 62.3904}]}, {"name": "Gap Volume Long", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 0.8467}, {"ym": "2020-06", "nav": 0.845}, {"ym": "2020-07", "nav": 0.8027}, {"ym": "2020-08", "nav": 0.8224}, {"ym": "2020-09", "nav": 0.6762}, {"ym": "2020-10", "nav": 0.6762}, {"ym": "2020-11", "nav": 0.7297}, {"ym": "2020-12", "nav": 0.8182}, {"ym": "2021-01", "nav": 0.8182}, {"ym": "2021-02", "nav": 1.1842}, {"ym": "2021-03", "nav": 1.3132}, {"ym": "2021-04", "nav": 1.3132}, {"ym": "2021-05", "nav": 2.535}, {"ym": "2021-06", "nav": 3.1655}, {"ym": "2021-07", "nav": 3.1655}, {"ym": "2021-08", "nav": 3.6596}, {"ym": "2021-09", "nav": 2.8624}, {"ym": "2021-10", "nav": 3.3982}, {"ym": "2021-11", "nav": 3.3982}, {"ym": "2021-12", "nav": 2.7107}, {"ym": "2022-01", "nav": 2.7107}, {"ym": "2022-02", "nav": 2.7107}, {"ym": "2022-03", "nav": 2.7107}, {"ym": "2022-04", "nav": 2.5696}, {"ym": "2022-05", "nav": 2.5696}, {"ym": "2022-06", "nav": 2.5696}, {"ym": "2022-07", "nav": 2.5696}, {"ym": "2022-08", "nav": 2.648}, {"ym": "2022-09", "nav": 2.4708}, {"ym": "2022-10", "nav": 2.4708}, {"ym": "2022-11", "nav": 3.5071}, {"ym": "2022-12", "nav": 3.4127}, {"ym": "2023-01", "nav": 3.4127}, {"ym": "2023-02", "nav": 5.0144}, {"ym": "2023-03", "nav": 5.0144}, {"ym": "2023-04", "nav": 3.571}, {"ym": "2023-05", "nav": 2.5872}, {"ym": "2023-06", "nav": 2.5872}, {"ym": "2023-07", "nav": 2.7294}, {"ym": "2023-08", "nav": 2.2591}, {"ym": "2023-09", "nav": 2.118}, {"ym": "2023-10", "nav": 2.118}, {"ym": "2023-11", "nav": 2.542}, {"ym": "2023-12", "nav": 2.2875}, {"ym": "2024-01", "nav": 3.0153}, {"ym": "2024-02", "nav": 3.2419}, {"ym": "2024-03", "nav": 7.1157}, {"ym": "2024-04", "nav": 7.6503}, {"ym": "2024-05", "nav": 7.6503}, {"ym": "2024-06", "nav": 7.1643}, {"ym": "2024-07", "nav": 7.4294}, {"ym": "2024-08", "nav": 8.041}, {"ym": "2024-09", "nav": 8.041}, {"ym": "2024-10", "nav": 15.7028}, {"ym": "2024-11", "nav": 13.4732}, {"ym": "2024-12", "nav": 27.6188}, {"ym": "2025-01", "nav": 32.0849}, {"ym": "2025-02", "nav": 31.3209}, {"ym": "2025-03", "nav": 31.3209}, {"ym": "2025-04", "nav": 11.5283}, {"ym": "2025-05", "nav": 13.1757}, {"ym": "2025-06", "nav": 16.1527}, {"ym": "2025-07", "nav": 15.3525}, {"ym": "2025-08", "nav": 33.8953}, {"ym": "2025-09", "nav": 28.492}, {"ym": "2025-10", "nav": 28.2698}, {"ym": "2025-11", "nav": 37.8401}, {"ym": "2025-12", "nav": 29.0947}, {"ym": "2026-01", "nav": 29.0947}, {"ym": "2026-02", "nav": 31.251}]}], rendered: false },
+    'stack-max-diversification': { nav: [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.1997}, {"ym": "2020-05", "nav": 1.1644}, {"ym": "2020-06", "nav": 1.2159}, {"ym": "2020-07", "nav": 1.2042}, {"ym": "2020-08", "nav": 1.38}, {"ym": "2020-09", "nav": 1.3746}, {"ym": "2020-10", "nav": 1.3036}, {"ym": "2020-11", "nav": 1.3744}, {"ym": "2020-12", "nav": 1.666}, {"ym": "2021-01", "nav": 1.7441}, {"ym": "2021-02", "nav": 2.0771}, {"ym": "2021-03", "nav": 2.4247}, {"ym": "2021-04", "nav": 2.7443}, {"ym": "2021-05", "nav": 3.1588}, {"ym": "2021-06", "nav": 2.7968}, {"ym": "2021-07", "nav": 2.8331}, {"ym": "2021-08", "nav": 2.8083}, {"ym": "2021-09", "nav": 3.4531}, {"ym": "2021-10", "nav": 3.2343}, {"ym": "2021-11", "nav": 3.4583}, {"ym": "2021-12", "nav": 3.5483}, {"ym": "2022-01", "nav": 3.6861}, {"ym": "2022-02", "nav": 3.9844}, {"ym": "2022-03", "nav": 3.8346}, {"ym": "2022-04", "nav": 3.9701}, {"ym": "2022-05", "nav": 3.9938}, {"ym": "2022-06", "nav": 4.878}, {"ym": "2022-07", "nav": 4.997}, {"ym": "2022-08", "nav": 5.1256}, {"ym": "2022-09", "nav": 4.9512}, {"ym": "2022-10", "nav": 4.8242}, {"ym": "2022-11", "nav": 4.7795}, {"ym": "2022-12", "nav": 4.4539}, {"ym": "2023-01", "nav": 4.5805}, {"ym": "2023-02", "nav": 5.1921}, {"ym": "2023-03", "nav": 5.1463}, {"ym": "2023-04", "nav": 4.9891}, {"ym": "2023-05", "nav": 4.9635}, {"ym": "2023-06", "nav": 5.0982}, {"ym": "2023-07", "nav": 5.4605}, {"ym": "2023-08", "nav": 5.3408}, {"ym": "2023-09", "nav": 5.4856}, {"ym": "2023-10", "nav": 5.323}, {"ym": "2023-11", "nav": 6.5267}, {"ym": "2023-12", "nav": 7.4505}, {"ym": "2024-01", "nav": 8.7747}, {"ym": "2024-02", "nav": 8.5865}, {"ym": "2024-03", "nav": 10.2498}, {"ym": "2024-04", "nav": 11.5684}, {"ym": "2024-05", "nav": 10.8198}, {"ym": "2024-06", "nav": 11.2048}, {"ym": "2024-07", "nav": 11.1055}, {"ym": "2024-08", "nav": 10.7884}, {"ym": "2024-09", "nav": 10.3415}, {"ym": "2024-10", "nav": 10.5259}, {"ym": "2024-11", "nav": 10.1203}, {"ym": "2024-12", "nav": 14.2404}, {"ym": "2025-01", "nav": 13.7586}, {"ym": "2025-02", "nav": 13.8489}, {"ym": "2025-03", "nav": 14.042}, {"ym": "2025-04", "nav": 15.0865}, {"ym": "2025-05", "nav": 16.1249}, {"ym": "2025-06", "nav": 16.0549}, {"ym": "2025-07", "nav": 15.8112}, {"ym": "2025-08", "nav": 16.9624}, {"ym": "2025-09", "nav": 18.3007}, {"ym": "2025-10", "nav": 19.0373}, {"ym": "2025-11", "nav": 19.6744}, {"ym": "2025-12", "nav": 19.7495}, {"ym": "2026-01", "nav": 19.8171}, {"ym": "2026-02", "nav": 19.6259}], components: [{"name": "Btc Quarterly Momentum", "nav": [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.035}, {"ym": "2020-07", "nav": 0.984}, {"ym": "2020-08", "nav": 1.2158}, {"ym": "2020-09", "nav": 1.197}, {"ym": "2020-10", "nav": 1.0882}, {"ym": "2020-11", "nav": 1.3236}, {"ym": "2020-12", "nav": 1.7293}, {"ym": "2021-01", "nav": 2.2797}, {"ym": "2021-02", "nav": 2.5017}, {"ym": "2021-03", "nav": 3.0092}, {"ym": "2021-04", "nav": 3.2389}, {"ym": "2021-05", "nav": 3.2407}, {"ym": "2021-06", "nav": 2.9263}, {"ym": "2021-07", "nav": 2.9263}, {"ym": "2021-08", "nav": 2.9263}, {"ym": "2021-09", "nav": 2.9742}, {"ym": "2021-10", "nav": 2.8962}, {"ym": "2021-11", "nav": 3.3185}, {"ym": "2021-12", "nav": 3.1829}, {"ym": "2022-01", "nav": 2.8219}, {"ym": "2022-02", "nav": 2.8219}, {"ym": "2022-03", "nav": 2.8219}, {"ym": "2022-04", "nav": 2.8144}, {"ym": "2022-05", "nav": 2.575}, {"ym": "2022-06", "nav": 2.5357}, {"ym": "2022-07", "nav": 2.5357}, {"ym": "2022-08", "nav": 2.5357}, {"ym": "2022-09", "nav": 2.5357}, {"ym": "2022-10", "nav": 2.4477}, {"ym": "2022-11", "nav": 2.4471}, {"ym": "2022-12", "nav": 2.4471}, {"ym": "2023-01", "nav": 2.4471}, {"ym": "2023-02", "nav": 2.7617}, {"ym": "2023-03", "nav": 2.7855}, {"ym": "2023-04", "nav": 3.1119}, {"ym": "2023-05", "nav": 3.0621}, {"ym": "2023-06", "nav": 2.9471}, {"ym": "2023-07", "nav": 2.9308}, {"ym": "2023-08", "nav": 2.8803}, {"ym": "2023-09", "nav": 2.5296}, {"ym": "2023-10", "nav": 2.5585}, {"ym": "2023-11", "nav": 2.8853}, {"ym": "2023-12", "nav": 3.1051}, {"ym": "2024-01", "nav": 3.4978}, {"ym": "2024-02", "nav": 3.3971}, {"ym": "2024-03", "nav": 4.6259}, {"ym": "2024-04", "nav": 4.9928}, {"ym": "2024-05", "nav": 4.4875}, {"ym": "2024-06", "nav": 4.9104}, {"ym": "2024-07", "nav": 4.859}, {"ym": "2024-08", "nav": 4.8463}, {"ym": "2024-09", "nav": 4.6587}, {"ym": "2024-10", "nav": 4.5839}, {"ym": "2024-11", "nav": 4.701}, {"ym": "2024-12", "nav": 6.3964}, {"ym": "2025-01", "nav": 6.2805}, {"ym": "2025-02", "nav": 6.6407}, {"ym": "2025-03", "nav": 6.1907}, {"ym": "2025-04", "nav": 6.1907}, {"ym": "2025-05", "nav": 6.1907}, {"ym": "2025-06", "nav": 6.3356}, {"ym": "2025-07", "nav": 6.2957}, {"ym": "2025-08", "nav": 6.8684}, {"ym": "2025-09", "nav": 6.6404}, {"ym": "2025-10", "nav": 6.9852}, {"ym": "2025-11", "nav": 6.7641}, {"ym": "2025-12", "nav": 6.7641}, {"ym": "2026-01", "nav": 6.7641}, {"ym": "2026-02", "nav": 6.7641}]}, {"name": "Time-Series Momentum", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.799}, {"ym": "2020-05", "nav": 1.6288}, {"ym": "2020-06", "nav": 1.8727}, {"ym": "2020-07", "nav": 1.8657}, {"ym": "2020-08", "nav": 2.4666}, {"ym": "2020-09", "nav": 2.4273}, {"ym": "2020-10", "nav": 2.0675}, {"ym": "2020-11", "nav": 2.1263}, {"ym": "2020-12", "nav": 2.7556}, {"ym": "2021-01", "nav": 2.8092}, {"ym": "2021-02", "nav": 3.5557}, {"ym": "2021-03", "nav": 4.7882}, {"ym": "2021-04", "nav": 6.1475}, {"ym": "2021-05", "nav": 8.0271}, {"ym": "2021-06", "nav": 7.0656}, {"ym": "2021-07", "nav": 7.5346}, {"ym": "2021-08", "nav": 7.0198}, {"ym": "2021-09", "nav": 9.143}, {"ym": "2021-10", "nav": 7.519}, {"ym": "2021-11", "nav": 7.5769}, {"ym": "2021-12", "nav": 8.2604}, {"ym": "2022-01", "nav": 8.5366}, {"ym": "2022-02", "nav": 10.5672}, {"ym": "2022-03", "nav": 9.6492}, {"ym": "2022-04", "nav": 9.8523}, {"ym": "2022-05", "nav": 10.419}, {"ym": "2022-06", "nav": 13.0613}, {"ym": "2022-07", "nav": 14.8091}, {"ym": "2022-08", "nav": 14.559}, {"ym": "2022-09", "nav": 12.9763}, {"ym": "2022-10", "nav": 12.7796}, {"ym": "2022-11", "nav": 12.6902}, {"ym": "2022-12", "nav": 10.9054}, {"ym": "2023-01", "nav": 12.3094}, {"ym": "2023-02", "nav": 13.2665}, {"ym": "2023-03", "nav": 13.1517}, {"ym": "2023-04", "nav": 11.2311}, {"ym": "2023-05", "nav": 11.9061}, {"ym": "2023-06", "nav": 12.58}, {"ym": "2023-07", "nav": 13.5424}, {"ym": "2023-08", "nav": 12.5828}, {"ym": "2023-09", "nav": 12.884}, {"ym": "2023-10", "nav": 11.2897}, {"ym": "2023-11", "nav": 12.2705}, {"ym": "2023-12", "nav": 15.1918}, {"ym": "2024-01", "nav": 20.4281}, {"ym": "2024-02", "nav": 19.5507}, {"ym": "2024-03", "nav": 22.6499}, {"ym": "2024-04", "nav": 28.153}, {"ym": "2024-05", "nav": 25.5078}, {"ym": "2024-06", "nav": 24.5989}, {"ym": "2024-07", "nav": 27.8962}, {"ym": "2024-08", "nav": 27.3298}, {"ym": "2024-09", "nav": 29.4508}, {"ym": "2024-10", "nav": 26.9055}, {"ym": "2024-11", "nav": 26.322}, {"ym": "2024-12", "nav": 46.8071}, {"ym": "2025-01", "nav": 41.6359}, {"ym": "2025-02", "nav": 44.5017}, {"ym": "2025-03", "nav": 50.3256}, {"ym": "2025-04", "nav": 51.4218}, {"ym": "2025-05", "nav": 49.3085}, {"ym": "2025-06", "nav": 40.5322}, {"ym": "2025-07", "nav": 40.026}, {"ym": "2025-08", "nav": 42.416}, {"ym": "2025-09", "nav": 44.8468}, {"ym": "2025-10", "nav": 45.8468}, {"ym": "2025-11", "nav": 52.9231}, {"ym": "2025-12", "nav": 64.0272}, {"ym": "2026-01", "nav": 64.3341}, {"ym": "2026-02", "nav": 62.3904}]}, {"name": "Short Overextended Bear", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.0}, {"ym": "2020-07", "nav": 1.0}, {"ym": "2020-08", "nav": 1.0}, {"ym": "2020-09", "nav": 1.0}, {"ym": "2020-10", "nav": 1.0}, {"ym": "2020-11", "nav": 1.0}, {"ym": "2020-12", "nav": 1.0}, {"ym": "2021-01", "nav": 1.0}, {"ym": "2021-02", "nav": 1.0}, {"ym": "2021-03", "nav": 1.0}, {"ym": "2021-04", "nav": 1.0}, {"ym": "2021-05", "nav": 1.0}, {"ym": "2021-06", "nav": 0.6335}, {"ym": "2021-07", "nav": 0.6335}, {"ym": "2021-08", "nav": 0.6335}, {"ym": "2021-09", "nav": 0.6335}, {"ym": "2021-10", "nav": 0.6335}, {"ym": "2021-11", "nav": 0.6335}, {"ym": "2021-12", "nav": 0.6335}, {"ym": "2022-01", "nav": 0.8}, {"ym": "2022-02", "nav": 0.8}, {"ym": "2022-03", "nav": 0.8}, {"ym": "2022-04", "nav": 0.8}, {"ym": "2022-05", "nav": 0.8}, {"ym": "2022-06", "nav": 1.0656}, {"ym": "2022-07", "nav": 1.0359}, {"ym": "2022-08", "nav": 1.0359}, {"ym": "2022-09", "nav": 1.0359}, {"ym": "2022-10", "nav": 1.0359}, {"ym": "2022-11", "nav": 1.0359}, {"ym": "2022-12", "nav": 1.0337}, {"ym": "2023-01", "nav": 1.0698}, {"ym": "2023-02", "nav": 1.0698}, {"ym": "2023-03", "nav": 1.0698}, {"ym": "2023-04", "nav": 1.0698}, {"ym": "2023-05", "nav": 1.0698}, {"ym": "2023-06", "nav": 1.1922}, {"ym": "2023-07", "nav": 1.1009}, {"ym": "2023-08", "nav": 1.1009}, {"ym": "2023-09", "nav": 1.5325}, {"ym": "2023-10", "nav": 1.5547}, {"ym": "2023-11", "nav": 1.5547}, {"ym": "2023-12", "nav": 1.5547}, {"ym": "2024-01", "nav": 1.5547}, {"ym": "2024-02", "nav": 1.5547}, {"ym": "2024-03", "nav": 1.5547}, {"ym": "2024-04", "nav": 1.5547}, {"ym": "2024-05", "nav": 1.5547}, {"ym": "2024-06", "nav": 1.762}, {"ym": "2024-07", "nav": 1.762}, {"ym": "2024-08", "nav": 1.762}, {"ym": "2024-09", "nav": 1.6312}, {"ym": "2024-10", "nav": 1.6312}, {"ym": "2024-11", "nav": 1.6312}, {"ym": "2024-12", "nav": 1.6312}, {"ym": "2025-01", "nav": 1.6312}, {"ym": "2025-02", "nav": 1.6312}, {"ym": "2025-03", "nav": 1.6312}, {"ym": "2025-04", "nav": 2.4131}, {"ym": "2025-05", "nav": 2.4131}, {"ym": "2025-06", "nav": 2.4131}, {"ym": "2025-07", "nav": 2.4131}, {"ym": "2025-08", "nav": 2.4131}, {"ym": "2025-09", "nav": 3.3562}, {"ym": "2025-10", "nav": 3.3633}, {"ym": "2025-11", "nav": 3.4269}, {"ym": "2025-12", "nav": 2.8646}, {"ym": "2026-01", "nav": 2.7675}, {"ym": "2026-02", "nav": 2.7635}]}, {"name": "Large Cap Ema Ribbon", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 0.9419}, {"ym": "2020-06", "nav": 0.9726}, {"ym": "2020-07", "nav": 0.9367}, {"ym": "2020-08", "nav": 1.3286}, {"ym": "2020-09", "nav": 1.3508}, {"ym": "2020-10", "nav": 1.2762}, {"ym": "2020-11", "nav": 1.3148}, {"ym": "2020-12", "nav": 1.9227}, {"ym": "2021-01", "nav": 1.7783}, {"ym": "2021-02", "nav": 2.4577}, {"ym": "2021-03", "nav": 2.9625}, {"ym": "2021-04", "nav": 3.0313}, {"ym": "2021-05", "nav": 4.234}, {"ym": "2021-06", "nav": 3.9674}, {"ym": "2021-07", "nav": 3.9674}, {"ym": "2021-08", "nav": 3.9674}, {"ym": "2021-09", "nav": 8.703}, {"ym": "2021-10", "nav": 8.0952}, {"ym": "2021-11", "nav": 8.4452}, {"ym": "2021-12", "nav": 7.8766}, {"ym": "2022-01", "nav": 7.6055}, {"ym": "2022-02", "nav": 7.6055}, {"ym": "2022-03", "nav": 7.6055}, {"ym": "2022-04", "nav": 9.7906}, {"ym": "2022-05", "nav": 6.4901}, {"ym": "2022-06", "nav": 6.4901}, {"ym": "2022-07", "nav": 6.4901}, {"ym": "2022-08", "nav": 8.5063}, {"ym": "2022-09", "nav": 8.8135}, {"ym": "2022-10", "nav": 8.8135}, {"ym": "2022-11", "nav": 7.8532}, {"ym": "2022-12", "nav": 5.5243}, {"ym": "2023-01", "nav": 5.401}, {"ym": "2023-02", "nav": 7.8688}, {"ym": "2023-03", "nav": 7.7267}, {"ym": "2023-04", "nav": 7.6801}, {"ym": "2023-05", "nav": 7.3683}, {"ym": "2023-06", "nav": 7.4176}, {"ym": "2023-07", "nav": 7.2033}, {"ym": "2023-08", "nav": 6.4181}, {"ym": "2023-09", "nav": 5.486}, {"ym": "2023-10", "nav": 5.486}, {"ym": "2023-11", "nav": 5.9657}, {"ym": "2023-12", "nav": 8.0804}, {"ym": "2024-01", "nav": 10.9105}, {"ym": "2024-02", "nav": 10.4359}, {"ym": "2024-03", "nav": 12.2607}, {"ym": "2024-04", "nav": 13.7195}, {"ym": "2024-05", "nav": 10.9422}, {"ym": "2024-06", "nav": 10.6947}, {"ym": "2024-07", "nav": 10.4559}, {"ym": "2024-08", "nav": 10.4559}, {"ym": "2024-09", "nav": 10.4559}, {"ym": "2024-10", "nav": 15.3441}, {"ym": "2024-11", "nav": 15.8803}, {"ym": "2024-12", "nav": 24.1284}, {"ym": "2025-01", "nav": 24.6292}, {"ym": "2025-02", "nav": 22.9462}, {"ym": "2025-03", "nav": 22.9462}, {"ym": "2025-04", "nav": 22.9462}, {"ym": "2025-05", "nav": 23.4888}, {"ym": "2025-06", "nav": 26.5644}, {"ym": "2025-07", "nav": 24.5351}, {"ym": "2025-08", "nav": 27.7763}, {"ym": "2025-09", "nav": 29.171}, {"ym": "2025-10", "nav": 31.126}, {"ym": "2025-11", "nav": 28.6303}, {"ym": "2025-12", "nav": 28.6303}, {"ym": "2026-01", "nav": 28.6303}, {"ym": "2026-02", "nav": 28.6303}]}, {"name": "All-Weather Adaptive", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.0}, {"ym": "2020-07", "nav": 1.0}, {"ym": "2020-08", "nav": 1.0}, {"ym": "2020-09", "nav": 1.0}, {"ym": "2020-10", "nav": 1.0}, {"ym": "2020-11", "nav": 1.0564}, {"ym": "2020-12", "nav": 1.2181}, {"ym": "2021-01", "nav": 1.2721}, {"ym": "2021-02", "nav": 1.5156}, {"ym": "2021-03", "nav": 1.6665}, {"ym": "2021-04", "nav": 1.8785}, {"ym": "2021-05", "nav": 2.0423}, {"ym": "2021-06", "nav": 1.9724}, {"ym": "2021-07", "nav": 1.9547}, {"ym": "2021-08", "nav": 1.9954}, {"ym": "2021-09", "nav": 2.1599}, {"ym": "2021-10", "nav": 2.1094}, {"ym": "2021-11", "nav": 2.3648}, {"ym": "2021-12", "nav": 2.4493}, {"ym": "2022-01", "nav": 2.485}, {"ym": "2022-02", "nav": 2.6184}, {"ym": "2022-03", "nav": 2.5144}, {"ym": "2022-04", "nav": 2.5246}, {"ym": "2022-05", "nav": 2.7379}, {"ym": "2022-06", "nav": 3.4889}, {"ym": "2022-07", "nav": 3.4463}, {"ym": "2022-08", "nav": 3.4368}, {"ym": "2022-09", "nav": 3.3469}, {"ym": "2022-10", "nav": 3.1931}, {"ym": "2022-11", "nav": 3.2203}, {"ym": "2022-12", "nav": 3.1961}, {"ym": "2023-01", "nav": 3.1421}, {"ym": "2023-02", "nav": 3.5784}, {"ym": "2023-03", "nav": 3.5273}, {"ym": "2023-04", "nav": 3.4818}, {"ym": "2023-05", "nav": 3.3556}, {"ym": "2023-06", "nav": 3.3465}, {"ym": "2023-07", "nav": 3.906}, {"ym": "2023-08", "nav": 3.9881}, {"ym": "2023-09", "nav": 3.8787}, {"ym": "2023-10", "nav": 3.8591}, {"ym": "2023-11", "nav": 5.6236}, {"ym": "2023-12", "nav": 6.1712}, {"ym": "2024-01", "nav": 6.8484}, {"ym": "2024-02", "nav": 6.7889}, {"ym": "2024-03", "nav": 8.4932}, {"ym": "2024-04", "nav": 9.514}, {"ym": "2024-05", "nav": 9.2558}, {"ym": "2024-06", "nav": 9.6567}, {"ym": "2024-07", "nav": 8.713}, {"ym": "2024-08", "nav": 8.2072}, {"ym": "2024-09", "nav": 7.2671}, {"ym": "2024-10", "nav": 7.1634}, {"ym": "2024-11", "nav": 6.4621}, {"ym": "2024-12", "nav": 8.4742}, {"ym": "2025-01", "nav": 8.3369}, {"ym": "2025-02", "nav": 8.138}, {"ym": "2025-03", "nav": 7.8939}, {"ym": "2025-04", "nav": 7.8354}, {"ym": "2025-05", "nav": 9.3386}, {"ym": "2025-06", "nav": 9.9158}, {"ym": "2025-07", "nav": 9.8219}, {"ym": "2025-08", "nav": 10.6955}, {"ym": "2025-09", "nav": 10.8089}, {"ym": "2025-10", "nav": 11.416}, {"ym": "2025-11", "nav": 11.5081}, {"ym": "2025-12", "nav": 10.8169}, {"ym": "2026-01", "nav": 11.0145}, {"ym": "2026-02", "nav": 10.9628}]}], rendered: false },
+    'stack-all-weather': { nav: [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0171}, {"ym": "2020-03", "nav": 1.0647}, {"ym": "2020-04", "nav": 1.0482}, {"ym": "2020-05", "nav": 1.118}, {"ym": "2020-06", "nav": 1.1578}, {"ym": "2020-07", "nav": 1.1353}, {"ym": "2020-08", "nav": 1.2359}, {"ym": "2020-09", "nav": 1.2595}, {"ym": "2020-10", "nav": 1.1816}, {"ym": "2020-11", "nav": 1.247}, {"ym": "2020-12", "nav": 1.4436}, {"ym": "2021-01", "nav": 1.5647}, {"ym": "2021-02", "nav": 1.8036}, {"ym": "2021-03", "nav": 1.9349}, {"ym": "2021-04", "nav": 2.1031}, {"ym": "2021-05", "nav": 2.2459}, {"ym": "2021-06", "nav": 1.9898}, {"ym": "2021-07", "nav": 1.9417}, {"ym": "2021-08", "nav": 2.0396}, {"ym": "2021-09", "nav": 2.2065}, {"ym": "2021-10", "nav": 2.1961}, {"ym": "2021-11", "nav": 2.3627}, {"ym": "2021-12", "nav": 2.4452}, {"ym": "2022-01", "nav": 2.593}, {"ym": "2022-02", "nav": 2.5699}, {"ym": "2022-03", "nav": 2.4767}, {"ym": "2022-04", "nav": 2.4941}, {"ym": "2022-05", "nav": 2.4568}, {"ym": "2022-06", "nav": 2.8464}, {"ym": "2022-07", "nav": 2.7051}, {"ym": "2022-08", "nav": 2.8758}, {"ym": "2022-09", "nav": 2.7992}, {"ym": "2022-10", "nav": 2.7392}, {"ym": "2022-11", "nav": 2.777}, {"ym": "2022-12", "nav": 2.6741}, {"ym": "2023-01", "nav": 2.6151}, {"ym": "2023-02", "nav": 3.1557}, {"ym": "2023-03", "nav": 3.1024}, {"ym": "2023-04", "nav": 3.1101}, {"ym": "2023-05", "nav": 3.0718}, {"ym": "2023-06", "nav": 3.1219}, {"ym": "2023-07", "nav": 3.2705}, {"ym": "2023-08", "nav": 3.3046}, {"ym": "2023-09", "nav": 3.5476}, {"ym": "2023-10", "nav": 3.6499}, {"ym": "2023-11", "nav": 4.4765}, {"ym": "2023-12", "nav": 4.7254}, {"ym": "2024-01", "nav": 5.1967}, {"ym": "2024-02", "nav": 5.1987}, {"ym": "2024-03", "nav": 6.2135}, {"ym": "2024-04", "nav": 6.6445}, {"ym": "2024-05", "nav": 6.4808}, {"ym": "2024-06", "nav": 6.8888}, {"ym": "2024-07", "nav": 6.5419}, {"ym": "2024-08", "nav": 6.4633}, {"ym": "2024-09", "nav": 5.7714}, {"ym": "2024-10", "nav": 5.7834}, {"ym": "2024-11", "nav": 5.7178}, {"ym": "2024-12", "nav": 6.9102}, {"ym": "2025-01", "nav": 6.8361}, {"ym": "2025-02", "nav": 6.663}, {"ym": "2025-03", "nav": 6.4229}, {"ym": "2025-04", "nav": 7.024}, {"ym": "2025-05", "nav": 7.6373}, {"ym": "2025-06", "nav": 7.9151}, {"ym": "2025-07", "nav": 7.851}, {"ym": "2025-08", "nav": 8.5304}, {"ym": "2025-09", "nav": 9.4405}, {"ym": "2025-10", "nav": 10.1404}, {"ym": "2025-11", "nav": 10.2428}, {"ym": "2025-12", "nav": 9.4663}, {"ym": "2026-01", "nav": 9.3449}, {"ym": "2026-02", "nav": 9.0576}], components: [{"name": "All-Weather Adaptive", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.0}, {"ym": "2020-07", "nav": 1.0}, {"ym": "2020-08", "nav": 1.0}, {"ym": "2020-09", "nav": 1.0}, {"ym": "2020-10", "nav": 1.0}, {"ym": "2020-11", "nav": 1.0564}, {"ym": "2020-12", "nav": 1.2181}, {"ym": "2021-01", "nav": 1.2721}, {"ym": "2021-02", "nav": 1.5156}, {"ym": "2021-03", "nav": 1.6665}, {"ym": "2021-04", "nav": 1.8785}, {"ym": "2021-05", "nav": 2.0423}, {"ym": "2021-06", "nav": 1.9724}, {"ym": "2021-07", "nav": 1.9547}, {"ym": "2021-08", "nav": 1.9954}, {"ym": "2021-09", "nav": 2.1599}, {"ym": "2021-10", "nav": 2.1094}, {"ym": "2021-11", "nav": 2.3648}, {"ym": "2021-12", "nav": 2.4493}, {"ym": "2022-01", "nav": 2.485}, {"ym": "2022-02", "nav": 2.6184}, {"ym": "2022-03", "nav": 2.5144}, {"ym": "2022-04", "nav": 2.5246}, {"ym": "2022-05", "nav": 2.7379}, {"ym": "2022-06", "nav": 3.4889}, {"ym": "2022-07", "nav": 3.4463}, {"ym": "2022-08", "nav": 3.4368}, {"ym": "2022-09", "nav": 3.3469}, {"ym": "2022-10", "nav": 3.1931}, {"ym": "2022-11", "nav": 3.2203}, {"ym": "2022-12", "nav": 3.1961}, {"ym": "2023-01", "nav": 3.1421}, {"ym": "2023-02", "nav": 3.5784}, {"ym": "2023-03", "nav": 3.5273}, {"ym": "2023-04", "nav": 3.4818}, {"ym": "2023-05", "nav": 3.3556}, {"ym": "2023-06", "nav": 3.3465}, {"ym": "2023-07", "nav": 3.906}, {"ym": "2023-08", "nav": 3.9881}, {"ym": "2023-09", "nav": 3.8787}, {"ym": "2023-10", "nav": 3.8591}, {"ym": "2023-11", "nav": 5.6236}, {"ym": "2023-12", "nav": 6.1712}, {"ym": "2024-01", "nav": 6.8484}, {"ym": "2024-02", "nav": 6.7889}, {"ym": "2024-03", "nav": 8.4932}, {"ym": "2024-04", "nav": 9.514}, {"ym": "2024-05", "nav": 9.2558}, {"ym": "2024-06", "nav": 9.6567}, {"ym": "2024-07", "nav": 8.713}, {"ym": "2024-08", "nav": 8.2072}, {"ym": "2024-09", "nav": 7.2671}, {"ym": "2024-10", "nav": 7.1634}, {"ym": "2024-11", "nav": 6.4621}, {"ym": "2024-12", "nav": 8.4742}, {"ym": "2025-01", "nav": 8.3369}, {"ym": "2025-02", "nav": 8.138}, {"ym": "2025-03", "nav": 7.8939}, {"ym": "2025-04", "nav": 7.8354}, {"ym": "2025-05", "nav": 9.3386}, {"ym": "2025-06", "nav": 9.9158}, {"ym": "2025-07", "nav": 9.8219}, {"ym": "2025-08", "nav": 10.6955}, {"ym": "2025-09", "nav": 10.8089}, {"ym": "2025-10", "nav": 11.416}, {"ym": "2025-11", "nav": 11.5081}, {"ym": "2025-12", "nav": 10.8169}, {"ym": "2026-01", "nav": 11.0145}, {"ym": "2026-02", "nav": 10.9628}]}, {"name": "Trend Anti-Trend Combo", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.049}, {"ym": "2020-03", "nav": 1.1892}, {"ym": "2020-04", "nav": 1.1365}, {"ym": "2020-05", "nav": 1.3135}, {"ym": "2020-06", "nav": 1.3982}, {"ym": "2020-07", "nav": 1.3511}, {"ym": "2020-08", "nav": 1.5546}, {"ym": "2020-09", "nav": 1.6528}, {"ym": "2020-10", "nav": 1.4519}, {"ym": "2020-11", "nav": 1.4381}, {"ym": "2020-12", "nav": 1.68}, {"ym": "2021-01", "nav": 1.7766}, {"ym": "2021-02", "nav": 2.1895}, {"ym": "2021-03", "nav": 2.355}, {"ym": "2021-04", "nav": 2.5802}, {"ym": "2021-05", "nav": 2.9512}, {"ym": "2021-06", "nav": 2.923}, {"ym": "2021-07", "nav": 2.7558}, {"ym": "2021-08", "nav": 3.0454}, {"ym": "2021-09", "nav": 3.385}, {"ym": "2021-10", "nav": 3.4759}, {"ym": "2021-11", "nav": 3.7832}, {"ym": "2021-12", "nav": 4.0564}, {"ym": "2022-01", "nav": 3.945}, {"ym": "2022-02", "nav": 3.6628}, {"ym": "2022-03", "nav": 3.5072}, {"ym": "2022-04", "nav": 3.6115}, {"ym": "2022-05", "nav": 3.3302}, {"ym": "2022-06", "nav": 3.2662}, {"ym": "2022-07", "nav": 2.9263}, {"ym": "2022-08", "nav": 3.3961}, {"ym": "2022-09", "nav": 3.2822}, {"ym": "2022-10", "nav": 3.2105}, {"ym": "2022-11", "nav": 3.3024}, {"ym": "2022-12", "nav": 3.1316}, {"ym": "2023-01", "nav": 2.9606}, {"ym": "2023-02", "nav": 3.7099}, {"ym": "2023-03", "nav": 3.6118}, {"ym": "2023-04", "nav": 3.4557}, {"ym": "2023-05", "nav": 3.4545}, {"ym": "2023-06", "nav": 3.379}, {"ym": "2023-07", "nav": 3.4253}, {"ym": "2023-08", "nav": 3.4993}, {"ym": "2023-09", "nav": 3.3368}, {"ym": "2023-10", "nav": 3.4949}, {"ym": "2023-11", "nav": 3.8951}, {"ym": "2023-12", "nav": 4.0452}, {"ym": "2024-01", "nav": 4.5987}, {"ym": "2024-02", "nav": 4.8621}, {"ym": "2024-03", "nav": 5.936}, {"ym": "2024-04", "nav": 6.3128}, {"ym": "2024-05", "nav": 6.0222}, {"ym": "2024-06", "nav": 6.2597}, {"ym": "2024-07", "nav": 5.9341}, {"ym": "2024-08", "nav": 6.0788}, {"ym": "2024-09", "nav": 5.6121}, {"ym": "2024-10", "nav": 5.8975}, {"ym": "2024-11", "nav": 5.8626}, {"ym": "2024-12", "nav": 6.8003}, {"ym": "2025-01", "nav": 6.7853}, {"ym": "2025-02", "nav": 6.6189}, {"ym": "2025-03", "nav": 6.2534}, {"ym": "2025-04", "nav": 5.8677}, {"ym": "2025-05", "nav": 6.2624}, {"ym": "2025-06", "nav": 6.3834}, {"ym": "2025-07", "nav": 6.3759}, {"ym": "2025-08", "nav": 7.239}, {"ym": "2025-09", "nav": 7.2103}, {"ym": "2025-10", "nav": 8.3873}, {"ym": "2025-11", "nav": 8.7496}, {"ym": "2025-12", "nav": 8.3305}, {"ym": "2026-01", "nav": 8.0838}, {"ym": "2026-02", "nav": 7.8426}]}, {"name": "Short Overextended Bear", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.0}, {"ym": "2020-07", "nav": 1.0}, {"ym": "2020-08", "nav": 1.0}, {"ym": "2020-09", "nav": 1.0}, {"ym": "2020-10", "nav": 1.0}, {"ym": "2020-11", "nav": 1.0}, {"ym": "2020-12", "nav": 1.0}, {"ym": "2021-01", "nav": 1.0}, {"ym": "2021-02", "nav": 1.0}, {"ym": "2021-03", "nav": 1.0}, {"ym": "2021-04", "nav": 1.0}, {"ym": "2021-05", "nav": 1.0}, {"ym": "2021-06", "nav": 0.6335}, {"ym": "2021-07", "nav": 0.6335}, {"ym": "2021-08", "nav": 0.6335}, {"ym": "2021-09", "nav": 0.6335}, {"ym": "2021-10", "nav": 0.6335}, {"ym": "2021-11", "nav": 0.6335}, {"ym": "2021-12", "nav": 0.6335}, {"ym": "2022-01", "nav": 0.8}, {"ym": "2022-02", "nav": 0.8}, {"ym": "2022-03", "nav": 0.8}, {"ym": "2022-04", "nav": 0.8}, {"ym": "2022-05", "nav": 0.8}, {"ym": "2022-06", "nav": 1.0656}, {"ym": "2022-07", "nav": 1.0359}, {"ym": "2022-08", "nav": 1.0359}, {"ym": "2022-09", "nav": 1.0359}, {"ym": "2022-10", "nav": 1.0359}, {"ym": "2022-11", "nav": 1.0359}, {"ym": "2022-12", "nav": 1.0337}, {"ym": "2023-01", "nav": 1.0698}, {"ym": "2023-02", "nav": 1.0698}, {"ym": "2023-03", "nav": 1.0698}, {"ym": "2023-04", "nav": 1.0698}, {"ym": "2023-05", "nav": 1.0698}, {"ym": "2023-06", "nav": 1.1922}, {"ym": "2023-07", "nav": 1.1009}, {"ym": "2023-08", "nav": 1.1009}, {"ym": "2023-09", "nav": 1.5325}, {"ym": "2023-10", "nav": 1.5547}, {"ym": "2023-11", "nav": 1.5547}, {"ym": "2023-12", "nav": 1.5547}, {"ym": "2024-01", "nav": 1.5547}, {"ym": "2024-02", "nav": 1.5547}, {"ym": "2024-03", "nav": 1.5547}, {"ym": "2024-04", "nav": 1.5547}, {"ym": "2024-05", "nav": 1.5547}, {"ym": "2024-06", "nav": 1.762}, {"ym": "2024-07", "nav": 1.762}, {"ym": "2024-08", "nav": 1.762}, {"ym": "2024-09", "nav": 1.6312}, {"ym": "2024-10", "nav": 1.6312}, {"ym": "2024-11", "nav": 1.6312}, {"ym": "2024-12", "nav": 1.6312}, {"ym": "2025-01", "nav": 1.6312}, {"ym": "2025-02", "nav": 1.6312}, {"ym": "2025-03", "nav": 1.6312}, {"ym": "2025-04", "nav": 2.4131}, {"ym": "2025-05", "nav": 2.4131}, {"ym": "2025-06", "nav": 2.4131}, {"ym": "2025-07", "nav": 2.4131}, {"ym": "2025-08", "nav": 2.4131}, {"ym": "2025-09", "nav": 3.3562}, {"ym": "2025-10", "nav": 3.3633}, {"ym": "2025-11", "nav": 3.4269}, {"ym": "2025-12", "nav": 2.8646}, {"ym": "2026-01", "nav": 2.7675}, {"ym": "2026-02", "nav": 2.7635}]}, {"name": "Btc Monthly Momentum", "nav": [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.1207}, {"ym": "2020-06", "nav": 1.2668}, {"ym": "2020-07", "nav": 1.1702}, {"ym": "2020-08", "nav": 1.5897}, {"ym": "2020-09", "nav": 1.5415}, {"ym": "2020-10", "nav": 1.244}, {"ym": "2020-11", "nav": 1.7633}, {"ym": "2020-12", "nav": 2.6955}, {"ym": "2021-01", "nav": 4.0576}, {"ym": "2021-02", "nav": 4.6213}, {"ym": "2021-03", "nav": 5.3811}, {"ym": "2021-04", "nav": 6.2057}, {"ym": "2021-05", "nav": 5.6714}, {"ym": "2021-06", "nav": 5.1728}, {"ym": "2021-07", "nav": 5.097}, {"ym": "2021-08", "nav": 5.4753}, {"ym": "2021-09", "nav": 6.4638}, {"ym": "2021-10", "nav": 6.0056}, {"ym": "2021-11", "nav": 6.5228}, {"ym": "2021-12", "nav": 6.4503}, {"ym": "2022-01", "nav": 6.4503}, {"ym": "2022-02", "nav": 6.4503}, {"ym": "2022-03", "nav": 5.8389}, {"ym": "2022-04", "nav": 5.5703}, {"ym": "2022-05", "nav": 4.8451}, {"ym": "2022-06", "nav": 4.8451}, {"ym": "2022-07", "nav": 4.7206}, {"ym": "2022-08", "nav": 5.0844}, {"ym": "2022-09", "nav": 4.726}, {"ym": "2022-10", "nav": 4.726}, {"ym": "2022-11", "nav": 4.7838}, {"ym": "2022-12", "nav": 4.0114}, {"ym": "2023-01", "nav": 3.7458}, {"ym": "2023-02", "nav": 6.6106}, {"ym": "2023-03", "nav": 6.3899}, {"ym": "2023-04", "nav": 7.7622}, {"ym": "2023-05", "nav": 7.6592}, {"ym": "2023-06", "nav": 7.3655}, {"ym": "2023-07", "nav": 8.2346}, {"ym": "2023-08", "nav": 7.9515}, {"ym": "2023-09", "nav": 7.9515}, {"ym": "2023-10", "nav": 8.7577}, {"ym": "2023-11", "nav": 13.0692}, {"ym": "2023-12", "nav": 14.7551}, {"ym": "2024-01", "nav": 17.5481}, {"ym": "2024-02", "nav": 14.557}, {"ym": "2024-03", "nav": 20.7545}, {"ym": "2024-04", "nav": 23.0563}, {"ym": "2024-05", "nav": 22.9699}, {"ym": "2024-06", "nav": 23.6152}, {"ym": "2024-07", "nav": 22.9473}, {"ym": "2024-08", "nav": 22.2266}, {"ym": "2024-09", "nav": 16.1687}, {"ym": "2024-10", "nav": 14.3187}, {"ym": "2024-11", "nav": 17.1973}, {"ym": "2024-12", "nav": 27.3686}, {"ym": "2025-01", "nav": 25.9774}, {"ym": "2025-02", "nav": 23.4899}, {"ym": "2025-03", "nav": 21.6788}, {"ym": "2025-04", "nav": 21.1493}, {"ym": "2025-05", "nav": 22.4626}, {"ym": "2025-06", "nav": 24.9491}, {"ym": "2025-07", "nav": 23.7415}, {"ym": "2025-08", "nav": 26.7045}, {"ym": "2025-09", "nav": 28.6223}, {"ym": "2025-10", "nav": 28.5169}, {"ym": "2025-11", "nav": 25.0451}, {"ym": "2025-12", "nav": 25.0451}, {"ym": "2026-01", "nav": 25.1795}, {"ym": "2026-02", "nav": 20.5131}]}], rendered: false },
+    'stack-conservative': { nav: [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0392}, {"ym": "2020-03", "nav": 1.0909}, {"ym": "2020-04", "nav": 1.0617}, {"ym": "2020-05", "nav": 1.1012}, {"ym": "2020-06", "nav": 1.1524}, {"ym": "2020-07", "nav": 1.1239}, {"ym": "2020-08", "nav": 1.3189}, {"ym": "2020-09", "nav": 1.3479}, {"ym": "2020-10", "nav": 1.265}, {"ym": "2020-11", "nav": 1.2895}, {"ym": "2020-12", "nav": 1.453}, {"ym": "2021-01", "nav": 1.5153}, {"ym": "2021-02", "nav": 1.6411}, {"ym": "2021-03", "nav": 1.7475}, {"ym": "2021-04", "nav": 1.9098}, {"ym": "2021-05", "nav": 2.0809}, {"ym": "2021-06", "nav": 2.0236}, {"ym": "2021-07", "nav": 2.187}, {"ym": "2021-08", "nav": 2.2788}, {"ym": "2021-09", "nav": 2.4634}, {"ym": "2021-10", "nav": 2.4568}, {"ym": "2021-11", "nav": 2.5775}, {"ym": "2021-12", "nav": 2.7249}, {"ym": "2022-01", "nav": 2.5183}, {"ym": "2022-02", "nav": 2.4514}, {"ym": "2022-03", "nav": 2.3478}, {"ym": "2022-04", "nav": 2.3705}, {"ym": "2022-05", "nav": 2.6473}, {"ym": "2022-06", "nav": 2.6738}, {"ym": "2022-07", "nav": 2.577}, {"ym": "2022-08", "nav": 2.6876}, {"ym": "2022-09", "nav": 2.6379}, {"ym": "2022-10", "nav": 2.5953}, {"ym": "2022-11", "nav": 2.5619}, {"ym": "2022-12", "nav": 2.3046}, {"ym": "2023-01", "nav": 2.3091}, {"ym": "2023-02", "nav": 2.7804}, {"ym": "2023-03", "nav": 2.7225}, {"ym": "2023-04", "nav": 2.9038}, {"ym": "2023-05", "nav": 2.8574}, {"ym": "2023-06", "nav": 2.8373}, {"ym": "2023-07", "nav": 3.0141}, {"ym": "2023-08", "nav": 3.0351}, {"ym": "2023-09", "nav": 3.1993}, {"ym": "2023-10", "nav": 3.3359}, {"ym": "2023-11", "nav": 3.6526}, {"ym": "2023-12", "nav": 3.7512}, {"ym": "2024-01", "nav": 4.0653}, {"ym": "2024-02", "nav": 4.249}, {"ym": "2024-03", "nav": 4.7925}, {"ym": "2024-04", "nav": 5.1208}, {"ym": "2024-05", "nav": 5.7812}, {"ym": "2024-06", "nav": 5.8921}, {"ym": "2024-07", "nav": 5.6161}, {"ym": "2024-08", "nav": 5.6772}, {"ym": "2024-09", "nav": 5.4309}, {"ym": "2024-10", "nav": 5.6446}, {"ym": "2024-11", "nav": 5.6142}, {"ym": "2024-12", "nav": 6.637}, {"ym": "2025-01", "nav": 6.6729}, {"ym": "2025-02", "nav": 6.3767}, {"ym": "2025-03", "nav": 6.1558}, {"ym": "2025-04", "nav": 5.841}, {"ym": "2025-05", "nav": 6.2122}, {"ym": "2025-06", "nav": 6.2179}, {"ym": "2025-07", "nav": 5.9565}, {"ym": "2025-08", "nav": 6.7716}, {"ym": "2025-09", "nav": 6.8619}, {"ym": "2025-10", "nav": 6.8821}, {"ym": "2025-11", "nav": 7.2611}, {"ym": "2025-12", "nav": 7.1934}, {"ym": "2026-01", "nav": 7.0913}, {"ym": "2026-02", "nav": 6.7922}], components: [{"name": "Conservative All-Season", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.0}, {"ym": "2020-07", "nav": 1.0}, {"ym": "2020-08", "nav": 1.2884}, {"ym": "2020-09", "nav": 1.2949}, {"ym": "2020-10", "nav": 1.2686}, {"ym": "2020-11", "nav": 1.2452}, {"ym": "2020-12", "nav": 1.4455}, {"ym": "2021-01", "nav": 1.4105}, {"ym": "2021-02", "nav": 1.5722}, {"ym": "2021-03", "nav": 1.6431}, {"ym": "2021-04", "nav": 1.7924}, {"ym": "2021-05", "nav": 1.9262}, {"ym": "2021-06", "nav": 1.9227}, {"ym": "2021-07", "nav": 1.9248}, {"ym": "2021-08", "nav": 1.954}, {"ym": "2021-09", "nav": 2.2623}, {"ym": "2021-10", "nav": 2.2129}, {"ym": "2021-11", "nav": 2.2684}, {"ym": "2021-12", "nav": 2.4003}, {"ym": "2022-01", "nav": 2.3987}, {"ym": "2022-02", "nav": 2.5344}, {"ym": "2022-03", "nav": 2.2922}, {"ym": "2022-04", "nav": 2.2773}, {"ym": "2022-05", "nav": 2.2116}, {"ym": "2022-06", "nav": 2.3682}, {"ym": "2022-07", "nav": 2.3483}, {"ym": "2022-08", "nav": 2.1826}, {"ym": "2022-09", "nav": 2.1677}, {"ym": "2022-10", "nav": 2.161}, {"ym": "2022-11", "nav": 2.1843}, {"ym": "2022-12", "nav": 2.036}, {"ym": "2023-01", "nav": 1.9822}, {"ym": "2023-02", "nav": 2.3858}, {"ym": "2023-03", "nav": 2.3426}, {"ym": "2023-04", "nav": 2.2916}, {"ym": "2023-05", "nav": 2.1157}, {"ym": "2023-06", "nav": 2.1229}, {"ym": "2023-07", "nav": 2.6822}, {"ym": "2023-08", "nav": 2.8231}, {"ym": "2023-09", "nav": 2.843}, {"ym": "2023-10", "nav": 2.9703}, {"ym": "2023-11", "nav": 3.3109}, {"ym": "2023-12", "nav": 3.3228}, {"ym": "2024-01", "nav": 3.6521}, {"ym": "2024-02", "nav": 3.5491}, {"ym": "2024-03", "nav": 4.1895}, {"ym": "2024-04", "nav": 4.7256}, {"ym": "2024-05", "nav": 4.6482}, {"ym": "2024-06", "nav": 4.7916}, {"ym": "2024-07", "nav": 4.7377}, {"ym": "2024-08", "nav": 4.3909}, {"ym": "2024-09", "nav": 4.0712}, {"ym": "2024-10", "nav": 4.6744}, {"ym": "2024-11", "nav": 4.3586}, {"ym": "2024-12", "nav": 5.2115}, {"ym": "2025-01", "nav": 5.4636}, {"ym": "2025-02", "nav": 5.2856}, {"ym": "2025-03", "nav": 4.8858}, {"ym": "2025-04", "nav": 4.5488}, {"ym": "2025-05", "nav": 5.0202}, {"ym": "2025-06", "nav": 4.7235}, {"ym": "2025-07", "nav": 4.7203}, {"ym": "2025-08", "nav": 6.3722}, {"ym": "2025-09", "nav": 6.4172}, {"ym": "2025-10", "nav": 7.1983}, {"ym": "2025-11", "nav": 7.085}, {"ym": "2025-12", "nav": 7.0052}, {"ym": "2026-01", "nav": 7.0563}, {"ym": "2026-02", "nav": 6.1787}]}, {"name": "Vol-Scaled Turtle", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0871}, {"ym": "2020-03", "nav": 1.2072}, {"ym": "2020-04", "nav": 1.1356}, {"ym": "2020-05", "nav": 1.2123}, {"ym": "2020-06", "nav": 1.3222}, {"ym": "2020-07", "nav": 1.2688}, {"ym": "2020-08", "nav": 1.5305}, {"ym": "2020-09", "nav": 1.6121}, {"ym": "2020-10", "nav": 1.4371}, {"ym": "2020-11", "nav": 1.4355}, {"ym": "2020-12", "nav": 1.651}, {"ym": "2021-01", "nav": 1.7141}, {"ym": "2021-02", "nav": 1.9203}, {"ym": "2021-03", "nav": 2.112}, {"ym": "2021-04", "nav": 2.4233}, {"ym": "2021-05", "nav": 2.8608}, {"ym": "2021-06", "nav": 2.7301}, {"ym": "2021-07", "nav": 2.6045}, {"ym": "2021-08", "nav": 2.8437}, {"ym": "2021-09", "nav": 3.0965}, {"ym": "2021-10", "nav": 3.1347}, {"ym": "2021-11", "nav": 3.4176}, {"ym": "2021-12", "nav": 3.7724}, {"ym": "2022-01", "nav": 3.6542}, {"ym": "2022-02", "nav": 3.3467}, {"ym": "2022-03", "nav": 3.1968}, {"ym": "2022-04", "nav": 3.2973}, {"ym": "2022-05", "nav": 3.1537}, {"ym": "2022-06", "nav": 3.1246}, {"ym": "2022-07", "nav": 2.8917}, {"ym": "2022-08", "nav": 3.2544}, {"ym": "2022-09", "nav": 3.1569}, {"ym": "2022-10", "nav": 3.0481}, {"ym": "2022-11", "nav": 3.1062}, {"ym": "2022-12", "nav": 2.875}, {"ym": "2023-01", "nav": 2.7823}, {"ym": "2023-02", "nav": 3.554}, {"ym": "2023-03", "nav": 3.4565}, {"ym": "2023-04", "nav": 3.317}, {"ym": "2023-05", "nav": 3.3368}, {"ym": "2023-06", "nav": 3.2942}, {"ym": "2023-07", "nav": 3.309}, {"ym": "2023-08", "nav": 3.3155}, {"ym": "2023-09", "nav": 3.1568}, {"ym": "2023-10", "nav": 3.3126}, {"ym": "2023-11", "nav": 3.6284}, {"ym": "2023-12", "nav": 3.7888}, {"ym": "2024-01", "nav": 4.2414}, {"ym": "2024-02", "nav": 4.3776}, {"ym": "2024-03", "nav": 5.2088}, {"ym": "2024-04", "nav": 5.679}, {"ym": "2024-05", "nav": 5.3804}, {"ym": "2024-06", "nav": 5.6409}, {"ym": "2024-07", "nav": 5.1636}, {"ym": "2024-08", "nav": 5.2836}, {"ym": "2024-09", "nav": 5.0748}, {"ym": "2024-10", "nav": 5.2447}, {"ym": "2024-11", "nav": 5.2621}, {"ym": "2024-12", "nav": 6.6232}, {"ym": "2025-01", "nav": 6.6821}, {"ym": "2025-02", "nav": 6.538}, {"ym": "2025-03", "nav": 6.1647}, {"ym": "2025-04", "nav": 5.7922}, {"ym": "2025-05", "nav": 6.223}, {"ym": "2025-06", "nav": 6.3176}, {"ym": "2025-07", "nav": 6.3074}, {"ym": "2025-08", "nav": 7.1341}, {"ym": "2025-09", "nav": 7.2861}, {"ym": "2025-10", "nav": 8.0287}, {"ym": "2025-11", "nav": 8.5637}, {"ym": "2025-12", "nav": 8.1204}, {"ym": "2026-01", "nav": 7.8098}, {"ym": "2026-02", "nav": 7.6292}]}, {"name": "Btc Dual Momentum V2", "nav": [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0679}, {"ym": "2020-06", "nav": 1.1284}, {"ym": "2020-07", "nav": 1.0544}, {"ym": "2020-08", "nav": 1.2973}, {"ym": "2020-09", "nav": 1.258}, {"ym": "2020-10", "nav": 1.1503}, {"ym": "2020-11", "nav": 1.4208}, {"ym": "2020-12", "nav": 1.8058}, {"ym": "2021-01", "nav": 2.3572}, {"ym": "2021-02", "nav": 2.4966}, {"ym": "2021-03", "nav": 2.7689}, {"ym": "2021-04", "nav": 3.0004}, {"ym": "2021-05", "nav": 2.8036}, {"ym": "2021-06", "nav": 2.618}, {"ym": "2021-07", "nav": 2.5924}, {"ym": "2021-08", "nav": 2.7353}, {"ym": "2021-09", "nav": 2.9936}, {"ym": "2021-10", "nav": 2.8775}, {"ym": "2021-11", "nav": 2.9782}, {"ym": "2021-12", "nav": 2.9439}, {"ym": "2022-01", "nav": 2.9439}, {"ym": "2022-02", "nav": 2.9439}, {"ym": "2022-03", "nav": 2.8563}, {"ym": "2022-04", "nav": 2.7655}, {"ym": "2022-05", "nav": 2.6118}, {"ym": "2022-06", "nav": 2.6118}, {"ym": "2022-07", "nav": 2.5858}, {"ym": "2022-08", "nav": 2.6013}, {"ym": "2022-09", "nav": 2.5059}, {"ym": "2022-10", "nav": 2.5059}, {"ym": "2022-11", "nav": 2.4836}, {"ym": "2022-12", "nav": 2.2102}, {"ym": "2023-01", "nav": 2.1311}, {"ym": "2023-02", "nav": 3.1095}, {"ym": "2023-03", "nav": 2.9588}, {"ym": "2023-04", "nav": 3.3153}, {"ym": "2023-05", "nav": 3.2044}, {"ym": "2023-06", "nav": 3.1417}, {"ym": "2023-07", "nav": 3.3809}, {"ym": "2023-08", "nav": 3.2307}, {"ym": "2023-09", "nav": 3.2307}, {"ym": "2023-10", "nav": 3.386}, {"ym": "2023-11", "nav": 4.372}, {"ym": "2023-12", "nav": 4.6504}, {"ym": "2024-01", "nav": 5.1226}, {"ym": "2024-02", "nav": 4.5252}, {"ym": "2024-03", "nav": 5.5963}, {"ym": "2024-04", "nav": 5.7249}, {"ym": "2024-05", "nav": 5.6822}, {"ym": "2024-06", "nav": 5.8161}, {"ym": "2024-07", "nav": 5.6531}, {"ym": "2024-08", "nav": 5.527}, {"ym": "2024-09", "nav": 4.9719}, {"ym": "2024-10", "nav": 4.7062}, {"ym": "2024-11", "nav": 5.0184}, {"ym": "2024-12", "nav": 6.3549}, {"ym": "2025-01", "nav": 6.3591}, {"ym": "2025-02", "nav": 5.9527}, {"ym": "2025-03", "nav": 5.7857}, {"ym": "2025-04", "nav": 5.6915}, {"ym": "2025-05", "nav": 5.9277}, {"ym": "2025-06", "nav": 6.2776}, {"ym": "2025-07", "nav": 6.1408}, {"ym": "2025-08", "nav": 6.6248}, {"ym": "2025-09", "nav": 6.779}, {"ym": "2025-10", "nav": 6.9}, {"ym": "2025-11", "nav": 6.3504}, {"ym": "2025-12", "nav": 6.3504}, {"ym": "2026-01", "nav": 6.3185}, {"ym": "2026-02", "nav": 5.6396}]}, {"name": "Short Low Vol Downtrend", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.0}, {"ym": "2020-07", "nav": 1.0}, {"ym": "2020-08", "nav": 1.0}, {"ym": "2020-09", "nav": 1.0}, {"ym": "2020-10", "nav": 1.0}, {"ym": "2020-11", "nav": 1.0}, {"ym": "2020-12", "nav": 1.0}, {"ym": "2021-01", "nav": 1.0}, {"ym": "2021-02", "nav": 1.0}, {"ym": "2021-03", "nav": 1.0}, {"ym": "2021-04", "nav": 1.0}, {"ym": "2021-05", "nav": 1.0}, {"ym": "2021-06", "nav": 1.0}, {"ym": "2021-07", "nav": 1.4089}, {"ym": "2021-08", "nav": 1.3644}, {"ym": "2021-09", "nav": 1.3644}, {"ym": "2021-10", "nav": 1.3644}, {"ym": "2021-11", "nav": 1.3644}, {"ym": "2021-12", "nav": 1.3644}, {"ym": "2022-01", "nav": 1.0282}, {"ym": "2022-02", "nav": 1.0282}, {"ym": "2022-03", "nav": 1.0282}, {"ym": "2022-04", "nav": 1.0282}, {"ym": "2022-05", "nav": 1.6356}, {"ym": "2022-06", "nav": 1.6356}, {"ym": "2022-07", "nav": 1.6356}, {"ym": "2022-08", "nav": 1.6356}, {"ym": "2022-09", "nav": 1.6356}, {"ym": "2022-10", "nav": 1.6356}, {"ym": "2022-11", "nav": 1.487}, {"ym": "2022-12", "nav": 1.2351}, {"ym": "2023-01", "nav": 1.3602}, {"ym": "2023-02", "nav": 1.3202}, {"ym": "2023-03", "nav": 1.3202}, {"ym": "2023-04", "nav": 1.7272}, {"ym": "2023-05", "nav": 1.7272}, {"ym": "2023-06", "nav": 1.7272}, {"ym": "2023-07", "nav": 1.7272}, {"ym": "2023-08", "nav": 1.7272}, {"ym": "2023-09", "nav": 2.2401}, {"ym": "2023-10", "nav": 2.3003}, {"ym": "2023-11", "nav": 2.3003}, {"ym": "2023-12", "nav": 2.3003}, {"ym": "2024-01", "nav": 2.3003}, {"ym": "2024-02", "nav": 2.7425}, {"ym": "2024-03", "nav": 2.5526}, {"ym": "2024-04", "nav": 2.5526}, {"ym": "2024-05", "nav": 4.1521}, {"ym": "2024-06", "nav": 3.967}, {"ym": "2024-07", "nav": 3.9083}, {"ym": "2024-08", "nav": 4.1785}, {"ym": "2024-09", "nav": 4.1619}, {"ym": "2024-10", "nav": 4.1619}, {"ym": "2024-11", "nav": 4.1619}, {"ym": "2024-12", "nav": 4.1619}, {"ym": "2025-01", "nav": 4.0233}, {"ym": "2025-02", "nav": 3.6728}, {"ym": "2025-03", "nav": 3.8048}, {"ym": "2025-04", "nav": 3.675}, {"ym": "2025-05", "nav": 3.7516}, {"ym": "2025-06", "nav": 3.7516}, {"ym": "2025-07", "nav": 3.1662}, {"ym": "2025-08", "nav": 3.1662}, {"ym": "2025-09", "nav": 3.1662}, {"ym": "2025-10", "nav": 2.2918}, {"ym": "2025-11", "nav": 2.6236}, {"ym": "2025-12", "nav": 2.7938}, {"ym": "2026-01", "nav": 2.8169}, {"ym": "2026-02", "nav": 2.8603}]}], rendered: false },
+    'stack-balanced': { nav: [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0171}, {"ym": "2020-03", "nav": 1.0605}, {"ym": "2020-04", "nav": 1.0545}, {"ym": "2020-05", "nav": 1.0834}, {"ym": "2020-06", "nav": 1.1211}, {"ym": "2020-07", "nav": 1.0986}, {"ym": "2020-08", "nav": 1.1963}, {"ym": "2020-09", "nav": 1.2147}, {"ym": "2020-10", "nav": 1.1381}, {"ym": "2020-11", "nav": 1.1691}, {"ym": "2020-12", "nav": 1.4309}, {"ym": "2021-01", "nav": 1.5543}, {"ym": "2021-02", "nav": 1.8358}, {"ym": "2021-03", "nav": 2.1012}, {"ym": "2021-04", "nav": 2.3203}, {"ym": "2021-05", "nav": 2.4538}, {"ym": "2021-06", "nav": 2.1948}, {"ym": "2021-07", "nav": 2.1546}, {"ym": "2021-08", "nav": 2.294}, {"ym": "2021-09", "nav": 2.6511}, {"ym": "2021-10", "nav": 2.563}, {"ym": "2021-11", "nav": 2.8289}, {"ym": "2021-12", "nav": 2.9623}, {"ym": "2022-01", "nav": 3.1917}, {"ym": "2022-02", "nav": 3.2068}, {"ym": "2022-03", "nav": 2.9526}, {"ym": "2022-04", "nav": 2.967}, {"ym": "2022-05", "nav": 2.9044}, {"ym": "2022-06", "nav": 3.2649}, {"ym": "2022-07", "nav": 3.0839}, {"ym": "2022-08", "nav": 3.2324}, {"ym": "2022-09", "nav": 3.1451}, {"ym": "2022-10", "nav": 3.1433}, {"ym": "2022-11", "nav": 3.1435}, {"ym": "2022-12", "nav": 2.7302}, {"ym": "2023-01", "nav": 2.6913}, {"ym": "2023-02", "nav": 3.4077}, {"ym": "2023-03", "nav": 3.35}, {"ym": "2023-04", "nav": 3.3348}, {"ym": "2023-05", "nav": 3.3007}, {"ym": "2023-06", "nav": 3.363}, {"ym": "2023-07", "nav": 3.4368}, {"ym": "2023-08", "nav": 3.4453}, {"ym": "2023-09", "nav": 3.8835}, {"ym": "2023-10", "nav": 3.9459}, {"ym": "2023-11", "nav": 4.4431}, {"ym": "2023-12", "nav": 4.96}, {"ym": "2024-01", "nav": 5.7117}, {"ym": "2024-02", "nav": 5.6823}, {"ym": "2024-03", "nav": 6.6394}, {"ym": "2024-04", "nav": 7.4256}, {"ym": "2024-05", "nav": 7.1179}, {"ym": "2024-06", "nav": 7.5794}, {"ym": "2024-07", "nav": 7.1259}, {"ym": "2024-08", "nav": 6.9629}, {"ym": "2024-09", "nav": 6.3012}, {"ym": "2024-10", "nav": 6.2745}, {"ym": "2024-11", "nav": 6.3059}, {"ym": "2024-12", "nav": 8.3688}, {"ym": "2025-01", "nav": 8.2696}, {"ym": "2025-02", "nav": 8.0431}, {"ym": "2025-03", "nav": 7.5947}, {"ym": "2025-04", "nav": 8.3704}, {"ym": "2025-05", "nav": 9.1262}, {"ym": "2025-06", "nav": 9.6819}, {"ym": "2025-07", "nav": 9.6158}, {"ym": "2025-08", "nav": 10.3602}, {"ym": "2025-09", "nav": 11.7044}, {"ym": "2025-10", "nav": 12.5741}, {"ym": "2025-11", "nav": 12.8186}, {"ym": "2025-12", "nav": 12.2335}, {"ym": "2026-01", "nav": 11.9634}, {"ym": "2026-02", "nav": 10.9759}], components: [{"name": "Hedged Breakout", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.049}, {"ym": "2020-03", "nav": 1.1766}, {"ym": "2020-04", "nav": 1.1578}, {"ym": "2020-05", "nav": 1.2086}, {"ym": "2020-06", "nav": 1.2835}, {"ym": "2020-07", "nav": 1.2378}, {"ym": "2020-08", "nav": 1.4256}, {"ym": "2020-09", "nav": 1.5007}, {"ym": "2020-10", "nav": 1.3129}, {"ym": "2020-11", "nav": 1.319}, {"ym": "2020-12", "nav": 1.5022}, {"ym": "2021-01", "nav": 1.5765}, {"ym": "2021-02", "nav": 1.8297}, {"ym": "2021-03", "nav": 2.0535}, {"ym": "2021-04", "nav": 2.3993}, {"ym": "2021-05", "nav": 2.6671}, {"ym": "2021-06", "nav": 2.4946}, {"ym": "2021-07", "nav": 2.3122}, {"ym": "2021-08", "nav": 2.5687}, {"ym": "2021-09", "nav": 2.7436}, {"ym": "2021-10", "nav": 2.7352}, {"ym": "2021-11", "nav": 3.0456}, {"ym": "2021-12", "nav": 3.3265}, {"ym": "2022-01", "nav": 3.2608}, {"ym": "2022-02", "nav": 3.088}, {"ym": "2022-03", "nav": 2.8919}, {"ym": "2022-04", "nav": 2.9489}, {"ym": "2022-05", "nav": 2.8923}, {"ym": "2022-06", "nav": 3.0165}, {"ym": "2022-07", "nav": 2.6931}, {"ym": "2022-08", "nav": 2.9815}, {"ym": "2022-09", "nav": 2.8829}, {"ym": "2022-10", "nav": 2.7983}, {"ym": "2022-11", "nav": 2.9216}, {"ym": "2022-12", "nav": 2.5717}, {"ym": "2023-01", "nav": 2.4874}, {"ym": "2023-02", "nav": 3.0879}, {"ym": "2023-03", "nav": 3.0052}, {"ym": "2023-04", "nav": 2.8433}, {"ym": "2023-05", "nav": 2.8693}, {"ym": "2023-06", "nav": 2.8139}, {"ym": "2023-07", "nav": 2.8203}, {"ym": "2023-08", "nav": 2.8269}, {"ym": "2023-09", "nav": 2.7359}, {"ym": "2023-10", "nav": 2.8461}, {"ym": "2023-11", "nav": 3.1153}, {"ym": "2023-12", "nav": 3.2549}, {"ym": "2024-01", "nav": 3.6438}, {"ym": "2024-02", "nav": 3.7817}, {"ym": "2024-03", "nav": 4.5239}, {"ym": "2024-04", "nav": 4.9775}, {"ym": "2024-05", "nav": 4.5555}, {"ym": "2024-06", "nav": 4.722}, {"ym": "2024-07", "nav": 4.3909}, {"ym": "2024-08", "nav": 4.438}, {"ym": "2024-09", "nav": 4.1776}, {"ym": "2024-10", "nav": 4.2019}, {"ym": "2024-11", "nav": 4.2134}, {"ym": "2024-12", "nav": 5.2563}, {"ym": "2025-01", "nav": 5.3005}, {"ym": "2025-02", "nav": 5.0811}, {"ym": "2025-03", "nav": 4.9298}, {"ym": "2025-04", "nav": 4.5146}, {"ym": "2025-05", "nav": 5.1823}, {"ym": "2025-06", "nav": 5.2825}, {"ym": "2025-07", "nav": 5.2009}, {"ym": "2025-08", "nav": 5.9009}, {"ym": "2025-09", "nav": 5.961}, {"ym": "2025-10", "nav": 6.5449}, {"ym": "2025-11", "nav": 7.0805}, {"ym": "2025-12", "nav": 6.4879}, {"ym": "2026-01", "nav": 6.2528}, {"ym": "2026-02", "nav": 6.1157}]}, {"name": "Regime-Adaptive", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.0}, {"ym": "2020-07", "nav": 1.0}, {"ym": "2020-08", "nav": 1.0}, {"ym": "2020-09", "nav": 1.0}, {"ym": "2020-10", "nav": 1.0}, {"ym": "2020-11", "nav": 0.9358}, {"ym": "2020-12", "nav": 1.3941}, {"ym": "2021-01", "nav": 1.4965}, {"ym": "2021-02", "nav": 2.1612}, {"ym": "2021-03", "nav": 2.8987}, {"ym": "2021-04", "nav": 3.2464}, {"ym": "2021-05", "nav": 3.5983}, {"ym": "2021-06", "nav": 4.1137}, {"ym": "2021-07", "nav": 4.2574}, {"ym": "2021-08", "nav": 4.5715}, {"ym": "2021-09", "nav": 6.6522}, {"ym": "2021-10", "nav": 5.9851}, {"ym": "2021-11", "nav": 7.3123}, {"ym": "2021-12", "nav": 7.7795}, {"ym": "2022-01", "nav": 7.9506}, {"ym": "2022-02", "nav": 8.6909}, {"ym": "2022-03", "nav": 7.0376}, {"ym": "2022-04", "nav": 7.1107}, {"ym": "2022-05", "nav": 7.0712}, {"ym": "2022-06", "nav": 7.34}, {"ym": "2022-07", "nav": 7.1353}, {"ym": "2022-08", "nav": 7.2197}, {"ym": "2022-09", "nav": 6.9777}, {"ym": "2022-10", "nav": 7.2482}, {"ym": "2022-11", "nav": 6.7675}, {"ym": "2022-12", "nav": 4.7975}, {"ym": "2023-01", "nav": 4.6705}, {"ym": "2023-02", "nav": 6.6357}, {"ym": "2023-03", "nav": 6.5241}, {"ym": "2023-04", "nav": 6.3371}, {"ym": "2023-05", "nav": 6.0306}, {"ym": "2023-06", "nav": 5.913}, {"ym": "2023-07", "nav": 6.6776}, {"ym": "2023-08", "nav": 6.8134}, {"ym": "2023-09", "nav": 7.3815}, {"ym": "2023-10", "nav": 7.012}, {"ym": "2023-11", "nav": 8.2371}, {"ym": "2023-12", "nav": 11.1284}, {"ym": "2024-01", "nav": 15.1705}, {"ym": "2024-02", "nav": 15.0887}, {"ym": "2024-03", "nav": 18.5397}, {"ym": "2024-04", "nav": 23.8956}, {"ym": "2024-05", "nav": 22.8076}, {"ym": "2024-06", "nav": 23.6493}, {"ym": "2024-07", "nav": 20.5786}, {"ym": "2024-08", "nav": 18.6445}, {"ym": "2024-09", "nav": 16.7827}, {"ym": "2024-10", "nav": 17.1297}, {"ym": "2024-11", "nav": 16.0293}, {"ym": "2024-12", "nav": 27.6574}, {"ym": "2025-01", "nav": 26.5838}, {"ym": "2025-02", "nav": 26.2301}, {"ym": "2025-03", "nav": 22.2827}, {"ym": "2025-04", "nav": 21.4148}, {"ym": "2025-05", "nav": 24.1832}, {"ym": "2025-06", "nav": 28.3472}, {"ym": "2025-07", "nav": 28.7349}, {"ym": "2025-08", "nav": 30.7847}, {"ym": "2025-09", "nav": 31.0005}, {"ym": "2025-10", "nav": 35.9304}, {"ym": "2025-11", "nav": 35.5421}, {"ym": "2025-12", "nav": 40.2161}, {"ym": "2026-01", "nav": 40.2545}, {"ym": "2026-02", "nav": 31.252}]}, {"name": "Btc Monthly Momentum", "nav": [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.1207}, {"ym": "2020-06", "nav": 1.2668}, {"ym": "2020-07", "nav": 1.1702}, {"ym": "2020-08", "nav": 1.5897}, {"ym": "2020-09", "nav": 1.5415}, {"ym": "2020-10", "nav": 1.244}, {"ym": "2020-11", "nav": 1.7633}, {"ym": "2020-12", "nav": 2.6955}, {"ym": "2021-01", "nav": 4.0576}, {"ym": "2021-02", "nav": 4.6213}, {"ym": "2021-03", "nav": 5.3811}, {"ym": "2021-04", "nav": 6.2057}, {"ym": "2021-05", "nav": 5.6714}, {"ym": "2021-06", "nav": 5.1728}, {"ym": "2021-07", "nav": 5.097}, {"ym": "2021-08", "nav": 5.4753}, {"ym": "2021-09", "nav": 6.4638}, {"ym": "2021-10", "nav": 6.0056}, {"ym": "2021-11", "nav": 6.5228}, {"ym": "2021-12", "nav": 6.4503}, {"ym": "2022-01", "nav": 6.4503}, {"ym": "2022-02", "nav": 6.4503}, {"ym": "2022-03", "nav": 5.8389}, {"ym": "2022-04", "nav": 5.5703}, {"ym": "2022-05", "nav": 4.8451}, {"ym": "2022-06", "nav": 4.8451}, {"ym": "2022-07", "nav": 4.7206}, {"ym": "2022-08", "nav": 5.0844}, {"ym": "2022-09", "nav": 4.726}, {"ym": "2022-10", "nav": 4.726}, {"ym": "2022-11", "nav": 4.7838}, {"ym": "2022-12", "nav": 4.0114}, {"ym": "2023-01", "nav": 3.7458}, {"ym": "2023-02", "nav": 6.6106}, {"ym": "2023-03", "nav": 6.3899}, {"ym": "2023-04", "nav": 7.7622}, {"ym": "2023-05", "nav": 7.6592}, {"ym": "2023-06", "nav": 7.3655}, {"ym": "2023-07", "nav": 8.2346}, {"ym": "2023-08", "nav": 7.9515}, {"ym": "2023-09", "nav": 7.9515}, {"ym": "2023-10", "nav": 8.7577}, {"ym": "2023-11", "nav": 13.0692}, {"ym": "2023-12", "nav": 14.7551}, {"ym": "2024-01", "nav": 17.5481}, {"ym": "2024-02", "nav": 14.557}, {"ym": "2024-03", "nav": 20.7545}, {"ym": "2024-04", "nav": 23.0563}, {"ym": "2024-05", "nav": 22.9699}, {"ym": "2024-06", "nav": 23.6152}, {"ym": "2024-07", "nav": 22.9473}, {"ym": "2024-08", "nav": 22.2266}, {"ym": "2024-09", "nav": 16.1687}, {"ym": "2024-10", "nav": 14.3187}, {"ym": "2024-11", "nav": 17.1973}, {"ym": "2024-12", "nav": 27.3686}, {"ym": "2025-01", "nav": 25.9774}, {"ym": "2025-02", "nav": 23.4899}, {"ym": "2025-03", "nav": 21.6788}, {"ym": "2025-04", "nav": 21.1493}, {"ym": "2025-05", "nav": 22.4626}, {"ym": "2025-06", "nav": 24.9491}, {"ym": "2025-07", "nav": 23.7415}, {"ym": "2025-08", "nav": 26.7045}, {"ym": "2025-09", "nav": 28.6223}, {"ym": "2025-10", "nav": 28.5169}, {"ym": "2025-11", "nav": 25.0451}, {"ym": "2025-12", "nav": 25.0451}, {"ym": "2026-01", "nav": 25.1795}, {"ym": "2026-02", "nav": 20.5131}]}, {"name": "Short Overextended Bear", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.0}, {"ym": "2020-07", "nav": 1.0}, {"ym": "2020-08", "nav": 1.0}, {"ym": "2020-09", "nav": 1.0}, {"ym": "2020-10", "nav": 1.0}, {"ym": "2020-11", "nav": 1.0}, {"ym": "2020-12", "nav": 1.0}, {"ym": "2021-01", "nav": 1.0}, {"ym": "2021-02", "nav": 1.0}, {"ym": "2021-03", "nav": 1.0}, {"ym": "2021-04", "nav": 1.0}, {"ym": "2021-05", "nav": 1.0}, {"ym": "2021-06", "nav": 0.6335}, {"ym": "2021-07", "nav": 0.6335}, {"ym": "2021-08", "nav": 0.6335}, {"ym": "2021-09", "nav": 0.6335}, {"ym": "2021-10", "nav": 0.6335}, {"ym": "2021-11", "nav": 0.6335}, {"ym": "2021-12", "nav": 0.6335}, {"ym": "2022-01", "nav": 0.8}, {"ym": "2022-02", "nav": 0.8}, {"ym": "2022-03", "nav": 0.8}, {"ym": "2022-04", "nav": 0.8}, {"ym": "2022-05", "nav": 0.8}, {"ym": "2022-06", "nav": 1.0656}, {"ym": "2022-07", "nav": 1.0359}, {"ym": "2022-08", "nav": 1.0359}, {"ym": "2022-09", "nav": 1.0359}, {"ym": "2022-10", "nav": 1.0359}, {"ym": "2022-11", "nav": 1.0359}, {"ym": "2022-12", "nav": 1.0337}, {"ym": "2023-01", "nav": 1.0698}, {"ym": "2023-02", "nav": 1.0698}, {"ym": "2023-03", "nav": 1.0698}, {"ym": "2023-04", "nav": 1.0698}, {"ym": "2023-05", "nav": 1.0698}, {"ym": "2023-06", "nav": 1.1922}, {"ym": "2023-07", "nav": 1.1009}, {"ym": "2023-08", "nav": 1.1009}, {"ym": "2023-09", "nav": 1.5325}, {"ym": "2023-10", "nav": 1.5547}, {"ym": "2023-11", "nav": 1.5547}, {"ym": "2023-12", "nav": 1.5547}, {"ym": "2024-01", "nav": 1.5547}, {"ym": "2024-02", "nav": 1.5547}, {"ym": "2024-03", "nav": 1.5547}, {"ym": "2024-04", "nav": 1.5547}, {"ym": "2024-05", "nav": 1.5547}, {"ym": "2024-06", "nav": 1.762}, {"ym": "2024-07", "nav": 1.762}, {"ym": "2024-08", "nav": 1.762}, {"ym": "2024-09", "nav": 1.6312}, {"ym": "2024-10", "nav": 1.6312}, {"ym": "2024-11", "nav": 1.6312}, {"ym": "2024-12", "nav": 1.6312}, {"ym": "2025-01", "nav": 1.6312}, {"ym": "2025-02", "nav": 1.6312}, {"ym": "2025-03", "nav": 1.6312}, {"ym": "2025-04", "nav": 2.4131}, {"ym": "2025-05", "nav": 2.4131}, {"ym": "2025-06", "nav": 2.4131}, {"ym": "2025-07", "nav": 2.4131}, {"ym": "2025-08", "nav": 2.4131}, {"ym": "2025-09", "nav": 3.3562}, {"ym": "2025-10", "nav": 3.3633}, {"ym": "2025-11", "nav": 3.4269}, {"ym": "2025-12", "nav": 2.8646}, {"ym": "2026-01", "nav": 2.7675}, {"ym": "2026-02", "nav": 2.7635}]}], rendered: false },
+    'alpha-stack-3x': { nav: [{"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.019}, {"ym": "2020-03", "nav": 1.112}, {"ym": "2020-04", "nav": 1.3383}, {"ym": "2020-05", "nav": 1.3285}, {"ym": "2020-06", "nav": 1.4411}, {"ym": "2020-07", "nav": 1.4389}, {"ym": "2020-08", "nav": 1.7521}, {"ym": "2020-09", "nav": 1.7991}, {"ym": "2020-10", "nav": 1.5874}, {"ym": "2020-11", "nav": 1.6308}, {"ym": "2020-12", "nav": 1.9899}, {"ym": "2021-01", "nav": 2.0727}, {"ym": "2021-02", "nav": 2.5658}, {"ym": "2021-03", "nav": 3.1135}, {"ym": "2021-04", "nav": 3.7637}, {"ym": "2021-05", "nav": 4.5848}, {"ym": "2021-06", "nav": 4.3511}, {"ym": "2021-07", "nav": 4.2956}, {"ym": "2021-08", "nav": 4.593}, {"ym": "2021-09", "nav": 5.346}, {"ym": "2021-10", "nav": 5.0025}, {"ym": "2021-11", "nav": 5.5031}, {"ym": "2021-12", "nav": 5.9234}, {"ym": "2022-01", "nav": 5.8991}, {"ym": "2022-02", "nav": 6.1902}, {"ym": "2022-03", "nav": 5.9198}, {"ym": "2022-04", "nav": 6.0976}, {"ym": "2022-05", "nav": 6.0976}, {"ym": "2022-06", "nav": 7.1634}, {"ym": "2022-07", "nav": 7.1203}, {"ym": "2022-08", "nav": 7.6381}, {"ym": "2022-09", "nav": 7.1758}, {"ym": "2022-10", "nav": 6.9704}, {"ym": "2022-11", "nav": 7.0358}, {"ym": "2022-12", "nav": 6.5357}, {"ym": "2023-01", "nav": 6.6759}, {"ym": "2023-02", "nav": 7.9751}, {"ym": "2023-03", "nav": 7.8461}, {"ym": "2023-04", "nav": 7.2177}, {"ym": "2023-05", "nav": 7.244}, {"ym": "2023-06", "nav": 7.328}, {"ym": "2023-07", "nav": 7.8625}, {"ym": "2023-08", "nav": 7.6573}, {"ym": "2023-09", "nav": 7.3849}, {"ym": "2023-10", "nav": 7.2723}, {"ym": "2023-11", "nav": 8.8029}, {"ym": "2023-12", "nav": 9.9524}, {"ym": "2024-01", "nav": 12.1558}, {"ym": "2024-02", "nav": 12.1492}, {"ym": "2024-03", "nav": 15.2187}, {"ym": "2024-04", "nav": 17.9487}, {"ym": "2024-05", "nav": 16.5292}, {"ym": "2024-06", "nav": 16.9764}, {"ym": "2024-07", "nav": 16.6037}, {"ym": "2024-08", "nav": 16.323}, {"ym": "2024-09", "nav": 16.1789}, {"ym": "2024-10", "nav": 16.3919}, {"ym": "2024-11", "nav": 15.9823}, {"ym": "2024-12", "nav": 24.0865}, {"ym": "2025-01", "nav": 23.2708}, {"ym": "2025-02", "nav": 23.4084}, {"ym": "2025-03", "nav": 23.624}, {"ym": "2025-04", "nav": 23.0294}, {"ym": "2025-05", "nav": 25.0337}, {"ym": "2025-06", "nav": 23.9436}, {"ym": "2025-07", "nav": 23.6815}, {"ym": "2025-08", "nav": 26.8537}, {"ym": "2025-09", "nav": 27.9063}, {"ym": "2025-10", "nav": 30.2392}, {"ym": "2025-11", "nav": 33.2986}, {"ym": "2025-12", "nav": 34.131}, {"ym": "2026-01", "nav": 33.8435}, {"ym": "2026-02", "nav": 32.4177}], components: [{"name": "All-Weather Adaptive", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.0}, {"ym": "2020-05", "nav": 1.0}, {"ym": "2020-06", "nav": 1.0}, {"ym": "2020-07", "nav": 1.0}, {"ym": "2020-08", "nav": 1.0}, {"ym": "2020-09", "nav": 1.0}, {"ym": "2020-10", "nav": 1.0}, {"ym": "2020-11", "nav": 1.0564}, {"ym": "2020-12", "nav": 1.2181}, {"ym": "2021-01", "nav": 1.2721}, {"ym": "2021-02", "nav": 1.5156}, {"ym": "2021-03", "nav": 1.6665}, {"ym": "2021-04", "nav": 1.8785}, {"ym": "2021-05", "nav": 2.0423}, {"ym": "2021-06", "nav": 1.9724}, {"ym": "2021-07", "nav": 1.9547}, {"ym": "2021-08", "nav": 1.9954}, {"ym": "2021-09", "nav": 2.1599}, {"ym": "2021-10", "nav": 2.1094}, {"ym": "2021-11", "nav": 2.3648}, {"ym": "2021-12", "nav": 2.4493}, {"ym": "2022-01", "nav": 2.485}, {"ym": "2022-02", "nav": 2.6184}, {"ym": "2022-03", "nav": 2.5144}, {"ym": "2022-04", "nav": 2.5246}, {"ym": "2022-05", "nav": 2.7379}, {"ym": "2022-06", "nav": 3.4889}, {"ym": "2022-07", "nav": 3.4463}, {"ym": "2022-08", "nav": 3.4368}, {"ym": "2022-09", "nav": 3.3469}, {"ym": "2022-10", "nav": 3.1931}, {"ym": "2022-11", "nav": 3.2203}, {"ym": "2022-12", "nav": 3.1961}, {"ym": "2023-01", "nav": 3.1421}, {"ym": "2023-02", "nav": 3.5784}, {"ym": "2023-03", "nav": 3.5273}, {"ym": "2023-04", "nav": 3.4818}, {"ym": "2023-05", "nav": 3.3556}, {"ym": "2023-06", "nav": 3.3465}, {"ym": "2023-07", "nav": 3.906}, {"ym": "2023-08", "nav": 3.9881}, {"ym": "2023-09", "nav": 3.8787}, {"ym": "2023-10", "nav": 3.8591}, {"ym": "2023-11", "nav": 5.6236}, {"ym": "2023-12", "nav": 6.1712}, {"ym": "2024-01", "nav": 6.8484}, {"ym": "2024-02", "nav": 6.7889}, {"ym": "2024-03", "nav": 8.4932}, {"ym": "2024-04", "nav": 9.514}, {"ym": "2024-05", "nav": 9.2558}, {"ym": "2024-06", "nav": 9.6567}, {"ym": "2024-07", "nav": 8.713}, {"ym": "2024-08", "nav": 8.2072}, {"ym": "2024-09", "nav": 7.2671}, {"ym": "2024-10", "nav": 7.1634}, {"ym": "2024-11", "nav": 6.4621}, {"ym": "2024-12", "nav": 8.4742}, {"ym": "2025-01", "nav": 8.3369}, {"ym": "2025-02", "nav": 8.138}, {"ym": "2025-03", "nav": 7.8939}, {"ym": "2025-04", "nav": 7.8354}, {"ym": "2025-05", "nav": 9.3386}, {"ym": "2025-06", "nav": 9.9158}, {"ym": "2025-07", "nav": 9.8219}, {"ym": "2025-08", "nav": 10.6955}, {"ym": "2025-09", "nav": 10.8089}, {"ym": "2025-10", "nav": 11.416}, {"ym": "2025-11", "nav": 11.5081}, {"ym": "2025-12", "nav": 10.8169}, {"ym": "2026-01", "nav": 11.0145}, {"ym": "2026-02", "nav": 10.9628}]}, {"name": "Breakout Rvol Donchian", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0475}, {"ym": "2020-03", "nav": 1.2865}, {"ym": "2020-04", "nav": 1.0416}, {"ym": "2020-05", "nav": 1.1088}, {"ym": "2020-06", "nav": 1.1985}, {"ym": "2020-07", "nav": 1.1977}, {"ym": "2020-08", "nav": 1.512}, {"ym": "2020-09", "nav": 1.6345}, {"ym": "2020-10", "nav": 1.3656}, {"ym": "2020-11", "nav": 1.3768}, {"ym": "2020-12", "nav": 1.6466}, {"ym": "2021-01", "nav": 1.7442}, {"ym": "2021-02", "nav": 2.1673}, {"ym": "2021-03", "nav": 2.5317}, {"ym": "2021-04", "nav": 3.0234}, {"ym": "2021-05", "nav": 3.6986}, {"ym": "2021-06", "nav": 3.694}, {"ym": "2021-07", "nav": 3.3824}, {"ym": "2021-08", "nav": 4.1261}, {"ym": "2021-09", "nav": 4.5127}, {"ym": "2021-10", "nav": 4.5551}, {"ym": "2021-11", "nav": 5.3192}, {"ym": "2021-12", "nav": 5.7963}, {"ym": "2022-01", "nav": 5.5145}, {"ym": "2022-02", "nav": 4.862}, {"ym": "2022-03", "nav": 4.8213}, {"ym": "2022-04", "nav": 5.0822}, {"ym": "2022-05", "nav": 4.5581}, {"ym": "2022-06", "nav": 4.757}, {"ym": "2022-07", "nav": 4.1648}, {"ym": "2022-08", "nav": 4.9907}, {"ym": "2022-09", "nav": 4.7919}, {"ym": "2022-10", "nav": 4.6501}, {"ym": "2022-11", "nav": 4.7629}, {"ym": "2022-12", "nav": 4.5251}, {"ym": "2023-01", "nav": 4.3058}, {"ym": "2023-02", "nav": 5.734}, {"ym": "2023-03", "nav": 5.5967}, {"ym": "2023-04", "nav": 5.2364}, {"ym": "2023-05", "nav": 5.1274}, {"ym": "2023-06", "nav": 5.0307}, {"ym": "2023-07", "nav": 5.0856}, {"ym": "2023-08", "nav": 5.0023}, {"ym": "2023-09", "nav": 4.5385}, {"ym": "2023-10", "nav": 4.8711}, {"ym": "2023-11", "nav": 5.672}, {"ym": "2023-12", "nav": 5.9968}, {"ym": "2024-01", "nav": 7.0961}, {"ym": "2024-02", "nav": 7.3917}, {"ym": "2024-03", "nav": 9.8754}, {"ym": "2024-04", "nav": 11.4628}, {"ym": "2024-05", "nav": 10.3333}, {"ym": "2024-06", "nav": 11.0746}, {"ym": "2024-07", "nav": 9.8444}, {"ym": "2024-08", "nav": 9.9603}, {"ym": "2024-09", "nav": 9.7772}, {"ym": "2024-10", "nav": 10.9256}, {"ym": "2024-11", "nav": 11.1189}, {"ym": "2024-12", "nav": 15.4788}, {"ym": "2025-01", "nav": 15.8213}, {"ym": "2025-02", "nav": 15.3383}, {"ym": "2025-03", "nav": 14.2226}, {"ym": "2025-04", "nav": 13.1224}, {"ym": "2025-05", "nav": 14.8761}, {"ym": "2025-06", "nav": 14.9988}, {"ym": "2025-07", "nav": 14.8409}, {"ym": "2025-08", "nav": 18.2105}, {"ym": "2025-09", "nav": 18.9611}, {"ym": "2025-10", "nav": 21.8884}, {"ym": "2025-11", "nav": 24.3583}, {"ym": "2025-12", "nav": 22.3229}, {"ym": "2026-01", "nav": 21.5044}, {"ym": "2026-02", "nav": 19.871}]}, {"name": "Time-Series Momentum", "nav": [{"ym": "2019-12", "nav": 1.0}, {"ym": "2020-01", "nav": 1.0}, {"ym": "2020-02", "nav": 1.0}, {"ym": "2020-03", "nav": 1.0}, {"ym": "2020-04", "nav": 1.799}, {"ym": "2020-05", "nav": 1.6288}, {"ym": "2020-06", "nav": 1.8727}, {"ym": "2020-07", "nav": 1.8657}, {"ym": "2020-08", "nav": 2.4666}, {"ym": "2020-09", "nav": 2.4273}, {"ym": "2020-10", "nav": 2.0675}, {"ym": "2020-11", "nav": 2.1263}, {"ym": "2020-12", "nav": 2.7556}, {"ym": "2021-01", "nav": 2.8092}, {"ym": "2021-02", "nav": 3.5557}, {"ym": "2021-03", "nav": 4.7882}, {"ym": "2021-04", "nav": 6.1475}, {"ym": "2021-05", "nav": 8.0271}, {"ym": "2021-06", "nav": 7.0656}, {"ym": "2021-07", "nav": 7.5346}, {"ym": "2021-08", "nav": 7.0198}, {"ym": "2021-09", "nav": 9.143}, {"ym": "2021-10", "nav": 7.519}, {"ym": "2021-11", "nav": 7.5769}, {"ym": "2021-12", "nav": 8.2604}, {"ym": "2022-01", "nav": 8.5366}, {"ym": "2022-02", "nav": 10.5672}, {"ym": "2022-03", "nav": 9.6492}, {"ym": "2022-04", "nav": 9.8523}, {"ym": "2022-05", "nav": 10.419}, {"ym": "2022-06", "nav": 13.0613}, {"ym": "2022-07", "nav": 14.8091}, {"ym": "2022-08", "nav": 14.559}, {"ym": "2022-09", "nav": 12.9763}, {"ym": "2022-10", "nav": 12.7796}, {"ym": "2022-11", "nav": 12.6902}, {"ym": "2022-12", "nav": 10.9054}, {"ym": "2023-01", "nav": 12.3094}, {"ym": "2023-02", "nav": 13.2665}, {"ym": "2023-03", "nav": 13.1517}, {"ym": "2023-04", "nav": 11.2311}, {"ym": "2023-05", "nav": 11.9061}, {"ym": "2023-06", "nav": 12.58}, {"ym": "2023-07", "nav": 13.5424}, {"ym": "2023-08", "nav": 12.5828}, {"ym": "2023-09", "nav": 12.884}, {"ym": "2023-10", "nav": 11.2897}, {"ym": "2023-11", "nav": 12.2705}, {"ym": "2023-12", "nav": 15.1918}, {"ym": "2024-01", "nav": 20.4281}, {"ym": "2024-02", "nav": 19.5507}, {"ym": "2024-03", "nav": 22.6499}, {"ym": "2024-04", "nav": 28.153}, {"ym": "2024-05", "nav": 25.5078}, {"ym": "2024-06", "nav": 24.5989}, {"ym": "2024-07", "nav": 27.8962}, {"ym": "2024-08", "nav": 27.3298}, {"ym": "2024-09", "nav": 29.4508}, {"ym": "2024-10", "nav": 26.9055}, {"ym": "2024-11", "nav": 26.322}, {"ym": "2024-12", "nav": 46.8071}, {"ym": "2025-01", "nav": 41.6359}, {"ym": "2025-02", "nav": 44.5017}, {"ym": "2025-03", "nav": 50.3256}, {"ym": "2025-04", "nav": 51.4218}, {"ym": "2025-05", "nav": 49.3085}, {"ym": "2025-06", "nav": 40.5322}, {"ym": "2025-07", "nav": 40.026}, {"ym": "2025-08", "nav": 42.416}, {"ym": "2025-09", "nav": 44.8468}, {"ym": "2025-10", "nav": 45.8468}, {"ym": "2025-11", "nav": 52.9231}, {"ym": "2025-12", "nav": 64.0272}, {"ym": "2026-01", "nav": 64.3341}, {"ym": "2026-02", "nav": 62.3904}]}], rendered: false },
+    };
+    const ALL_SLUGS = ["stack-aggressive-growth", "stack-max-diversification", "stack-all-weather", "stack-conservative", "stack-balanced", "alpha-stack-3x"];
+
+    Chart.defaults.color = '#556070';
+    Chart.defaults.borderColor = '#1e2430';
+    Chart.defaults.font.family = "'Alte Haas Grotesk', sans-serif";
+    Chart.defaults.font.size = 11;
+
+    function lineOpts(yCallback) {
+        return {
+            responsive: true, maintainAspectRatio: true,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { labels: { usePointStyle: true, pointStyle: 'line', padding: 20 } },
+                tooltip: { backgroundColor: '#111820', titleColor: '#efefef', bodyColor: '#efefef', borderColor: '#1e2430', borderWidth: 1, padding: 10 }
+            },
+            scales: {
+                x: { ticks: { maxTicksLimit: 8, maxRotation: 0 }, grid: { color: '#111820' } },
+                y: { grid: { color: '#111820' }, ticks: { callback: yCallback || (v => v) } }
+            }
+        };
+    }
+
+    function renderStrategy(sid) {
+        const data = STRATEGY_DATA[sid];
+        if (!data || data.rendered) return;
+        data.rendered = true;
+        let rawNav = data.nav;
+        let startIdx = 0;
+        for (let i = 1; i < rawNav.length; i++) {
+            if (Math.abs(rawNav[i].nav - rawNav[0].nav) > 0.001) { startIdx = Math.max(0, i - 1); break; }
+        }
+        const nav = rawNav.slice(startIdx);
+        const labels = nav.map(d => d.ym);
+        const equity = nav.map(d => Math.round(d.nav * START_CAPITAL));
+
+        // Build datasets: portfolio + individual components
+        const compColors = ['#556070', '#7b78ff', '#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff'];
+        const datasets = [{ label: 'Combined Portfolio', data: equity, borderColor: '#86f834', backgroundColor: 'rgba(134, 248, 52, 0.05)', borderWidth: 3, pointRadius: 0, fill: true, tension: 0.3 }];
+
+        const comps = data.components || [];
+        comps.forEach((comp, idx) => {
+            const cNav = comp.nav || [];
+            // Map component NAV to same labels
+            const cMap = {};
+            cNav.forEach(d => { cMap[d.ym] = d.nav; });
+            const cEquity = labels.map(ym => {
+                const v = cMap[ym];
+                return v ? Math.round(v * START_CAPITAL) : null;
+            });
+            datasets.push({
+                label: comp.name,
+                data: cEquity,
+                borderColor: compColors[idx % compColors.length],
+                borderWidth: 1,
+                pointRadius: 0,
+                borderDash: [4, 3],
+                tension: 0.3,
+                fill: false,
+            });
+        });
+
+        new Chart(document.getElementById('chart-eq-' + sid), {
+            type: 'line',
+            data: { labels, datasets },
+            options: lineOpts(v => '$' + (v >= 1000 ? (v/1000).toFixed(0) + 'K' : v))
+        });
+
+        // Drawdown chart with components
+        function calcDD(navArr) {
+            let pk = 0;
+            return navArr.map(v => { if (v === null) return null; pk = Math.max(pk, v); return ((v - pk) / pk) * 100; });
+        }
+
+        const ddDatasets = [{ label: 'Combined Portfolio', data: calcDD(nav.map(d => d.nav)), borderColor: '#2e29ef', backgroundColor: 'rgba(46, 41, 239, 0.5)', borderWidth: 3, pointRadius: 0, fill: true, tension: 0.3 }];
+
+        comps.forEach((comp, idx) => {
+            const cNav = comp.nav || [];
+            const cMap = {};
+            cNav.forEach(d => { cMap[d.ym] = d.nav; });
+            const cVals = labels.map(ym => cMap[ym] || null);
+            ddDatasets.push({
+                label: comp.name,
+                data: calcDD(cVals),
+                borderColor: compColors[idx % compColors.length],
+                borderWidth: 1,
+                pointRadius: 0,
+                borderDash: [4, 3],
+                tension: 0.3,
+                fill: false,
+            });
+        });
+
+        new Chart(document.getElementById('chart-dd-' + sid), {
+            type: 'line',
+            data: { labels, datasets: ddDatasets },
+            options: lineOpts(v => v.toFixed(0) + '%')
+        });
+
+        // Monthly heatmap
+        const container = document.getElementById('monthly-' + sid);
+        if (!container) return;
+        const monthlyRets = {};
+        const yearNav = {};
+        for (let i = 1; i < nav.length; i++) {
+            const ret = (nav[i].nav / nav[i-1].nav) - 1;
+            const yr = nav[i].ym.slice(0, 4);
+            const mo = parseInt(nav[i].ym.slice(5, 7));
+            if (!monthlyRets[yr]) monthlyRets[yr] = {};
+            monthlyRets[yr][mo] = ret;
+            if (!yearNav[yr]) yearNav[yr] = { first: nav[i-1].nav, last: nav[i].nav };
+            yearNav[yr].last = nav[i].nav;
+        }
+        let html = '<div class="month-header"></div>';
+        ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].forEach(m => html += '<div class="month-header">' + m + '</div>');
+        html += '<div class="month-header" style="font-weight:700;color:#efefef">Year</div>';
+        html += '<div class="month-header" style="font-weight:700;color:#2e29ef">Max DD</div>';
+        html += '<div class="month-header" style="font-weight:700;color:#efefef">Sharpe</div>';
+        Object.keys(monthlyRets).sort().forEach(yr => {
+            const hasData = Object.values(monthlyRets[yr]).some(r => Math.abs(r) >= 0.0001);
+            if (!hasData) return;
+            html += '<div class="year-label">' + yr + '</div>';
+            for (let m = 1; m <= 12; m++) {
+                const r = monthlyRets[yr][m];
+                if (r === undefined || Math.abs(r) < 0.0001) { html += '<div class="cell cell-empty">—</div>'; }
+                else { html += '<div class="cell ' + (r >= 0 ? 'cell-pos' : 'cell-neg') + '">' + (r * 100).toFixed(1) + '%</div>'; }
+            }
+            const yt = yearNav[yr] ? (yearNav[yr].last / yearNav[yr].first) - 1 : 0;
+            if (Math.abs(yt) < 0.0001) {
+                html += '<div class="cell cell-empty">—</div>';
+                html += '<div class="cell cell-empty">—</div>';
+                html += '<div class="cell cell-empty">—</div>';
+            } else {
+                html += '<div class="cell ' + (yt >= 0 ? 'cell-pos' : 'cell-neg') + '" style="font-weight:700">' + (yt * 100).toFixed(1) + '%</div>';
+                const yrNavs = nav.filter(d => d.ym.startsWith(yr)).map(d => d.nav);
+                let yrPk = yrNavs[0] || 1; let yrDD = 0;
+                yrNavs.forEach(v => { yrPk = Math.max(yrPk, v); yrDD = Math.min(yrDD, (v - yrPk) / yrPk); });
+                html += '<div class="cell cell-neg" style="font-weight:700">' + (yrDD * 100).toFixed(1) + '%</div>';
+                const yrR = [];
+                const yrND = nav.filter(d => d.ym.startsWith(yr));
+                for (let k = 1; k < yrND.length; k++) { yrR.push(yrND[k].nav / yrND[k-1].nav - 1); }
+                let yrSR = 0;
+                if (yrR.length > 1) {
+                    const m = yrR.reduce((a,b) => a+b, 0) / yrR.length;
+                    const s = Math.sqrt(yrR.reduce((a,r) => a + (r-m)**2, 0) / yrR.length);
+                    yrSR = s > 0 ? (m / s) * Math.sqrt(12) : 0;
+                }
+                html += '<div class="cell" style="font-weight:700;color:#efefef">' + yrSR.toFixed(1) + '</div>';
+            }
+        });
+        container.innerHTML = html;
+    }
+
+    function sortCards(mode, btn) {
+        document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const grid = document.querySelector('.cards-grid');
+        const cards = Array.from(grid.querySelectorAll('.strategy-card'));
+
+        if (mode === 'bookmarked') {
+            const bm = JSON.parse(localStorage.getItem('lootfi_bookmarks') || '[]');
+            cards.forEach(c => {
+                const icon = c.querySelector('.bookmark-icon');
+                const id = icon ? icon.dataset.id : '';
+                c.style.display = bm.includes(id) ? '' : 'none';
+            });
+            return;
+        }
+
+        cards.forEach(c => c.style.display = '');
+        cards.sort((a, b) => {
+            if (mode === 'cagr') return parseFloat(b.dataset.cagr) - parseFloat(a.dataset.cagr);
+            if (mode === 'sharpe') return parseFloat(b.dataset.sharpe) - parseFloat(a.dataset.sharpe);
+            if (mode === 'maxdd') return parseFloat(b.dataset.maxdd) - parseFloat(a.dataset.maxdd);
+        });
+        cards.forEach(c => grid.appendChild(c));
+    }
+
+    function getBookmarks() {
+        return JSON.parse(localStorage.getItem('lootfi_bookmarks') || '[]');
+    }
+
+    function toggleBookmark(el) {
+        const id = el.dataset.id;
+        let bm = getBookmarks();
+        if (bm.includes(id)) {
+            bm = bm.filter(b => b !== id);
+            el.classList.remove('active');
+        } else {
+            bm.push(id);
+            el.classList.add('active');
+        }
+        localStorage.setItem('lootfi_bookmarks', JSON.stringify(bm));
+    }
+
+    (function() {
+        const bm = getBookmarks();
+        document.querySelectorAll('.bookmark-icon').forEach(el => {
+            if (bm.includes(el.dataset.id)) el.classList.add('active');
+        });
+    }());
+
+    // Sort by CAGR on load
+    setTimeout(() => { sortCards('cagr', document.querySelector('.sort-btn.active')); }, 100);
+
+    function showDetail(sid) {
+        document.getElementById('cardsView').style.display = 'none';
+        document.querySelectorAll('.strategy-detail').forEach(d => d.classList.remove('active'));
+        document.getElementById('detail-' + sid).classList.add('active');
+        renderStrategy(sid);
+        window.scrollTo(0, 0);
+    }
+    function showCards() {
+        document.querySelectorAll('.strategy-detail').forEach(d => d.classList.remove('active'));
+        document.getElementById('cardsView').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+    </script>
+</body>
+</html>
