@@ -73,5 +73,11 @@
     </div>
   </div>
 
+  <script>
+  // Handle Supabase auth redirects (email confirmation, password reset)
+  if (window.location.hash.includes('access_token')) {
+      window.location.href = 'account.html' + window.location.hash;
+  }
+  </script>
 </body>
 </html>
