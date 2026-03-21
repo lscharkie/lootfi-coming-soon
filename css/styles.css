@@ -151,7 +151,8 @@ body {
 }
 
 .animation {
-  width: 650px;
+  width: 100%;
+  max-width: 650px;
   margin: 40px auto 20px;
 }
 
