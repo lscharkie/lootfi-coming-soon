@@ -459,6 +459,7 @@ body {
   .topnav-links { order: 3; }
   .topnav-auth { order: 4; }
   .topnav-links a { font-size: 18px; padding: 14px 0; }
+  .btn-login, .btn-signup { padding: 12px 28px; font-size: 14px; }
   .topnav-auth { flex-direction: row; justify-content: center; }
   .animation {
     width: 90%;
